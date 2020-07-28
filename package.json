@@ -15,8 +15,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy-local": "scp -r ./build pi@192.168.1.24:/var/lib/tomcat8/webapps",
-    "deploy-remote": "scp -r ./build pi@pwojtaszko.ddns.net:/var/lib/tomcat8/webapps",
+    "deploy-local": "scp -r ./build/* pi@192.168.1.24:/var/lib/tomcat8/webapps/ROOT",
+    "deploy-remote": "scp -r ./build/* pi@pwojtaszko.ddns.net:/var/lib/tomcat8/webapps/ROOT",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
