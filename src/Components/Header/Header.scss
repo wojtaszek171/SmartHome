@@ -1,0 +1,26 @@
+.header-component {
+    height: 53px;
+    width: 100%;
+    background-color: black;
+    color: white;
+
+    .header-title {
+        cursor: pointer;
+        font-weight: bold;
+        line-height: 53px;
+        margin-left: 20px;
+        font-size: 1.5em;
+    }
+    
+    .login-button {
+        color: #3486eb;
+        text-decoration: none;
+        float: right;
+        line-height: 53px;
+        margin-right: 20px;
+
+        &:active {
+            color: white;
+        }
+    }
+}
