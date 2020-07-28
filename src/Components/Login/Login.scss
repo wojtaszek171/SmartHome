@@ -1,0 +1,17 @@
+.login-component {
+    width: 100%;
+
+    .login-form {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        .button-component {
+            display: grid;
+        }
+    }
+}

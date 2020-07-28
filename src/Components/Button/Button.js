@@ -5,15 +5,15 @@ const Button = (props) => {
     const { text } = props;
 
     const handleOnClick = () => {
-        const { onClick } = props
+        const { handleClick } = props
 
-        if (onClick) {
-            onClick();
+        if (handleClick) {
+            handleClick();
         }
     }
 
     return (
-        <div className="button-component">
+        <div className="button-component noselect">
             <button onClick={handleOnClick}>{text}</button>
         </div>
     );
