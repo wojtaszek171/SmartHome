@@ -1,0 +1,12 @@
+.content-component {
+    display: flex;
+    flex: 1;
+    height: 0;
+    min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
+}
+
+.content-box {
+    overflow: auto;
+    width: 100%;
+    padding: 20px;
+}

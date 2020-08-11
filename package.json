@@ -12,15 +12,15 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-hls": "0.0.8",
     "react-scripts": "3.4.1",
+    "react-video-js-player": "^1.1.1",
     "redux": "^4.0.5",
     "sass": "^1.26.10",
     "wcjs-player": "^6.0.1",
     "webpack": "4.42.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set HTTPS=true && react-scripts start",
     "build": "react-scripts build",
     "deploy-local": "scp -r ./build/* pi@192.168.1.24:/var/www/html",
     "deploy-remote": "scp -r ./build/* pi@pwojtaszko.ddns.net:/var/www/html",
