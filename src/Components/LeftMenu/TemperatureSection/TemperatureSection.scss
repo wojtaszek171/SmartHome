@@ -1,0 +1,50 @@
+.temperature-section-component {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+
+    .button-bar {
+        width: 30px;
+        background-color: indigo;
+
+        .collapse-button {
+            width: 30px;
+            height: 30px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                color: white;
+            }
+        }
+    }
+    
+    .text-title {
+        font-size: 1.4em;
+        display: inline-table;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 2px dashed grey;
+    }
+
+    .section-box {
+        border-bottom: 1px dashed grey;
+        display: inline-table;
+        width: 100%;
+
+        .text-subtitle {
+            font-size: 1.2em;
+        }
+        
+        .temp-box {
+            text-align: center;
+            
+            span {
+                font-size: 1.4em;
+                display: inline-block;
+                padding: 10px;
+            }
+        }
+    }
+}
