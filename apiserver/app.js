@@ -32,7 +32,7 @@ app.use(function(req, res, next){
 	next();
 });
 app.use('/', indexRouter);
-app.use('/api/sensors', sensorsRouter);
+app.use('/sensors', sensorsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,5 +49,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+app.listen(8393);
 
 module.exports = app;
