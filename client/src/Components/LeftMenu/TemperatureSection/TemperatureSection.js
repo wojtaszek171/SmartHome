@@ -1,10 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './TemperatureSection.scss';
 import leftArrow from '../assets/arrow_left.svg';
+import { getSensorsData } from '../../../restService/restService';
 
 function TemperatureSection() {
   const [roomTemp, setRoomTemp] = useState('--');
   const [waterTemp, setWaterTemp] = useState('--');
+
+  useEffect(() => {
+    setTemperatureValues();
+    setInterval(
+      setTemperatureValues, 
+    5000)
+    
+  }, [])
+
+  const setTemperatureValues = async () => {
+    try {
+      const { response, error } = await getSensorsData();
+      if (error) {
+        throw new Error(error);
+      }
+      setRoomTemp(response.waterTemp.value);
+      setWaterTemp(response.roomTemp.value);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <div className="temperature-section-component">

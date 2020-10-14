@@ -1,0 +1,22 @@
+{
+    "name": "apiproject",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+      "start": "node ./bin/www",
+      "deploy-local": "scp -r ./src/* pi@192.168.1.24:/var/www/pythonApp/",
+      "deploy": "scp -r ./src/* pi@pwojtaszko.ddns.net:/var/www/pythonApp/"
+    },
+    "dependencies": {
+      "compression": "^1.7.4",
+      "cookie-parser": "~1.4.4",
+      "debug": "~2.6.9",
+      "express": "~4.16.1",
+      "helmet": "^4.1.1",
+      "http-errors": "~1.6.3",
+      "jade": "~1.11.0",
+      "morgan": "~1.9.1",
+      "mysql": "^2.18.1"
+    }
+  }
+  
