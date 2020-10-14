@@ -10,7 +10,7 @@ passwd = getpass()
 
 def main():
     startStream()
-    #threading.Thread(startApiServer()).start()
+    threading.Thread(startApiServer()).start()
     threading.Thread(sensorsReading()).start()
 
 def sensorsReading():

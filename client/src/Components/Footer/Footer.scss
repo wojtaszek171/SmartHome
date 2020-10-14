@@ -1,6 +1,11 @@
 .footer-component {
     height: 53px;
     width: 100%;
-    background-color: black;
-    color: white;
+
+    .footer-text {
+        width: 100%;
+        display: block;
+        line-height: 53px;
+        text-align: center;
+    }
 }

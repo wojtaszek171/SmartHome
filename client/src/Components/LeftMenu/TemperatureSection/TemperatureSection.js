@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './TemperatureSection.scss';
-import leftArrow from '../assets/arrow_left.svg';
 import { getSensorsData } from '../../../restService/restService';
 
 function TemperatureSection() {
@@ -43,11 +42,6 @@ function TemperatureSection() {
           <div className="temp-box">
             <span>{roomTemp}°C</span>
           </div>
-        </div>
-      </div>
-      <div className="button-bar">
-        <div className="collapse-button">
-          <img src={leftArrow} />
         </div>
       </div>
     </div>

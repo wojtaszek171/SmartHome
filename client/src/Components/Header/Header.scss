@@ -1,8 +1,6 @@
 .header-component {
     height: 53px;
     width: 100%;
-    background-color: black;
-    color: white;
 
     .header-title {
         cursor: pointer;
@@ -14,13 +12,14 @@
     
     .login-button {
         color: #3486eb;
+        font-weight: bold;
         text-decoration: none;
         float: right;
         line-height: 53px;
         margin-right: 20px;
 
         &:active {
-            color: white;
+            color: black;
         }
     }
 }
