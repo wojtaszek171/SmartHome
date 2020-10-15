@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './LeftMenu.scss';
 import TemperatureSection from './TemperatureSection';
 import leftArrow from './assets/arrow_left.svg';
+import { isMobile } from 'react-device-detect';
 
 function LeftMenu() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(isMobile);
 
   const handleCollapseClick = () => {
     setCollapsed(!collapsed);
