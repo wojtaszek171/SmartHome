@@ -16,12 +16,12 @@ function TemperatureSection() {
 
   const setTemperatureValues = async () => {
     try {
-      const { response, error } = await getSensorsData();
+      const { response: { waterTemp, roomTemp }, error } = await getSensorsData();
       if (error) {
         throw new Error(error);
       }
-      setRoomTemp(response.waterTemp.value);
-      setWaterTemp(response.roomTemp.value);
+      setRoomTemp(roomTemp.value.toFixed(2));
+      setWaterTemp(waterTemp.value.toFixed(2));
     } catch (e) {
       console.log(e);
     }
