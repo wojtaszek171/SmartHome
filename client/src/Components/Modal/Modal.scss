@@ -4,7 +4,8 @@
     height: 100%;
     position: absolute;
     background-color: grey;
-    opacity: 0.6;    
+    opacity: 0.6;
+    z-index: 3;
 }
 
 .modal-component {
@@ -17,7 +18,7 @@
     transform: translate(-50%, -50%);
     color: white;
     border-radius: 5px;
-    z-index: 1;
+    z-index: 3;
 
     .title-box {
         margin-right: 20px;
