@@ -9,8 +9,8 @@ import subprocess
 passwd = getpass()
 
 def main():
-    startStream()
-    threading.Thread(startApiServer()).start()
+    #startStream()
+    #threading.Thread(startApiServer()).start()
     threading.Thread(sensorsReading()).start()
 
 def sensorsReading():

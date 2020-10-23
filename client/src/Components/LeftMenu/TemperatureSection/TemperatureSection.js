@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './TemperatureSection.scss';
-import { getSensorsData } from '../../../restService/restService';
+import { getWaterTemp, getRoomTemp } from '../../../restService/restService';
 
 function TemperatureSection() {
   const [roomTemp, setRoomTemp] = useState('--');
@@ -16,12 +16,11 @@ function TemperatureSection() {
 
   const setTemperatureValues = async () => {
     try {
-      const { response: { waterTemp, roomTemp }, error } = await getSensorsData();
-      if (error) {
-        throw new Error(error);
-      }
-      setRoomTemp(roomTemp.value.toFixed(2));
-      setWaterTemp(waterTemp.value.toFixed(2));
+      const { value: waterTemp } =  await getWaterTemp();
+      const { value: roomTemp } =  await getRoomTemp();
+
+      setRoomTemp(roomTemp.toFixed(2));
+      setWaterTemp(waterTemp.toFixed(2));
     } catch (e) {
       console.log(e);
     }

@@ -21,7 +21,7 @@ def updateSensorValues(passwd, database):
         temperature = temperature / 1000
         cursor = mydb.cursor()
         print(temperature)
-        cursor.execute("INSERT INTO `sensors` (`NAME`, `VALUE`, `DATE_UPDATED`, `ID`) VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE VALUE=%s, DATE_UPDATED=%s",(sensorName, temperature, datetime.datetime.now(), sensorId, temperature, datetime.datetime.now()))
+        cursor.execute("INSERT INTO `Sensors` (`name`, `value`, `updatedAt`, `createdAt`, `id`) VALUES (%s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE value=%s, updatedAt=%s",(sensorName, temperature, datetime.datetime.now(), datetime.datetime.now(), sensorId, temperature, datetime.datetime.now()))
         time.sleep(1)
 
     mydb.commit()
