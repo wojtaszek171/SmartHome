@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Toggle.scss';
 
-const Toggle = ({ round, onClick, checked = false }) => {
+const Toggle = ({ round, onClick, checked = false, label }) => {
 
   const [isChecked, setIsChecked] = useState(checked);
 
@@ -11,10 +11,13 @@ const Toggle = ({ round, onClick, checked = false }) => {
   }
 
   return (
-    <div class="Toggle">
-      <label class="switch">
-        <input type="checkbox" onChange={handleOnClick} checked={isChecked}/>
-        <span class={`slider ${round && 'round'}`}></span>
+    <div className="Toggle">
+      <label className="toggle-content">
+        <div className="switch">
+          <input type="checkbox" onChange={handleOnClick} checked={isChecked}/>
+          <span className={`slider ${round && 'round'}`}></span>
+        </div>
+        <span className="label noselect">{label}</span>
       </label>
     </div>
   );

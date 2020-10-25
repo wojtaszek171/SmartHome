@@ -18,7 +18,7 @@ const Admin = () => {
         <span className="header-text">Administration panel</span>
       </div>
       <div className="settings">
-        <Toggle round onClick={handleToggleClick} />
+        <Toggle round onClick={handleToggleClick} label="Access from local network only" />
       </div>
     </div>
   );
