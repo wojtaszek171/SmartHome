@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import TextInput from '../TextInput';
 import Toggle from '../Toggle';
 import './Admin.scss';
 
@@ -11,6 +12,10 @@ const Admin = () => {
   const handleToggleClick = (value) => {
     console.log('clicked '+value);
   }
+
+  const handleTextInputChamge = (value) => {
+    console.log(value);
+  }
   
   return (
     <div className="Admin">
@@ -18,7 +23,16 @@ const Admin = () => {
         <span className="header-text">Administration panel</span>
       </div>
       <div className="settings">
-        <Toggle round onClick={handleToggleClick} label="Access from local network only" />
+        <Toggle
+          round
+          onClick={handleToggleClick}
+          label="Access from local network only"
+        />
+        <TextInput
+          label={'setting'}
+          placeholder={'put setting'}
+          onChange={handleTextInputChamge}
+        />
       </div>
     </div>
   );
