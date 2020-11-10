@@ -1,0 +1,14 @@
+.grid-item-component {
+    display: table;
+    padding: 20px;
+    border: 1px dashed black;
+
+    .item-title {
+        text-align: center;
+        display: block;
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 5px;
+    }
+
+}

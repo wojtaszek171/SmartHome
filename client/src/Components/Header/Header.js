@@ -25,7 +25,7 @@ function Header() {
 
   return (
     <div className="header-component">
-      <span className="header-title noselect" onClick={handleTitleClick}>Aquarium</span>
+      <span className="header-title noselect" onClick={handleTitleClick}>Smart Home</span>
       <a href="/#" className="login-button noselect" onClick={handleLoginOpen}>Login</a>
       <Modal show={loginVisible} title={"Login to administrate"} onClose={handleLoginClose}>
         <Login/>

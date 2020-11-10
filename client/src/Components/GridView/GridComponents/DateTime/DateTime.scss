@@ -1,0 +1,30 @@
+.datetime-component {
+    min-width: 300px;
+
+    .date-section {
+
+        .date-col {
+            
+            .date-row {
+                text-align: center;
+
+                &.date {
+                    font-size: 1.4em;
+                    font-weight: bold;
+                    text-align: left;
+                }
+
+                &.time {
+                    font-size: 3.5em;
+                    font-weight: bold;
+                }
+
+                &.day {
+                    font-size: 1.4em;
+                    font-weight: bold;
+                    text-align: right;
+                }
+            }
+        }
+    }
+}

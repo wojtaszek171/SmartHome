@@ -5,7 +5,7 @@ import Footer from '../Footer';
 import Content from '../Content';
 import LeftMenu from '../LeftMenu/LeftMenu';
 import Admin from '../Admin';
-import { BrowserRouter as Router, Switch, Route, useHistory, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
 
@@ -19,7 +19,7 @@ function App() {
             <div className="appMiddle">
               <Switch>
                 <Route path="/" exact>
-                    <LeftMenu />
+                    {/* <LeftMenu /> */}
                     <Content />
                 </Route>
                 <Route path="/admin">
