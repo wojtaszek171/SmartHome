@@ -7,4 +7,5 @@
         "database": "home"
     },
     "secret": ""
+    "weather_api": ""
 }

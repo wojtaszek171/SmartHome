@@ -3,17 +3,15 @@ import './Weather.scss';
 
 const Weather = () => {
 
-  const [city, setCity] = useState('Warszawa');
-  const [apiKey, setApiKey] = useState('');
   const [weatherCurrent, setWeatherCurrent] = useState({
-    name: '',
-    temp: '',
-    humidity: '',
-    pressure: '',
+    temp: 0,
+    humidity: 0,
+    pressure: 0,
     sunrise: '',
     sunset: '',
     icon: ''
   });
+  const [weatherForecast, setWeatherForecast] = useState([]);
 
   let weatherRequestInterval = useRef(null)
 
@@ -21,7 +19,7 @@ const Weather = () => {
     fetchWeather();
     weatherRequestInterval = setInterval(
       fetchWeather,
-      1800000
+      60000
     );
 
     return () => {
@@ -31,13 +29,13 @@ const Weather = () => {
 
   const fetchWeather = () => {
     try {
-      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=pl`)
+      fetch(`https://pwojtaszko.ddns.net/api/weather/current`)
         .then(response => response.json())
         .then(data => {
-          const { main: { temp, humidity, pressure }, sys: { sunrise, sunset }, weather, name } = data;
+          const { temp, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
           const { icon, description } = weather[0];
+
           setWeatherCurrent({
-            name,
             temp: Math.round(temp ),
             humidity,
             pressure,
@@ -59,7 +57,7 @@ const Weather = () => {
     <div className="weather-component">
         <div className="weather-row current">
           <div className="weather-city">
-            <span>{weatherCurrent.name}</span>
+            <span>{'Warszawa'}</span>
           </div>
           <div className="weather-icon">
             <img src={`http://openweathermap.org/img/wn/${weatherCurrent.icon}@4x.png`}/>

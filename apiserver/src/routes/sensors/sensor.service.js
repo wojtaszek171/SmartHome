@@ -19,7 +19,6 @@ async function getById(id) {
 
 async function getByName(name) {
     const sensor = await db.Sensor.findOne({ where: { name } });
-    console.log({ where: { name } });
     if (!sensor) throw 'Sensor not found';
     return sensor;
 }
