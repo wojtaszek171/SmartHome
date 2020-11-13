@@ -1,24 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { getCurrentWeather } from '../../../../restService/restService';
 import './Weather.scss';
 
 const Weather = () => {
 
   const [weatherCurrent, setWeatherCurrent] = useState({
-    temp: 0,
-    humidity: 0,
-    pressure: 0,
-    sunrise: '',
-    sunset: '',
-    icon: ''
+    temp: null,
+    feels_like: null,
+    humidity: null,
+    pressure: null,
+    sunrise: null,
+    sunset: null,
+    icon: null
   });
   const [weatherForecast, setWeatherForecast] = useState([]);
 
   let weatherRequestInterval = useRef(null)
 
   useEffect(() => {
-    fetchWeather();
+    fetchCurrentWeather();
     weatherRequestInterval = setInterval(
-      fetchWeather,
+      fetchCurrentWeather,
       60000
     );
 
@@ -27,26 +29,9 @@ const Weather = () => {
     }
   }, [])
 
-  const fetchWeather = () => {
-    try {
-      fetch(`https://pwojtaszko.ddns.net/api/weather/current`)
-        .then(response => response.json())
-        .then(data => {
-          const { temp, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
-          const { icon, description } = weather[0];
-
-          setWeatherCurrent({
-            temp: Math.round(temp ),
-            humidity,
-            pressure,
-            sunrise,
-            sunset,
-            icon
-          })
-        });
-    } catch (e) {
-      console.log(e);
-    }
+  const fetchCurrentWeather = async () => {
+    const currentWeather = await getCurrentWeather();
+    setWeatherCurrent(currentWeather);
   }
 
   const renderForecastItem = () => {

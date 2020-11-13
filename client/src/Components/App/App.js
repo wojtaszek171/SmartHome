@@ -3,7 +3,7 @@ import './App.scss';
 import Header from '../Header';
 import Footer from '../Footer';
 import Content from '../Content';
-import LeftMenu from '../LeftMenu/LeftMenu';
+// import LeftMenu from '../LeftMenu/LeftMenu';
 import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 

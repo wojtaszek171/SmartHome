@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './LeftMenu.scss';
 import TemperatureSection from './TemperatureSection';
 import leftArrow from './assets/arrow_left.svg';
