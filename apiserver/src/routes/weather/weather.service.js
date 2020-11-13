@@ -13,16 +13,14 @@ async function getAll() {
 
 async function getByName(name) {
     const weather = await db.Weather.findOne({ where: { name } });
-    console.log({ where: { name } });
     if (!weather) throw 'Weather not found';
     return weather;
 }
 
 async function set(params) {
-    // validate
     if (await db.Weather.findOne({ where: { name: params.name } })) {
         update(params.name, params);
-    }else {
+    } else {
         await db.Weather.create(params);
     }
 }

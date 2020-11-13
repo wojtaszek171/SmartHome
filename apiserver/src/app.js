@@ -10,6 +10,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const errorHandler = require('_middleware/error-handler');
 const weatherService = require('./routes/weather/weather.service');
+const sensorService = require('./routes/sensors/sensor.service');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -49,10 +50,45 @@ const readWeather = () => {
     }
 }
 
+const readSensors = () => {
+    const { spawn } = require("child_process");
+
+    let process = spawn('python3', ["../pythonApp/sensors.py"] );
+
+    process.stdout.on('data', function (data) {
+        const sensors = JSON.parse(data.toString());
+
+        sensors.forEach(sensor => {
+            const { name, value } = sensor;
+            sensorService.set({
+                name,
+                value
+            });
+        });
+    });
+}
+
+const startStream = () => {
+    const { exec } = require("child_process");
+
+    exec('sudo raspivid --nopreview -o - -t 0 -w 960 -h 720 -fps 25 -b 4000000 -g 50  | ffmpeg -re -f h264 -i - -vcodec copy -g 50 -strict experimental -f flv -metadata streamName=myStream rtmp://pwojtaszko.ddns.net/show/stream', (err, stdout, stderr) => {
+        if (err) {
+            console.error(err)
+        }
+    });
+}
+
+readSensors();
+setInterval(() => {
+    readSensors();
+}, 5000);
+
 readWeather();
 setInterval(() => {
     readWeather();
 }, 900000);
+
+// startStream();
 
 // global error handler
 app.use(errorHandler);

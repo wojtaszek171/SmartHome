@@ -2,9 +2,8 @@ const db = require('_helpers/db');
 
 module.exports = {
     getAll,
-    getById,
     getByName,
-    create,
+    set,
     update,
     delete: _delete
 };
@@ -13,9 +12,6 @@ async function getAll() {
     return await db.Sensor.findAll();
 }
 
-async function getById(id) {
-    return await getSensor(id);
-}
 
 async function getByName(name) {
     const sensor = await db.Sensor.findOne({ where: { name } });
@@ -23,33 +19,31 @@ async function getByName(name) {
     return sensor;
 }
 
-async function create(params) {
-    // validate
-    if (await db.Sensor.findOne({ where: { id: params.id } })) {
-        throw 'Sensor "' + params.id + '" already exists';
+async function set(params) {
+    if (await db.Sensor.findOne({ where: { name: params.name } })) {
+        update(params.name, params);
+    } else {
+        await db.Sensor.create(params);
     }
-
-    // save sensor
-    await db.Sensor.create(params);
 }
 
-async function update(id, params) {
-    const sensor = await getSensor(id);
+async function update(name, params) {
+    const sensor = await getSensor(name);
 
     // copy params to sensor and save
     Object.assign(sensor, params);
     await sensor.save();
 }
 
-async function _delete(id) {
-    const sensor = await getSensor(id);
+async function _delete(name) {
+    const sensor = await getSensor(name);
     await sensor.destroy();
 }
 
 // helper functions
 
-async function getSensor(id) {
-    const sensor = await db.Sensor.findByPk(id);
+async function getSensor(name) {
+    const sensor = await db.Sensor.findByPk(name);
     if (!sensor) throw 'Sensor not found';
     return sensor;
 }
