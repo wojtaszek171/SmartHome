@@ -7,7 +7,7 @@ const DailyItem = ({ day, dayTemp, nightTemp, icon}) => {
 
   return (
     <div className="weather-forecast-day">
-        <span> {dayNames[day]} </span>
+        <span className="day-title"> {dayNames[day]} </span>
         <div className="day-image">
           <img src={`https://openweathermap.org/img/wn/${icon}@4x.png`}/>
         </div>

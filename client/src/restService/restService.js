@@ -29,7 +29,7 @@ export const getCurrentWeather = () => {
         .then(response => response.json())
         .then(data => {
             const { temp, feels_like, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
-            const { icon } = weather[0];
+            const { icon, description } = weather[0];
 
             return{
                 temp: Math.round(temp),
@@ -38,7 +38,8 @@ export const getCurrentWeather = () => {
                 pressure,
                 sunrise,
                 sunset,
-                icon
+                icon,
+                description
             }
         })
         .catch(e => {

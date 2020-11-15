@@ -12,7 +12,8 @@ const Weather = () => {
     pressure: null,
     sunrise: null,
     sunset: null,
-    icon: null
+    icon: null,
+    description: null
   });
   const [weatherDaily, setWeatherDaily] = useState([]);
 
@@ -59,9 +60,9 @@ const Weather = () => {
           <div className="weather-temperature">
             <span>{`${weatherCurrent.temp} °C`}</span>
           </div>
-          <div className="weather-humidity">
-
-          </div>
+        </div>
+        <div className="weather-row desc">
+            <span className="weather-desc">{weatherCurrent.description}</span>
         </div>
         <div className="weather-row forecast">
           {weatherDaily.map((day) => <DailyItem {...day} />)}

@@ -1,7 +1,15 @@
 .weather-forecast-day {
     display: flex;
+    flex-grow: 1;
     flex-flow: column;
     text-align: center;
+    padding: 10px;
+
+    .day-title {
+        font-size: 1.5em;
+        margin-bottom: -10px;
+    }
+
     .day-image {
         img {
             width: 100px;
@@ -9,12 +17,12 @@
     }
 
     .temperature-day {
-        width: 100%;
+        margin-top: -10px;
+        font-size: 1.3em;
     }
 
     .temperature-night {
-        width: 100%;
-
+        font-size: 1.3em;
     }
 
     &:nth-child(odd) {
