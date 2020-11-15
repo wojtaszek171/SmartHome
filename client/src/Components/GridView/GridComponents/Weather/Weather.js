@@ -59,10 +59,10 @@ const Weather = () => {
           </div>
           <div className="weather-temperature">
             <span>{`${weatherCurrent.temp} °C`}</span>
+            <div className="weather-desc">
+                <span className="weather-desc">{weatherCurrent.description}</span>
+            </div>
           </div>
-        </div>
-        <div className="weather-row desc">
-            <span className="weather-desc">{weatherCurrent.description}</span>
         </div>
         <div className="weather-row forecast">
           {weatherDaily.map((day) => <DailyItem {...day} />)}

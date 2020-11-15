@@ -8,7 +8,7 @@
             
             .weather-city {
                 flex: 2;
-                font-size: 2.5em;
+                font-size: 2.5rem;
                 text-align: center;
                 float: left;
             }
@@ -26,22 +26,17 @@
             .weather-temperature {
                 flex: 2;
                 text-align: center;
-                font-size: 3em;
+                font-size: 3rem;
                 font-weight: bold;
                 float: left;
+
+                .weather-desc {
+                    display: block;
+                    font-size: 1.5rem;
+                    text-align: center;
+                    width: 100%;    
+                }
             }
-        }
-
-        &.desc {
-            margin-top: -20px;
-        }
-
-        .weather-desc {
-            display: block;
-            font-size: 1.2em;
-            text-align: center;
-            width: 100%;
-            margin-bottom: 20px;
         }
 
         &.forecast {
