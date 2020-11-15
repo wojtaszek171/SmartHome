@@ -29,5 +29,10 @@
                 float: left;
             }
         }
+
+        &.forecast {
+            display: flex;
+            flex-flow: row;
+        }
     }
 }

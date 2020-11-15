@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getCurrentWeather } from '../../../../restService/restService';
+import { getCurrentWeather, getDailyWeather } from '../../../../restService/restService';
+import DailyItem from './DailyItem/DailyItem';
 import './Weather.scss';
 
 const Weather = () => {
@@ -13,15 +14,22 @@ const Weather = () => {
     sunset: null,
     icon: null
   });
-  const [weatherForecast, setWeatherForecast] = useState([]);
+  const [weatherDaily, setWeatherDaily] = useState([]);
 
   let weatherRequestInterval = useRef(null)
+  let weatherDailyRequestInterval = useRef(null)
 
   useEffect(() => {
     fetchCurrentWeather();
     weatherRequestInterval = setInterval(
       fetchCurrentWeather,
-      60000
+      60000 // update every minute
+    );
+
+    fetchDailyWeather();
+    weatherDailyRequestInterval = setInterval(
+      fetchCurrentWeather,
+      3600000 // update every hour
     );
 
     return () => {
@@ -34,8 +42,9 @@ const Weather = () => {
     setWeatherCurrent(currentWeather);
   }
 
-  const renderForecastItem = () => {
-    return <div></div>
+  const fetchDailyWeather = async () => {
+    const currentWeather = await getDailyWeather();
+    setWeatherDaily(currentWeather);
   }
 
   return (
@@ -45,7 +54,7 @@ const Weather = () => {
             <span>{'Warszawa'}</span>
           </div>
           <div className="weather-icon">
-            <img src={`http://openweathermap.org/img/wn/${weatherCurrent.icon}@4x.png`}/>
+            <img src={`https://openweathermap.org/img/wn/${weatherCurrent.icon}@4x.png`}/>
           </div>
           <div className="weather-temperature">
             <span>{`${weatherCurrent.temp} °C`}</span>
@@ -55,7 +64,7 @@ const Weather = () => {
           </div>
         </div>
         <div className="weather-row forecast">
-          {renderForecastItem()}
+          {weatherDaily.map((day) => <DailyItem {...day} />)}
         </div>
     </div>
   );

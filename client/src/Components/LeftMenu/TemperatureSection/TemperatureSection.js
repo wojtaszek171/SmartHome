@@ -16,11 +16,8 @@ function TemperatureSection() {
 
   const setTemperatureValues = async () => {
     try {
-      const { value: waterTemp } =  await getWaterTemp();
-      const { value: roomTemp } =  await getRoomTemp();
-
-      setRoomTemp(roomTemp.toFixed(2));
-      setWaterTemp(waterTemp.toFixed(2));
+      setRoomTemp(await getRoomTemp());
+      setWaterTemp(await getWaterTemp());
     } catch (e) {
       console.log(e);
     }

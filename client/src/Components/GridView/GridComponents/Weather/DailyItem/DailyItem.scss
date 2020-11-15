@@ -1,0 +1,23 @@
+.weather-forecast-day {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    .day-image {
+        img {
+            width: 100px;
+        }
+    }
+
+    .temperature-day {
+        width: 100%;
+    }
+
+    .temperature-night {
+        width: 100%;
+
+    }
+
+    &:nth-child(odd) {
+        background: #CCC;
+    }
+}

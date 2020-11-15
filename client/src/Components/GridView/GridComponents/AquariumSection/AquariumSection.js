@@ -15,9 +15,7 @@ const AquariumSection = () => {
 
   const setTemperatureValue = async () => {
     try {
-      const { value } =  await getWaterTemp();
-
-      setWaterTemp(value.toFixed(2));
+      setWaterTemp(await getWaterTemp());
     } catch (e) {
       console.log(e); 
     }

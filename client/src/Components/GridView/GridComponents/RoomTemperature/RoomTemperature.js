@@ -14,9 +14,7 @@ const RoomTemperature = () => {
 
   const setTemperatureValue = async () => {
     try {
-      const { value } =  await getRoomTemp();
-
-      setRoomTemp(value.toFixed(2));
+      setRoomTemp(await getRoomTemp());
     } catch (e) {
       console.log(e);
     }
