@@ -8,7 +8,7 @@ import './GridView.scss';
 
 const GridView = () => {
   return (
-    <div className="grid-component">
+    <div className="grid-component noselect">
       <GridItem>
         <DateTime />
       </GridItem>
