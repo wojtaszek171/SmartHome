@@ -1,0 +1,11 @@
+.weather-forecast-hour {
+    display: flex;
+    flex-grow: 1;
+    flex-flow: column;
+    text-align: center;
+    margin: 10px;
+    
+    img {
+        width: 40px;
+    }
+}

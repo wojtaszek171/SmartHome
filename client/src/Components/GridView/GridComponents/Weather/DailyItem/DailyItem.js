@@ -3,11 +3,11 @@ import './DailyItem.scss';
 
 const dayNames = ['niedz', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob']
 
-const DailyItem = ({ day, dayTemp, nightTemp, icon}) => {
+const DailyItem = ({ dayOfWeek, dayTemp, nightTemp, icon, onClick}) => {
 
   return (
-    <div className="weather-forecast-day">
-        <span className="day-title"> {dayNames[day]} </span>
+    <div className="weather-forecast-day" onClick={onClick && onClick}>
+        <span className="day-title"> {dayNames[dayOfWeek]} </span>
         <div className="day-image">
           <img src={`https://openweathermap.org/img/wn/${icon}@4x.png`}/>
         </div>

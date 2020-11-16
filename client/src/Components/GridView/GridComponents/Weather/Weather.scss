@@ -45,4 +45,16 @@
             align-items: stretch;
         }
     }
+
+    .weather-hourly {
+        display: flex;
+        flex-flow: column;
+
+        .temperatures {
+            display: flex;
+            flex-flow: row;
+            margin-left: 35px;
+            margin-right: 35px;
+        }
+    }
 }

@@ -60,7 +60,8 @@ export const getDailyWeather = () => {
 
                 if (new Date().getDate() !== date.getDate()) {
                     acc.push({
-                        day: date.getDay(),
+                        dayOfWeek: date.getDay(),
+                        day: date.getDate(),
                         dayTemp: Math.round(dayTemp),
                         nightTemp: Math.round(nightTemp),
                         pressure,
@@ -68,6 +69,31 @@ export const getDailyWeather = () => {
                         icon
                     });
                 }
+                return acc;
+            }, []);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+}
+
+export const getHourlyWeather = () => {
+    return fetch(`${HOST_URL}/api/weather/hourly`)
+        .then(response => response.json())
+        .then(data => {
+            const allHours = JSON.parse(data.value);
+
+            return allHours.reduce((acc, dayEl) => {
+                const { dt, temp, pressure, humidity, weather } = dayEl;
+                const icon = weather[0].icon;
+                const date = new Date(dt*1000);
+
+                acc.push({
+                    day: date.getDate(),
+                    hour: date.getHours(),
+                    temp: Math.round(temp),
+                    icon
+                });
                 return acc;
             }, []);
         })
