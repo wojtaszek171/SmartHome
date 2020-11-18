@@ -5,7 +5,10 @@ module.exports = model;
 function model(sequelize) {
     const attributes = {
         name: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-        value: { type: DataTypes.JSON, allowNull: false }
+        value: {
+            type: DataTypes.JSON,
+            allowNull: false
+        }
     };
     const options = {};
 

@@ -10,6 +10,9 @@ const GridView = () => {
   return (
     <div className="grid-component noselect">
       <GridItem>
+        <Weather/>
+      </GridItem>
+      <GridItem>
         <DateTime />
       </GridItem>
       <GridItem title="Pokój">
@@ -17,9 +20,6 @@ const GridView = () => {
       </GridItem>
       <GridItem title="Akwarium">
         <AquariumSection/>
-      </GridItem>
-      <GridItem>
-        <Weather/>
       </GridItem>
     </div>
   );

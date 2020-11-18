@@ -23,27 +23,64 @@ app.use('/sensors', require('./routes/sensors/sensors.controller'));
 app.use('/weather', require('./routes/weather/weather.controller'));
 
 // openweathermap reading
-const readWeather = () => {
+const readWeather = async () => {
     // TODO add reading location from database
     const lat = 52.229676;
     const lon = 21.012229;
     try {
-        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely&appid=${config.weather_api}&units=metric&lang=pl`)
+        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${config.weather_api}&units=metric&lang=pl`)
             .then(response => response.json())
             .then(data => {
-                const { current, hourly, daily } = data;
+                const { current, daily } = data;
                 weatherService.set({
                     name: 'current',
                     value: current
                 });
                 weatherService.set({
-                    name: 'hourly',
-                    value: hourly
-                });
-                weatherService.set({
                     name: 'daily',
                     value: daily
                 });
+            });
+
+
+        let savedHours = [];
+        const storeAfter = new Date();
+        storeAfter.setDate(storeAfter.getDate()-1);
+        const storeAfterTimestamp = storeAfter.getTime();
+
+        const hourlyRes = await weatherService.getByName('hourly');
+        if (hourlyRes.value) {
+            savedHours = JSON.parse(hourlyRes.value).filter((hour => hour.dt*1000 > storeAfterTimestamp))
+        }
+
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${config.weather_api}&units=metric&lang=pl`)
+            .then(response => response.json())
+            .then(data => {
+                data.list.forEach((hour) => {
+                    const { dt, main: { temp }, weather } = hour;
+                    const date = new Date(dt * 1000);
+                    const icon = weather[0].icon;
+                    const hourToSave = {
+                        dt,
+                        day: date.getDate(),
+                        hour: date.getHours(),
+                        temp,
+                        icon
+                    };
+                    const dateIndex = savedHours.findIndex((savedHour) => savedHour.dt === hourToSave.dt);
+                    if (dateIndex !== -1) {
+                        savedHours[dateIndex] = hourToSave;
+                    } else {
+                        savedHours.push(hourToSave);
+                    }
+                })
+                weatherService.set({
+                    name: 'hourly',
+                    value: savedHours
+                });
+            })
+            .catch(err => {
+                throw err;
             });
     } catch (e) {
         console.log(e);
@@ -78,12 +115,14 @@ const startStream = () => {
     });
 }
 
-readSensors();
+
 setInterval(() => {
     readSensors();
 }, 5000);
 
-readWeather();
+setTimeout(() => {
+    readWeather();
+}, 5000)
 setInterval(() => {
     readWeather();
 }, 900000);

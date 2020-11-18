@@ -66,9 +66,7 @@ const Weather = () => {
   }
 
   const handleHourlyDaySelect = (day) => {
-    setHourlyDaySelected(weatherHourly.filter((hour) => hour.day === day).filter((_, i) => {
-      return !((i + 1) % 3);
-    }));
+    setHourlyDaySelected(weatherHourly.filter((hour) => hour.day === day));
   }
 
   const handleHourlyClose = () => {
@@ -76,7 +74,7 @@ const Weather = () => {
   }
 
   const prepareChartData = () => {
-    return hourlyDaySelected.map((hour) => [hour.hour, hour.temp]);
+    return hourlyDaySelected.map((hour) => [hour.hour, hour.temp, hour.temp]);
   }
 
   return (
@@ -104,12 +102,13 @@ const Weather = () => {
               <Chart
                 width={'100%'}
                 height={100}
-                chartType="LineChart"
+                chartType="AreaChart"
                 loader={<div>Loading Chart</div>}
                 data={[
                   [
                     { type: 'number', label: 'x' },
                     { id: 'i0', type: 'number' },
+                    { type: 'number', role: 'annotation' },
                   ],
                   ...prepareChartData()
                 ]}
@@ -121,13 +120,19 @@ const Weather = () => {
                     gridlines: {
                       count: 0
                     },
-                    textPosition: 'none'
+                    textPosition: 'none',
+                    viewWindow: {
+                      max: Math.max.apply(Math, hourlyDaySelected.map(o => o.temp)) + 10
+                    }
                   },
                   hAxis: {
                     gridlines: {
                       count: 0
                     },
                     textPosition: 'none'
+                  },
+                  annotations: {
+                    stemColor : 'none'
                   },
                   backgroundColor: { fill:'transparent' },
                   enableInteractivity: false

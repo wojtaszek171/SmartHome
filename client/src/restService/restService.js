@@ -84,13 +84,11 @@ export const getHourlyWeather = () => {
             const allHours = JSON.parse(data.value);
 
             return allHours.reduce((acc, dayEl) => {
-                const { dt, temp, pressure, humidity, weather } = dayEl;
-                const icon = weather[0].icon;
-                const date = new Date(dt*1000);
+                const { day, hour, temp, icon } = dayEl;
 
                 acc.push({
-                    day: date.getDate(),
-                    hour: date.getHours(),
+                    day,
+                    hour,
                     temp: Math.round(temp),
                     icon
                 });
