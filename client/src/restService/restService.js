@@ -54,7 +54,7 @@ export const getDailyWeather = () => {
             const allDays = JSON.parse(data.value);
 
             return allDays.reduce((acc, dayEl) => {
-                const { dt, temp: { day: dayTemp, night: nightTemp }, pressure, humidity, weather } = dayEl;
+                const { dt, temp: { day: dayTemp, night: nightTemp }, pressure, humidity, weather, sunrise, sunset } = dayEl;
                 const icon = weather[0].icon;
                 const date = new Date(dt*1000);
 
@@ -66,6 +66,8 @@ export const getDailyWeather = () => {
                         nightTemp: Math.round(nightTemp),
                         pressure,
                         humidity,
+                        sunrise,
+                        sunset,
                         icon
                     });
                 }

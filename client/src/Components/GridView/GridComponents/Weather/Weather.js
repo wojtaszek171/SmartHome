@@ -5,6 +5,8 @@ import './Weather.scss';
 import Modal from '../../../Modal';
 import HourlyItem from './HourlyItem/HourlyItem';
 import { Chart } from "react-google-charts";
+import humidityIcon from './assets/humidity.svg';
+import pressureIcon from './assets/pressure.svg';
 
 const Weather = () => {
 
@@ -22,6 +24,8 @@ const Weather = () => {
   const [weatherHourly, setWeatherHourly] = useState([]);
 
   const [hourlyDaySelected, setHourlyDaySelected] = useState([]);
+  const [daySelected, setDaySelected] = useState({});
+
   let weatherRequestInterval = useRef(null)
   let weatherDailyRequestInterval = useRef(null)
   let weatherHourlyRequestInterval = useRef(null)
@@ -66,7 +70,31 @@ const Weather = () => {
   }
 
   const handleHourlyDaySelect = (day) => {
-    setHourlyDaySelected(weatherHourly.filter((hour) => hour.day === day));
+    setHourlyDaySelected(weatherHourly.filter(hour => hour.day === day));
+    if (day !== new Date().getDate()){
+      const { humidity, pressure, sunrise, sunset, dayTemp, nightTemp, icon } = weatherDaily.find(dayItem => dayItem.day === day);
+
+      setDaySelected({
+        icon,
+        dayTemp,
+        nightTemp,
+        humidity,
+        pressure,
+        sunrise,
+        sunset
+      });
+    } else {
+      const { humidity, pressure, sunrise, sunset, temp: dayTemp, icon } = weatherCurrent;
+      setDaySelected({
+        icon,
+        dayTemp,
+        nightTemp: null,
+        humidity,
+        pressure,
+        sunrise,
+        sunset
+      })
+    }
   }
 
   const handleHourlyClose = () => {
@@ -98,6 +126,24 @@ const Weather = () => {
         </div>
         <Modal show={!!hourlyDaySelected.length} title={"Pogoda godzinowa"} onClose={handleHourlyClose}>
           <div className="weather-hourly">
+            <div className="values">
+              <div className="weather-icon">
+                <img src={`https://openweathermap.org/img/wn/${daySelected.icon}@4x.png`}/>
+              </div>
+              <div className="weather-temperature">
+                <span>{`${daySelected.dayTemp} °C`}</span>
+              </div>
+              <div className="weather-other">
+                <div className="other-value">
+                  <img src={humidityIcon}/>
+                  <span>{`${daySelected.humidity} %`}</span>
+                </div>
+                <div className="other-value">
+                  <img src={pressureIcon}/>
+                  <span>{`${daySelected.pressure} hPa`}</span>
+                </div>
+              </div>
+            </div>
             <div className="chart">
               <Chart
                 width={'100%'}
