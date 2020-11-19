@@ -123,7 +123,7 @@ const Weather = () => {
             <Icon name={weatherCurrent.icon}/>
           </div>
           <div className="weather-temperature">
-            <span>{`${weatherCurrent.temp} °C`}</span>
+            <span>{`${weatherCurrent.temp}°C`}</span>
             <div className="weather-desc">
                 <span className="weather-desc">{weatherCurrent.description}</span>
             </div>
@@ -139,7 +139,16 @@ const Weather = () => {
                 <Icon name={daySelected.icon}/>
               </div>
               <div className="weather-temperature">
-                <span>{`${daySelected.dayTemp} °C`}</span>
+                <div>
+                  <Icon name={'sun'}/>
+                  <span>{`${daySelected.dayTemp}°C`}</span>
+                </div>
+                {daySelected.nightTemp && 
+                  <div>
+                    <Icon name={'moon'}/>
+                    <span>{`${daySelected.nightTemp}°C`}</span>
+                  </div>
+                }
               </div>
               <div className="weather-other">
                 <div className="other-value">

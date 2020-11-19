@@ -3,7 +3,6 @@ import './App.scss';
 import Header from '../Header';
 import Footer from '../Footer';
 import Content from '../Content';
-// import LeftMenu from '../LeftMenu/LeftMenu';
 import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
@@ -19,7 +18,6 @@ function App() {
             <div className="appMiddle">
               <Switch>
                 <Route path="/" exact>
-                    {/* <LeftMenu /> */}
                     <Content />
                 </Route>
                 <Route path="/admin">

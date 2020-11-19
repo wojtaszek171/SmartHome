@@ -1,7 +1,7 @@
 import React from "react";
 
 const Icon = (props) => {
-  const { name, width } = props;
+  const { name } = props;
 
   let icon = undefined;
   try {
@@ -12,7 +12,7 @@ const Icon = (props) => {
    }
   return (
     <>
-      {name && <img width={width} src={icon} alt=""/>}
+      {name && <img {...props} src={icon} alt=""/>}
     </>
   );
 };

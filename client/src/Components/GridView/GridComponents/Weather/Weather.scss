@@ -73,6 +73,19 @@
                 font-size: 3rem;
                 font-weight: bold;
                 float: left;
+
+                div {
+                    display: flex;
+                    flex-flow: row;
+
+                    img {
+                        width: 20px;
+                        margin-bottom: 12px;
+                        margin-right: 5px;
+                        display: flex;
+                        align-self: flex-end;
+                    }
+                }
             }
 
             .weather-other {
@@ -87,7 +100,6 @@
                     flex-flow: row;
 
                     img {
-                        margin-right: 5px;
                         margin-left: 15px;
                     }
 
