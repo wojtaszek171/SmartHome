@@ -140,7 +140,7 @@ const Weather = () => {
               </div>
               <div className="weather-temperature">
                 <div>
-                  <Icon name={'sun'}/>
+                  {daySelected.nightTemp && <Icon name={'sun'}/>}
                   <span>{`${daySelected.dayTemp}°C`}</span>
                 </div>
                 {daySelected.nightTemp && 
