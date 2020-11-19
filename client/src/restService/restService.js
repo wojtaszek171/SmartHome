@@ -28,10 +28,11 @@ export const getCurrentWeather = () => {
     return fetch(`${HOST_URL}/api/weather/current`)
         .then(response => response.json())
         .then(data => {
-            const { temp, feels_like, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
+            const { dt, temp, feels_like, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
             const { icon, description } = weather[0];
 
             return{
+                dt,
                 temp: Math.round(temp),
                 feels_like,
                 humidity,
@@ -60,6 +61,7 @@ export const getDailyWeather = () => {
 
                 if (new Date().getDate() !== date.getDate()) {
                     acc.push({
+                        dt,
                         dayOfWeek: date.getDay(),
                         day: date.getDate(),
                         dayTemp: Math.round(dayTemp),

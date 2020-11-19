@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from '../../../../Icon/Icon';
 import './HourlyItem.scss';
 
 const HourlyItem = ({ hour, temp, icon}) => {
@@ -7,7 +8,7 @@ const HourlyItem = ({ hour, temp, icon}) => {
     <div className="weather-forecast-hour">
         <span className="hour-title">{`${("0" + hour).slice(-2)}:00`}</span>
         <div className="day-image">
-          <img src={`https://openweathermap.org/img/wn/${icon}@4x.png`}/>
+          <Icon name={icon}/>
         </div>
         <span className="temperature">{temp}°C</span>
     </div>

@@ -5,7 +5,6 @@ const DateTime = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   const days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
-  const months = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
 
   let timeInterval = useRef(null)
 

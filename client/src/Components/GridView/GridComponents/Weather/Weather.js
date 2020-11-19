@@ -5,8 +5,7 @@ import './Weather.scss';
 import Modal from '../../../Modal';
 import HourlyItem from './HourlyItem/HourlyItem';
 import { Chart } from "react-google-charts";
-import humidityIcon from './assets/humidity.svg';
-import pressureIcon from './assets/pressure.svg';
+import Icon from '../../../Icon/Icon';
 
 const Weather = () => {
 
@@ -51,6 +50,8 @@ const Weather = () => {
 
     return () => {
       clearInterval(weatherRequestInterval);
+      clearInterval(weatherDailyRequestInterval);
+      clearInterval(weatherHourlyRequestInterval);
     }
   }, [])
 
@@ -72,9 +73,10 @@ const Weather = () => {
   const handleHourlyDaySelect = (day) => {
     setHourlyDaySelected(weatherHourly.filter(hour => hour.day === day));
     if (day !== new Date().getDate()){
-      const { humidity, pressure, sunrise, sunset, dayTemp, nightTemp, icon } = weatherDaily.find(dayItem => dayItem.day === day);
+      const { humidity, pressure, sunrise, sunset, dayTemp, nightTemp, icon, dt } = weatherDaily.find(dayItem => dayItem.day === day);
 
       setDaySelected({
+        dt,
         icon,
         dayTemp,
         nightTemp,
@@ -84,8 +86,9 @@ const Weather = () => {
         sunset
       });
     } else {
-      const { humidity, pressure, sunrise, sunset, temp: dayTemp, icon } = weatherCurrent;
+      const { humidity, pressure, sunrise, sunset, temp: dayTemp, icon, dt } = weatherCurrent;
       setDaySelected({
+        dt,
         icon,
         dayTemp,
         nightTemp: null,
@@ -105,6 +108,11 @@ const Weather = () => {
     return hourlyDaySelected.map((hour) => [hour.hour, hour.temp, hour.temp]);
   }
 
+  const displayModalTitle = () => {
+    const date = new Date(daySelected.dt * 1000);
+    return `Pogoda ${("0" + date.getDate()).slice(-2)}.${("0" + date.getMonth()).slice(-2)}`;
+  }
+
   return (
     <div className="weather-component">
         <div className="weather-row current" onClick={() => handleHourlyDaySelect(new Date().getDate())}>
@@ -112,7 +120,7 @@ const Weather = () => {
             <span>{'Warszawa'}</span>
           </div>
           <div className="weather-icon">
-            <img src={`https://openweathermap.org/img/wn/${weatherCurrent.icon}@4x.png`}/>
+            <Icon name={weatherCurrent.icon}/>
           </div>
           <div className="weather-temperature">
             <span>{`${weatherCurrent.temp} °C`}</span>
@@ -124,22 +132,22 @@ const Weather = () => {
         <div className="weather-row forecast">
           {weatherDaily.map((day) => <DailyItem onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
         </div>
-        <Modal show={!!hourlyDaySelected.length} title={"Pogoda godzinowa"} onClose={handleHourlyClose}>
+        <Modal show={!!hourlyDaySelected.length} title={displayModalTitle()} onClose={handleHourlyClose}>
           <div className="weather-hourly">
             <div className="values">
               <div className="weather-icon">
-                <img src={`https://openweathermap.org/img/wn/${daySelected.icon}@4x.png`}/>
+                <Icon name={daySelected.icon}/>
               </div>
               <div className="weather-temperature">
                 <span>{`${daySelected.dayTemp} °C`}</span>
               </div>
               <div className="weather-other">
                 <div className="other-value">
-                  <img src={humidityIcon}/>
+                  <Icon name='humidity' width={'30px'}/>
                   <span>{`${daySelected.humidity} %`}</span>
                 </div>
                 <div className="other-value">
-                  <img src={pressureIcon}/>
+                  <Icon name='barometer' width={'30px'}/>
                   <span>{`${daySelected.pressure} hPa`}</span>
                 </div>
               </div>
