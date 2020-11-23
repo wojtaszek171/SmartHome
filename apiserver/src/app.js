@@ -20,6 +20,7 @@ app.use(cors());
 app.use('/', indexRouter);
 app.use('/users', require('./routes/users/users.controller'));
 app.use('/sensors', require('./routes/sensors/sensors.controller'));
+app.use('/sockets', require('./routes/sockets/sockets.controller'));
 app.use('/weather', require('./routes/weather/weather.controller'));
 
 // openweathermap reading

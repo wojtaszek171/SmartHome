@@ -3,61 +3,63 @@ const router = express.Router();
 const Joi = require('joi');
 const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize')
-const sensorService = require('./sensor.service');
+const socketService = require('./socket.service');
 
 // routes
 router.post('/set', authorize(), setSchema, set);
 router.get('/', getAll);
-router.get('/:name', getByName);
-router.put('/:name', authorize(), updateSchema, update);
-router.delete('/:name', authorize(), _delete);
+router.get('/:id', getById);
+router.put('/:id', authorize(), updateSchema, update);
+router.delete('/:id', authorize(), _delete);
 
 module.exports = router;
 
 function setSchema(req, res, next) {
     const schema = Joi.object({
-        name: Joi.string().required(),
-        value: Joi.number().required(),
+        id: Joi.number().required(),
+        device: Joi.string(),
+        enabled: Joi.bool(),
         dateUpdated: Joi.date()
     });
     validateRequest(req, next, schema);
 }
 
 function set(req, res, next) {
-    sensorService.create(req.body)
-        .then(() => res.json({ message: 'Successfully added sensor value' }))
+    socketService.create(req.body)
+        .then(() => res.json({ message: 'Successfully added socket value' }))
         .catch(next);
 }
 
 function getAll(req, res, next) {
-    sensorService.getAll()
-        .then(sensors => res.json(sensors))
+    socketService.getAll()
+        .then(sockets => res.json(sockets))
         .catch(next);
 }
 
-function getByName(req, res, next) {
-    sensorService.getByName(req.params.name)
-        .then(sensor => res.json(sensor))
+function getById(req, res, next) {
+    socketService.getSocket(req.params.id)
+        .then(socket => res.json(socket))
         .catch(next);
 }
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        name: Joi.string().empty(''),
-        value: Joi.number(),
+        id: Joi.number(),
+        device: Joi.string(),
+        enabled: Joi.bool(),
         dateUpdated: Joi.date()
     });
     validateRequest(req, next, schema);
 }
 
 function update(req, res, next) {
-    sensorService.update(req.params.name, req.body)
-        .then(sensor => res.json(sensor))
+    socketService.update(req.params.name, req.body)
+        .then(socket => res.json(socket))
         .catch(next);
 }
 
 function _delete(req, res, next) {
-    sensorService.delete(req.params.name)
+    socketService.delete(req.params.name)
         .then(() => res.json({ message: 'Sensor deleted successfully' }))
         .catch(next);
 }
