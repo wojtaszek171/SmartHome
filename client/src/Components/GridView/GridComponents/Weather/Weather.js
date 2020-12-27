@@ -140,13 +140,13 @@ const Weather = () => {
               </div>
               <div className="weather-temperature">
                 <div>
-                  {daySelected.nightTemp && <Icon name={'sun'}/>}
-                  <span>{`${daySelected.dayTemp}°C`}</span>
+                  {daySelected.dayTemp !== null && <Icon name={'sun'}/>}
+                  <span>{`${daySelected.dayTemp} °C`}</span>
                 </div>
-                {daySelected.nightTemp && 
+                {daySelected.nightTemp !== null && 
                   <div>
                     <Icon name={'moon'}/>
-                    <span>{`${daySelected.nightTemp}°C`}</span>
+                    <span>{`${daySelected.nightTemp} °C`}</span>
                   </div>
                 }
               </div>
