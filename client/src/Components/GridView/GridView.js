@@ -1,7 +1,7 @@
 import React from 'react';
 import AquariumSection from './GridComponents/AquariumSection/AquariumSection';
 import DateTime from './GridComponents/DateTime';
-import RoomTemperature from './GridComponents/RoomTemperature';
+import Room from './GridComponents/Room/Room';
 import Weather from './GridComponents/Weather';
 import GridItem from './GridItem';
 import './GridView.scss';
@@ -15,8 +15,8 @@ const GridView = () => {
       <GridItem>
         <DateTime />
       </GridItem>
-      <GridItem title="Pokój">
-        <RoomTemperature/>
+      <GridItem>
+        <Room/>
       </GridItem>
       <GridItem title="Akwarium">
         <AquariumSection/>

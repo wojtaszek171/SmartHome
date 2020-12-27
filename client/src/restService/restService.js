@@ -19,7 +19,23 @@ export const getWaterTemp = () =>
 export const getRoomTemp = () => 
     fetch(`${HOST_URL}/api/sensors/roomTemp`)
         .then(response => response.json())
-        .then(data => data.value.toFixed(1))
+        .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
+        .catch(e => {
+            console.log(e);
+        });
+
+export const getRoomHumidity = () => 
+    fetch(`${HOST_URL}/api/sensors/roomHumidity`)
+        .then(response => response.json())
+        .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
+        .catch(e => {
+            console.log(e);
+        });
+
+export const getRoomPressure = () => 
+    fetch(`${HOST_URL}/api/sensors/pressure`)
+        .then(response => response.json())
+        .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
             console.log(e);
         });
