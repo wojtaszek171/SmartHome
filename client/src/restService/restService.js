@@ -119,3 +119,22 @@ export const getHourlyWeather = () => {
             console.log(e);
         });
 }
+
+export const authenticateAdmin = (username, password) => {
+    return fetch(`${HOST_URL}/api/users/authenticate`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username,
+                password
+            }),
+        }).then(response => response.json())
+        .then(data => {
+            return data;
+        })
+        .catch(e => {
+            console.log(e);
+        });
+}

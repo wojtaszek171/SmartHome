@@ -1,6 +1,8 @@
 .room-section-component {
     display: flex;
+    height: 134px;
     flex-direction: row;
+    align-items: center;
 
     .room-tile {
         display: flex;
