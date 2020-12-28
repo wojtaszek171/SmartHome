@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { setSessionData } from '../../reducers/session';
 import { authenticateAdmin } from '../../restService/restService';
 import Button from '../Button';
+import TextInput from '../TextInput';
 import './Login.scss';
 
-const Login = (props) => {
+const LoginNotConnected = ({ setSessionData }) => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleLoginChange = (event) => {
-        setLogin(event.target.value)
+    const handleLoginChange = (value) => {
+        setLogin(value)
     };
 
-    const handlePasswordChange = (event) => {
-        setPassword(event.target.value)
+    const handlePasswordChange = (value) => {
+        setPassword(value)
     };
 
     const handleLogin = async () => {
@@ -21,6 +24,14 @@ const Login = (props) => {
         if (res.message) {
             setMessage(res.message);
         } else {
+            const { id, username, firstName, lastName, token: authToken } = res;
+            setSessionData({
+                id,
+                username,
+                firstName,
+                lastName,
+                authToken
+            });
             setMessage('');
         }
     }
@@ -28,8 +39,19 @@ const Login = (props) => {
     return (
         <div className="login-component">
             <div className="login-form">
-                <input type='text' placeholder='login' value={login} onChange={handleLoginChange}/>
-                <input type='password' placeholder='password' value={password} onChange={handlePasswordChange}/>
+                <TextInput
+                    label='username'
+                    value={login}
+                    autocomplete={'off'}
+                    onChange={handleLoginChange}
+                />
+                <TextInput
+                    label='password'
+                    placeholder='******'
+                    type='password'
+                    value={password}
+                    onChange={handlePasswordChange}
+                />
                 <Button className='login-button' text='login' handleClick={handleLogin}/>
                 {message && <span className="login-error">{message}</span>}
             </div>
@@ -37,4 +59,15 @@ const Login = (props) => {
     );
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+      user: state.user,
+    }
+};
+
+export default connect(
+  mapStateToProps,
+  {
+    setSessionData
+  }
+)(LoginNotConnected)

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './DateTime.scss';
 
 const DateTime = () => {
@@ -6,10 +6,8 @@ const DateTime = () => {
 
   const days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
 
-  let timeInterval = useRef(null)
-
   useEffect(() => {
-    timeInterval = setInterval(
+    const timeInterval = setInterval(
       () => setCurrentTime(new Date()),
       1000
     );

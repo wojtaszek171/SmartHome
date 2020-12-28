@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './TextInput.scss';
 
-const TextInput = ({ onChange, value = '', label, placeholder, type = 'text' }) => {
+const TextInput = ({ onChange, value = '', label, placeholder, type = 'text', autocomplete }) => {
 
   const [inputValue, setInputValue] = useState(value);
 
@@ -13,8 +13,15 @@ const TextInput = ({ onChange, value = '', label, placeholder, type = 'text' }) 
 
   return (
     <div className="TextInput">
-      {label && <label for="lname">{label}</label>}
-      <input type={type} id="lname" name="lastname" onChange={handleOnChange} value={inputValue} placeholder={placeholder}/>
+      {label && <label>{label}</label>}
+      <input
+        type={type}
+        name="lastname"
+        onChange={handleOnChange}
+        value={inputValue}
+        placeholder={placeholder}
+        autoComplete={autocomplete}
+      />
     </div>
   );
 }

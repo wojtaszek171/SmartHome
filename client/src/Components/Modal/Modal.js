@@ -29,7 +29,7 @@ const Modal = ({ show, title, onClose, children }) => {
         document.removeEventListener('keydown', handleClickEscape, true)
       };
     }
-  }, []);
+  });
 
   return (
     show && <>

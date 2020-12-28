@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../../../restService/restService';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import DailyItem from './DailyItem/DailyItem';
 import './Weather.scss';
 import Modal from '../../../Modal';
@@ -7,86 +7,19 @@ import HourlyItem from './HourlyItem/HourlyItem';
 import { Chart } from "react-google-charts";
 import Icon from '../../../Icon/Icon';
 
-const Weather = () => {
-
-  const [weatherCurrent, setWeatherCurrent] = useState({
-    temp: null,
-    feels_like: null,
-    humidity: null,
-    pressure: null,
-    sunrise: null,
-    sunset: null,
-    icon: null,
-    description: null
-  });
-  const [weatherDaily, setWeatherDaily] = useState([]);
-  const [weatherHourly, setWeatherHourly] = useState([]);
+const Weather = ({ current, daily, hourly }) => {
 
   const [hourlyDaySelected, setHourlyDaySelected] = useState([]);
   const [daySelected, setDaySelected] = useState({});
 
-  let weatherRequestInterval = useRef(null)
-  let weatherDailyRequestInterval = useRef(null)
-  let weatherHourlyRequestInterval = useRef(null)
-
-  useEffect(() => {
-    fetchCurrentWeather();
-    weatherRequestInterval = setInterval(
-      fetchCurrentWeather,
-      60000 // update every minute
-    );
-
-    fetchDailyWeather();
-    weatherDailyRequestInterval = setInterval(
-      fetchCurrentWeather,
-      3600000 // update every hour
-    );
-
-    fetchHourlyWeather();
-    weatherHourlyRequestInterval = setInterval(
-      fetchCurrentWeather,
-      3600000 // update every hour
-    );
-
-    return () => {
-      clearInterval(weatherRequestInterval);
-      clearInterval(weatherDailyRequestInterval);
-      clearInterval(weatherHourlyRequestInterval);
-    }
-  }, [])
-
-  const fetchCurrentWeather = async () => {
-    const currentWeather = await getCurrentWeather();
-    setWeatherCurrent(currentWeather);
-  }
-
-  const fetchDailyWeather = async () => {
-    const currentWeather = await getDailyWeather();
-    setWeatherDaily(currentWeather);
-  }
-  
-  const fetchHourlyWeather = async () => {
-    const currentWeather = await getHourlyWeather();
-    setWeatherHourly(currentWeather);
-  }
-
   const handleHourlyDaySelect = (day) => {
-    setHourlyDaySelected(weatherHourly.filter(hour => hour.day === day));
+    setHourlyDaySelected(hourly.filter(hour => hour.day === day));
     if (day !== new Date().getDate()){
-      const { humidity, pressure, sunrise, sunset, dayTemp, nightTemp, icon, dt } = weatherDaily.find(dayItem => dayItem.day === day);
+      const filteredDay = daily.find(dayItem => dayItem.day === day);
 
-      setDaySelected({
-        dt,
-        icon,
-        dayTemp,
-        nightTemp,
-        humidity,
-        pressure,
-        sunrise,
-        sunset
-      });
+      setDaySelected({...filteredDay});
     } else {
-      const { humidity, pressure, sunrise, sunset, temp: dayTemp, icon, dt } = weatherCurrent;
+      const { humidity, pressure, sunrise, sunset, temp: dayTemp, icon, dt } = current;
       setDaySelected({
         dt,
         icon,
@@ -110,7 +43,7 @@ const Weather = () => {
 
   const displayModalTitle = () => {
     const date = new Date(daySelected.dt * 1000);
-    return `Pogoda ${("0" + date.getDate()).slice(-2)}.${("0" + date.getMonth()).slice(-2)}`;
+    return `Pogoda ${("0" + date.getDate()).slice(-2)}.${("0" + (date.getMonth() + 1)).slice(-2)}`;
   }
 
   return (
@@ -120,17 +53,17 @@ const Weather = () => {
             <span>{'Warszawa'}</span>
           </div>
           <div className="weather-icon">
-            <Icon name={weatherCurrent.icon}/>
+            <Icon name={current.icon}/>
           </div>
           <div className="weather-temperature">
-            <span>{`${weatherCurrent.temp}°C`}</span>
+            <span>{`${current.temp}°C`}</span>
             <div className="weather-desc">
-                <span className="weather-desc">{weatherCurrent.description}</span>
+                <span className="weather-desc">{current.description}</span>
             </div>
           </div>
         </div>
         <div className="weather-row forecast">
-          {weatherDaily.map((day) => <DailyItem onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
+          {daily.map((day) => <DailyItem key={day.day} onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
         </div>
         <Modal show={!!hourlyDaySelected.length} title={displayModalTitle()} onClose={handleHourlyClose}>
           <div className="weather-hourly">
@@ -203,7 +136,7 @@ const Weather = () => {
               />
             </div>
             <div className="temperatures">
-              {hourlyDaySelected.map((hour) => <HourlyItem {...hour} />)}
+              {hourlyDaySelected.map((hour) => <HourlyItem key={hour.hour} {...hour} />)}
             </div>
           </div>
         </Modal>
@@ -211,4 +144,17 @@ const Weather = () => {
   );
 }
 
-export default Weather;
+const mapStateToProps = (state) => {
+  const { weather: { current, daily, hourly } } = state;
+
+  return {
+    current,
+    daily,
+    hourly
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Weather)
