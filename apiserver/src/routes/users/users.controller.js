@@ -27,7 +27,7 @@ function authenticateSchema(req, res, next) {
 function authenticate(req, res, next) {
     userService.authenticate(req.body)
         .then(user => {
-            res.cookie('token', user.token, { httpOnly: true });
+            res.cookie('token', user.token);
             res.json(user)
         })
         .catch(next);

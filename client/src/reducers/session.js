@@ -1,4 +1,5 @@
 const SESSION_SET = 'SESSION_SET';
+const SESSION_CLEAR = 'SESSION_CLEAR';
 
 const defaultState = {
   id: null,
@@ -15,6 +16,8 @@ export const session = (state = defaultState, action) => {
           ...state,
           ...action.payload
         }
+      case SESSION_CLEAR:
+        return defaultState
       default:
         return state
     }
@@ -23,4 +26,8 @@ export const session = (state = defaultState, action) => {
 export const setSessionData = (data) => ({
   type: SESSION_SET,
   payload: data
+});
+
+export const clearSession = () => ({
+  type: SESSION_CLEAR
 });

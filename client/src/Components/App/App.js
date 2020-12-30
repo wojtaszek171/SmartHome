@@ -7,9 +7,28 @@ import Content from '../Content';
 import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { setWeatherData } from '../../reducers/weather';
-import { getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
+import { getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
+import { setSessionData } from '../../reducers/session';
+import { getCookie } from '../../helpers';
 
-const App = ({ setWeatherData }) => {
+const App = ({ authToken, username, setWeatherData, setSessionData }) => {
+
+  useEffect(() => {
+    const token = getCookie('token');
+    if (token) {
+      setSessionData({ authToken: token });
+    }
+  }, [])
+
+  useEffect(() => {
+    const setCurrentUser = async () => {
+      setSessionData({...await getCurrentUser(authToken)});
+    }
+
+    if (authToken && !username) {
+      setCurrentUser();
+    }
+  }, [authToken, username])
 
   useEffect(() => {
     fetchCurrentWeather();
@@ -73,14 +92,17 @@ const App = ({ setWeatherData }) => {
 }
 
 const mapStateToProps = (state) => {
+  const { session: { username, authToken } } = state;
   return {
-    user: state.user,
+    username,
+    authToken
   }
 };
 
 export default connect(
   mapStateToProps,
   {
-    setWeatherData
+    setWeatherData,
+    setSessionData
   }
 )(App)

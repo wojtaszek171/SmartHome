@@ -7,7 +7,7 @@ module.exports = authorize;
 function authorize() {
     return [
         // authenticate JWT token and attach decoded token to request as req.user
-        jwt({ secret, algorithms: ['HS256'], getToken: req => req.cookies.token }),
+        jwt({ secret, algorithms: ['HS256'] }),
 
         // attach full user record to request object
         async (req, res, next) => {

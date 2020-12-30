@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { isDev } from '../../helpers';
 import { setSessionData } from '../../reducers/session';
 import { authenticateAdmin } from '../../restService/restService';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import './Login.scss';
 
-const LoginNotConnected = ({ setSessionData }) => {
+const LoginNotConnected = ({ setSessionData, onLogin }) => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -32,7 +33,16 @@ const LoginNotConnected = ({ setSessionData }) => {
                 lastName,
                 authToken
             });
+
+            if(isDev()) {
+                document.cookie = `token=${authToken}`;
+            }
+
             setMessage('');
+
+            if (onLogin) {
+                onLogin();
+            }
         }
     }
 
@@ -60,9 +70,7 @@ const LoginNotConnected = ({ setSessionData }) => {
 }
 
 const mapStateToProps = (state) => {
-    return {
-      user: state.user,
-    }
+    return {}
 };
 
 export default connect(

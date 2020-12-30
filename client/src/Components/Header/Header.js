@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import './Header.scss';
 import Modal from '../Modal/Modal';
 import Login from '../Login';
+import { connect } from 'react-redux';
+import HeaderDropdown from './HeaderDropdown';
 
-function Header() {
+function HeaderNotConnected({ authToken }) {
   const [loginVisible, setLoginVisible] = useState(false);
 
   const handleTitleClick = () => {
@@ -22,12 +24,26 @@ function Header() {
   return (
     <div className="header-component">
       <span className="header-title noselect" onClick={handleTitleClick}>Smart Home</span>
-      <a href="#" className="login-button noselect" onClick={handleLoginOpen}>Login</a>
+      {authToken ?
+        <HeaderDropdown /> :
+        <a href="#" className="login-button noselect" onClick={handleLoginOpen}>Login</a>
+      }
       <Modal show={loginVisible} title={"Login to administrate"} onClose={handleLoginClose}>
-        <Login/>
+        <Login onLogin={handleLoginClose}/>
       </Modal>
     </div>
   );
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  const { session: { authToken } } = state;
+  return {
+    authToken
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(HeaderNotConnected)
+
