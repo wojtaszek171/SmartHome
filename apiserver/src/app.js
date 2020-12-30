@@ -1,6 +1,7 @@
 var indexRouter = require('./routes/index');
 const config = require('./config.json');
 const fetch = require("node-fetch");
+const cookieParser = require("cookie-parser");
 
 require('rootpath')();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // api routes
+app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', require('./routes/users/users.controller'));
 app.use('/sensors', require('./routes/sensors/sensors.controller'));
