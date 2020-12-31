@@ -2,6 +2,7 @@
     display: flex;
     flex: 1;
     min-height: 0px; /* IMPORTANT: you need this for non-chrome browsers */
+    max-width: 100vw;
 }
 
 .content-box {
@@ -14,8 +15,8 @@
     padding-right: 30px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
     .content-box {
-        margin-left: 30px;
+        padding: 0;
     }
 }
