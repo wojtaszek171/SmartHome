@@ -1,7 +1,10 @@
 const WEATHER_SET = 'WEATHER_SET';
 
 const defaultState = {
-  current: {},
+  current: {
+    temp: null,
+    icon: null
+  },
   daily: [],
   hourly: []
 }

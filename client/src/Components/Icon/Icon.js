@@ -6,10 +6,11 @@ const Icon = (props) => {
   let icon = undefined;
   try {
     icon = require(`./assets/${name}.svg`);
-   }
-   catch (e) {
+  }
+  catch (e) {
     icon = require(`./assets/broken-image.svg`);
-   }
+  }
+
   return (
     <>
       {name && <img {...props} src={icon} alt=""/>}

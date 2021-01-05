@@ -56,7 +56,7 @@ const Weather = ({ current, daily, hourly }) => {
             <Icon name={current.icon}/>
           </div>
           <div className="weather-temperature">
-            <span>{`${current.temp}°C`}</span>
+            <span>{`${current.temp || '--'}°C`}</span>
             <div className="weather-desc">
                 <span className="weather-desc">{current.description}</span>
             </div>

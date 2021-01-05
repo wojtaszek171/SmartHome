@@ -18,6 +18,7 @@
 
 
             .weather-icon {
+                width: 200px;
                 flex: 2;
                 
                 img {
@@ -27,6 +28,7 @@
             }
 
             .weather-temperature {
+                min-width: 150px;
                 flex: 2;
                 text-align: center;
                 font-size: 3rem;
