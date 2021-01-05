@@ -4,6 +4,7 @@
 
         &.current {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             
             .weather-city {
@@ -11,6 +12,8 @@
                 font-size: 2.5rem;
                 text-align: center;
                 float: left;
+                padding-top: 10px;
+                padding-bottom: 10px;
             }
 
 
@@ -29,6 +32,8 @@
                 font-size: 3rem;
                 font-weight: bold;
                 float: left;
+                padding-top: 10px;
+                padding-bottom: 10px;
 
                 .weather-desc {
                     display: block;
@@ -41,7 +46,7 @@
 
         &.forecast {
             display: flex;
-            flex-flow: row;
+            flex-wrap: wrap;
             align-items: stretch;
         }
     }
