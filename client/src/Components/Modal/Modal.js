@@ -44,7 +44,7 @@ const Modal = ({ show, title, onClose, children }) => {
           </div>
           <div className='footer-box'></div>
         </div>
-        </>
+      </>
   );
 }
 

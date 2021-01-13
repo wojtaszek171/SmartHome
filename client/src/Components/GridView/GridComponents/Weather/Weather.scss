@@ -59,6 +59,7 @@
 
         .values {
             display: flex;
+            flex-wrap: wrap;
             flex: 1;
             margin-left: 40px;
             margin-right: 40px;
@@ -82,6 +83,7 @@
                 float: left;
 
                 div {
+                    min-width: 170px;
                     display: flex;
                     flex-flow: row;
 
@@ -99,7 +101,9 @@
                 display: flex;
                 flex: 3;
                 flex-flow: column;
+
                 .other-value {
+                    min-width: 190px;
                     text-align: center;
                     font-size: 2rem;
                     font-weight: bold;
@@ -122,6 +126,14 @@
             flex-flow: row;
             margin-left: 40px;
             margin-right: 40px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 500px) {
+            .temperatures {
+                margin-left: 0;
+                margin-right: 0;
+            }
         }
     }
 }
