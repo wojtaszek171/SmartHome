@@ -11,11 +11,12 @@
 
 .modal-component {
     padding: 10px 20px;
-    min-width: 200px;
+    min-width: 350px;
     background-color: #223343;
     -webkit-box-shadow: 0px 0px 30px 5px rgba(0,0,0,0.7); 
     box-shadow: 0px 0px 30px 5px rgba(0,0,0,0.7);
     position: fixed;
+    display: table;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
