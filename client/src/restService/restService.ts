@@ -10,7 +10,7 @@ export const getCurrentUser = (token: string) =>
     .then(response => response.json())
     .then(data => data)
     .catch(e => {
-        console.log(e);
+        throw e;
     });
 
 export const getSensorsData = () => 
@@ -18,7 +18,7 @@ export const getSensorsData = () =>
         .then(response => response.json())
         .then(data => data)
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 
 export const getWaterTemp = () => 
@@ -26,31 +26,31 @@ export const getWaterTemp = () =>
         .then(response => response.json())
         .then(data => data.value.toFixed(1))
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 
-export const getRoomTemp = () => 
+export const getRoomTemp = (): Promise<number> => 
     fetch(`${HOST_URL}/api/sensors/roomTemp`)
         .then(response => response.json())
         .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 
-export const getRoomHumidity = () => 
+export const getRoomHumidity = (): Promise<number> => 
     fetch(`${HOST_URL}/api/sensors/roomHumidity`)
         .then(response => response.json())
         .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 
-export const getRoomPressure = () => 
+export const getRoomPressure = (): Promise<number> => 
     fetch(`${HOST_URL}/api/sensors/pressure`)
         .then(response => response.json())
         .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 
 export const getCurrentWeather = () => {
@@ -73,7 +73,7 @@ export const getCurrentWeather = () => {
             }
         })
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 }
 
@@ -129,7 +129,7 @@ export const getHourlyWeather = () => {
             }, []);
         })
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 }
 
@@ -148,6 +148,6 @@ export const authenticateAdmin = (username: string, password: string) => {
             return data;
         })
         .catch(e => {
-            console.log(e);
+            throw e;
         });
 }

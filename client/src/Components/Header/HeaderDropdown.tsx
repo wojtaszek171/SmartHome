@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import './Header.scss';
 import { connect } from 'react-redux';
 import { eraseCookie } from '../../helpers';
 import { clearSession } from '../../reducers/session/session';
 import { useHistory } from "react-router-dom";
+import { ApplicationState } from 'src/reducers';
 
-const HeaderDropdownNotConnected = ({ firstName, lastName, clearSession }) => {
+const { useState } = React;
+
+interface HeaderDropdownProps {
+  firstName: string;
+  lastName: string;
+  clearSession: Function;
+}
+
+const HeaderDropdownNotConnected: React.FC<HeaderDropdownProps> = ({ firstName, lastName, clearSession }) => {
   const [expanded, setExpanded] = useState(false);
   const history = useHistory();
 
@@ -31,7 +40,7 @@ const HeaderDropdownNotConnected = ({ firstName, lastName, clearSession }) => {
   );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: ApplicationState) => {
   const { session: { firstName, lastName }} = state;
   return {
     firstName,
@@ -45,4 +54,3 @@ export default connect(
     clearSession
   }
 )(HeaderDropdownNotConnected)
-

@@ -1,11 +1,20 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import './Toggle.scss';
 
-const Toggle = ({ round, onClick, checked = false, label }) => {
+const { useState } = React;
+
+interface ToggleProps {
+  round: boolean;
+  checked: boolean;
+  label: string;
+  onClick?: Function;
+}
+
+const Toggle: React.FC<ToggleProps> = ({ round, onClick, checked = false, label }) => {
 
   const [isChecked, setIsChecked] = useState(checked);
 
-  const handleOnClick = (e) => {
+  const handleOnClick = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
     onClick && onClick(e.target.checked);
   }

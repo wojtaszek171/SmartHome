@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
+import { ApplicationState } from 'src/reducers';
 import { isDev } from '../../helpers';
 import { setSessionData } from '../../reducers/session/session';
 import { authenticateAdmin } from '../../restService/restService';
@@ -7,16 +8,23 @@ import Button from '../Button';
 import TextInput from '../TextInput';
 import './Login.scss';
 
-const LoginNotConnected = ({ setSessionData, onLogin }) => {
+const { useState } = React;
+
+interface LoginProps {
+    setSessionData: Function;
+    onLogin?: Function;
+}
+
+const LoginNotConnected: React.FC<LoginProps> = ({ setSessionData, onLogin }) => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    const handleLoginChange = (value) => {
+    const handleLoginChange = (value: string) => {
         setLogin(value)
     };
 
-    const handlePasswordChange = (value) => {
+    const handlePasswordChange = (value: string) => {
         setPassword(value)
     };
 
@@ -52,7 +60,7 @@ const LoginNotConnected = ({ setSessionData, onLogin }) => {
                 <TextInput
                     label='username'
                     value={login}
-                    autocomplete={'off'}
+                    autocomplete='off'
                     onChange={handleLoginChange}
                 />
                 <TextInput
@@ -62,14 +70,14 @@ const LoginNotConnected = ({ setSessionData, onLogin }) => {
                     value={password}
                     onChange={handlePasswordChange}
                 />
-                <Button className='login-button' text='login' handleClick={handleLogin}/>
+                <Button text='login' handleClick={handleLogin}/>
                 {message && <span className="login-error">{message}</span>}
             </div>
         </div>
     );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: ApplicationState) => {
     return {}
 };
 

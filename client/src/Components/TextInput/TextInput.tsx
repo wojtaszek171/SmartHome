@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import './TextInput.scss';
 
-const TextInput = ({ onChange, value = '', label, placeholder, type = 'text', autocomplete }) => {
+const { useState } = React;
+
+interface TextInputProps {
+  value: string;
+  label: string;
+  type?: string;
+  autocomplete?: string;
+  placeholder?: string;
+  onChange?: Function;
+}
+
+const TextInput: React.FC<TextInputProps> = ({ onChange, value = '', label, placeholder, type = 'text', autocomplete }) => {
 
   const [inputValue, setInputValue] = useState(value);
 
-  const handleOnChange = (e) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value
     setInputValue(val)
     onChange && onChange(val)

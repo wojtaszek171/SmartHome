@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import './TemperatureSection.scss';
 import { getWaterTemp, getRoomTemp } from '../../../restService/restService';
 
-function TemperatureSection() {
+const { useEffect, useState } = React;
+
+const TemperatureSection = () => {
   const [roomTemp, setRoomTemp] = useState('--');
   const [waterTemp, setWaterTemp] = useState('--');
 
@@ -16,8 +18,10 @@ function TemperatureSection() {
 
   const setTemperatureValues = async () => {
     try {
-      setRoomTemp(await getRoomTemp());
-      setWaterTemp(await getWaterTemp());
+      const roomTemp = await getRoomTemp();
+      setRoomTemp(roomTemp.toString());
+      const waterTemp = await getWaterTemp();
+      setWaterTemp(waterTemp.toString());
     } catch (e) {
       console.log(e);
     }

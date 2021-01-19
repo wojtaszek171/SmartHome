@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import './App.scss';
 import Header from '../Header';
@@ -12,14 +12,16 @@ import { setSessionData } from '../../reducers/session/session';
 import { getCookie } from '../../helpers';
 import { ApplicationState } from 'src/reducers';
 
-interface IApp {
+const { useEffect } = React;
+
+interface AppProps {
   authToken: string,
   username: string,
   setWeatherData: Function,
   setSessionData: Function
 }
 
-const App = ({ authToken, username, setWeatherData, setSessionData }: IApp) => {
+const App: React.FC<AppProps> = ({ authToken, username, setWeatherData, setSessionData }) => {
 
   useEffect(() => {
     const token = getCookie('token');

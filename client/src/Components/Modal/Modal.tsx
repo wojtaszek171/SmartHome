@@ -1,20 +1,29 @@
-import React, { useEffect, useRef } from 'react';
+import * as React from 'react';
 import './Modal.scss';
 
-const Modal = ({ show, title, onClose, children }) => {
-  const ref = useRef(null);
+const { useEffect, useRef } = React;
+
+interface ModalProps {
+  show: Boolean;
+  title: string;
+  onClose: Function;
+  children: React.ReactElement;
+}
+
+const Modal: React.FC<ModalProps> = ({ show, title, onClose, children }) => {
+  const ref = useRef<HTMLDivElement>(null);
 
   const handleClose = () => {
     onClose();
   }
 
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
+  const handleClickOutside = (event: MouseEvent) => {
+    if (ref.current && !ref.current.contains(event.target as Node)) {
       handleClose();
     }
   };
 
-  const handleClickEscape = (event) => {
+  const handleClickEscape = (event: KeyboardEvent) => {
     if (event.keyCode === 27) { 
       handleClose();
     }

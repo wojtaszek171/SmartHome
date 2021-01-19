@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import './Content.scss';
 import GridView from '../GridView';
 
-function Content() {
+const Content = () => {
 
   return (
     <div className="content-component">

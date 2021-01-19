@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import './Header.scss';
 import Modal from '../Modal/Modal';
 import Login from '../Login';
 import { connect } from 'react-redux';
 import HeaderDropdown from './HeaderDropdown';
+import { ApplicationState } from 'src/reducers';
 
-function HeaderNotConnected({ authToken }) {
+const { useState } = React;
+
+interface HeaderProps {
+  authToken: string;
+}
+
+const HeaderNotConnected: React.FC<HeaderProps> = ({ authToken }) => {
   const [loginVisible, setLoginVisible] = useState(false);
 
   const handleTitleClick = () => {
-    window.location = window.location.origin;
+    window.location.href = window.location.origin;
   }
 
   const handleLoginOpen = () => {
@@ -35,7 +42,7 @@ function HeaderNotConnected({ authToken }) {
   );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: ApplicationState) => {
   const { session: { authToken } } = state;
   return {
     authToken
@@ -46,4 +53,3 @@ export default connect(
   mapStateToProps,
   {}
 )(HeaderNotConnected)
-

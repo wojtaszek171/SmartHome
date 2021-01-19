@@ -1,12 +1,14 @@
-import React from 'react';
+import * as React from 'react';
 import './Button.scss';
 
-const Button = (props) => {
-    const { text } = props;
+interface ButtonProps {
+    text: string;
+    handleClick: Function;
+}
+
+const Button: React.FC<ButtonProps> = ({ text, handleClick }) => {
 
     const handleOnClick = () => {
-        const { handleClick } = props
-
         if (handleClick) {
             handleClick();
         }

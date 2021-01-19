@@ -1,6 +1,11 @@
-import React from "react";
+import * as React from "react";
 
-const Icon = (props) => {
+interface IconProps {
+  name: string;
+  className?: string;
+}
+
+const Icon: React.FC<IconProps> = (props) => {
   const { name } = props;
 
   let icon = undefined;
