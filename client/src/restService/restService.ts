@@ -1,6 +1,6 @@
 const HOST_URL = 'https://pwojtaszko.ddns.net';
 
-export const getCurrentUser = (token) => 
+export const getCurrentUser = (token: string) => 
     fetch(`${HOST_URL}/api/users/current`, {
         headers: {
             'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const getDailyWeather = () => {
         .then(data => {
             const allDays = JSON.parse(data.value);
 
-            return allDays.reduce((acc, dayEl) => {
+            return allDays.reduce((acc: any, dayEl: any) => {
                 const { dt, temp: { day: dayTemp, night: nightTemp }, pressure, humidity, weather, sunrise, sunset } = dayEl;
                 const icon = weather[0].icon;
                 const date = new Date(dt*1000);
@@ -116,7 +116,7 @@ export const getHourlyWeather = () => {
         .then(data => {
             const allHours = JSON.parse(data.value);
 
-            return allHours.reduce((acc, dayEl) => {
+            return allHours.reduce((acc: any, dayEl: any) => {
                 const { day, hour, temp, icon } = dayEl;
 
                 acc.push({
@@ -133,7 +133,7 @@ export const getHourlyWeather = () => {
         });
 }
 
-export const authenticateAdmin = (username, password) => {
+export const authenticateAdmin = (username: string, password: string) => {
     return fetch(`${HOST_URL}/api/users/authenticate`, {
             method: 'POST',
             headers: {

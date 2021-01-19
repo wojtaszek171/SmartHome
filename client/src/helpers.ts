@@ -1,6 +1,6 @@
-export const isDev = () => (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
+export const isDev = (): boolean => (!process.env.NODE_ENV || process.env.NODE_ENV === 'development')
 
-export const getCookie = (cname) => {
+export const getCookie = (cname: string): string => {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
@@ -16,6 +16,6 @@ export const getCookie = (cname) => {
     return "";
 }
 
-export const eraseCookie = (name) => {   
+export const eraseCookie = (name: string): void => {   
     document.cookie = name+'=; Max-Age=-99999999;';  
 }
