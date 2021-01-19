@@ -6,12 +6,20 @@ import Footer from '../Footer';
 import Content from '../Content';
 import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { setWeatherData } from '../../reducers/weather';
+import { setWeatherData } from '../../reducers/weather/weather';
 import { getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
-import { setSessionData } from '../../reducers/session';
+import { setSessionData } from '../../reducers/session/session';
 import { getCookie } from '../../helpers';
+import { ApplicationState } from 'src/reducers';
 
-const App = ({ authToken, username, setWeatherData, setSessionData }) => {
+interface IApp {
+  authToken: string,
+  username: string,
+  setWeatherData: Function,
+  setSessionData: Function
+}
+
+const App = ({ authToken, username, setWeatherData, setSessionData }: IApp) => {
 
   useEffect(() => {
     const token = getCookie('token');
@@ -91,7 +99,7 @@ const App = ({ authToken, username, setWeatherData, setSessionData }) => {
   );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: ApplicationState) => {
   const { session: { username, authToken } } = state;
   return {
     username,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { isDev } from '../../helpers';
-import { setSessionData } from '../../reducers/session';
+import { setSessionData } from '../../reducers/session/session';
 import { authenticateAdmin } from '../../restService/restService';
 import Button from '../Button';
 import TextInput from '../TextInput';

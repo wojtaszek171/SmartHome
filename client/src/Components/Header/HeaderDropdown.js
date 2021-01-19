@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Header.scss';
 import { connect } from 'react-redux';
 import { eraseCookie } from '../../helpers';
-import { clearSession } from '../../reducers/session';
+import { clearSession } from '../../reducers/session/session';
 import { useHistory } from "react-router-dom";
 
 const HeaderDropdownNotConnected = ({ firstName, lastName, clearSession }) => {

@@ -49,18 +49,20 @@ const Weather = ({ current, daily, hourly }) => {
   return (
     <div className="weather-component">
         <div className="weather-row current" onClick={() => handleHourlyDaySelect(new Date().getDate())}>
-          <div className="weather-city">
-            <span>{'Warszawa'}</span>
-          </div>
-          <div className="weather-icon">
-            <Icon name={current.icon}/>
-          </div>
-          <div className="weather-temperature">
-            <span>{`${current.temp || '--'}°C`}</span>
-            <div className="weather-desc">
-                <span className="weather-desc">{current.description}</span>
+          {current && <>
+            <div className="weather-city">
+              <span>{'Warszawa'}</span>
             </div>
-          </div>
+            <div className="weather-icon">
+              <Icon name={current.icon}/>
+            </div>
+            <div className="weather-temperature">
+              <span>{`${current.temp || '--'}°C`}</span>
+              <div className="weather-desc">
+                  <span className="weather-desc">{current.description}</span>
+              </div>
+            </div>
+          </>}
         </div>
         <div className="weather-row forecast">
           {daily.map((day) => <DailyItem key={day.day} onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
