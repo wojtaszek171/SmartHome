@@ -1,7 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import './GridItem.scss';
 
-const GridItem = ({ children, title }) => {
+interface GridItemProps {
+  title?: string;
+  children: React.ReactNode;
+}
+
+const GridItem: React.FC<GridItemProps> = ({ children, title }) => {
   return (
     <div className="grid-item-component">
       {title && <span className="item-title">{title}</span>}

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import './Room.scss';
 import { getRoomTemp, getRoomHumidity, getRoomPressure } from '../../../../restService/restService';
 import Icon from '../../../Icon/Icon';
+
+const { useEffect, useState } = React;
 
 const Room = () => {
   const [roomTemp, setRoomTemp] = useState('--');
@@ -17,11 +19,11 @@ const Room = () => {
 
   const setSensorValues = async () => {
     try {
-      setRoomTemp(await getRoomTemp());
-      setRoomPressure(await getRoomPressure());
-      setRoomHumidity(await getRoomHumidity());
+      setRoomTemp((await getRoomTemp()).toString());
+      setRoomPressure((await getRoomPressure()).toString());
+      setRoomHumidity((await getRoomHumidity()).toString());
     } catch (e) {
-      console.log(e);
+      throw e;
     }
   }
 

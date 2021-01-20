@@ -4,8 +4,8 @@ import './TextInput.scss';
 const { useState } = React;
 
 interface TextInputProps {
-  value: string;
   label: string;
+  value?: string;
   type?: string;
   autocomplete?: string;
   placeholder?: string;

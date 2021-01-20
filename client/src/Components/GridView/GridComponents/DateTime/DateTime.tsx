@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import './DateTime.scss';
+
+const { useEffect, useState } =  React;
 
 const DateTime = () => {
   const [currentTime, setCurrentTime] = useState(new Date());

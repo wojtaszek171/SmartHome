@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import DailyItem from './DailyItem/DailyItem';
 import './Weather.scss';
@@ -6,19 +6,49 @@ import Modal from '../../../Modal';
 import HourlyItem from './HourlyItem/HourlyItem';
 import { Chart } from "react-google-charts";
 import Icon from '../../../Icon/Icon';
+import { CurrentWeather, DailyWeather, HourlyWeather } from '../../../../reducers/weather/types';
+import { ApplicationState } from 'src/reducers';
 
-const Weather = ({ current, daily, hourly }) => {
+const { useState } = React;
 
-  const [hourlyDaySelected, setHourlyDaySelected] = useState([]);
-  const [daySelected, setDaySelected] = useState({});
+interface WeatherProps {
+  current: CurrentWeather | null;
+  daily: DailyWeather;
+  hourly: HourlyWeather;
+};
 
-  const handleHourlyDaySelect = (day) => {
+interface DaySelected {
+  dt: number;
+  icon: string;
+  dayTemp: number;
+  nightTemp: number | null;
+  humidity: number;
+  pressure: number;
+  sunrise: number;
+  sunset: number;
+}
+
+const Weather: React.FC<WeatherProps> = ({ current, daily, hourly }) => {
+
+  const [hourlyDaySelected, setHourlyDaySelected] = useState<HourlyWeather>([]);
+  const [daySelected, setDaySelected] = useState<DaySelected>({
+    dt: 0,
+    icon: '',
+    dayTemp: 0,
+    nightTemp: null,
+    humidity: 0,
+    pressure: 0,
+    sunrise: 0,
+    sunset: 0
+  });
+
+  const handleHourlyDaySelect = (day: number) => {
     setHourlyDaySelected(hourly.filter(hour => hour.day === day));
     if (day !== new Date().getDate()){
       const filteredDay = daily.find(dayItem => dayItem.day === day);
 
-      setDaySelected({...filteredDay});
-    } else {
+      setDaySelected({...filteredDay} as DaySelected);
+    } else if (current){
       const { humidity, pressure, sunrise, sunset, temp: dayTemp, icon, dt } = current;
       setDaySelected({
         dt,
@@ -132,7 +162,7 @@ const Weather = ({ current, daily, hourly }) => {
                   annotations: {
                     stemColor : 'none'
                   },
-                  backgroundColor: { fill:'transparent' },
+                  backgroundColor: 'transparent',
                   enableInteractivity: false
                 }}
               />
@@ -146,7 +176,7 @@ const Weather = ({ current, daily, hourly }) => {
   );
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: ApplicationState) => {
   const { weather: { current, daily, hourly } } = state;
 
   return {

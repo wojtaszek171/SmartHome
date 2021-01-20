@@ -1,51 +1,45 @@
 import { Action } from "redux";
 
-interface CurrentWeather {
-    dt: number,
-    temp: number,
-    feels_like: number,
-    humidity: number,
-    pressure: number,
-    sunrise: number,
-    sunset: number,
-    icon: string,
-    description: string
+export interface CurrentWeather {
+    dt: number;
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    pressure: number;
+    sunrise: number;
+    sunset: number;
+    icon: string;
+    description: string;
 }
 
-interface DailyWeather {
-    [index: number]: {
-        dt: number,
-        dayOfWeek: number,
-        day: number,
-        dayTemp: number,
-        nightTemp: number,
-        pressure: number,
-        humidity: number,
-        sunrise: number,
-        sunset: number,
-        icon: string
-    }
+export interface DailyWeatherItem {
+    dt: number;
+    dayOfWeek: number;
+    day: number;
+    dayTemp: number;
+    nightTemp: number;
+    pressure: number;
+    humidity: number;
+    sunrise: number;
+    sunset: number;
+    icon: string;
 }
 
-interface HourlyWeather {
-    [index: number]: {
-        dt: number,
-        dayOfWeek: number,
-        day: number,
-        dayTemp: number,
-        nightTemp: number,
-        pressure: number,
-        humidity: number,
-        sunrise: number,
-        sunset: number,
-        icon: string
-    }
+export interface DailyWeather extends Array<DailyWeatherItem> {}
+
+export interface HourlyWeatherItem {
+    day: number;
+    hour: number;
+    temp: number;
+    icon: string;
 }
+
+export interface HourlyWeather extends Array<HourlyWeatherItem> {}
 
 export interface WeatherState {
-    current: CurrentWeather | null,
-    daily: DailyWeather,
-    hourly: HourlyWeather
+    current: CurrentWeather | null;
+    daily: DailyWeather;
+    hourly: HourlyWeather;
 }
 
 export interface SetWeatherData extends Action {

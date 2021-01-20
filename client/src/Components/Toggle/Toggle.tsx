@@ -4,8 +4,8 @@ import './Toggle.scss';
 const { useState } = React;
 
 interface ToggleProps {
-  round: boolean;
-  checked: boolean;
+  round?: boolean;
+  checked?: boolean;
   label: string;
   onClick?: Function;
 }

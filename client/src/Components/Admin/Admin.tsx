@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import TextInput from '../TextInput';
 import Toggle from '../Toggle';
 import './Admin.scss';
+
+const { useEffect } = React;
 
 const Admin = () => {
 
@@ -9,11 +11,11 @@ const Admin = () => {
   
   }, [])
 
-  const handleToggleClick = (value) => {
+  const handleToggleClick = (value: boolean) => {
     console.log('clicked '+value);
   }
 
-  const handleTextInputChamge = (value) => {
+  const handleTextInputChamge = (value: string) => {
     console.log(value);
   }
   

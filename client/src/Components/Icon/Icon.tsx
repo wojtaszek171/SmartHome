@@ -3,6 +3,7 @@ import * as React from "react";
 interface IconProps {
   name: string;
   className?: string;
+  width?: string;
 }
 
 const Icon: React.FC<IconProps> = (props) => {

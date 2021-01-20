@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import { getWaterTemp } from '../../../../restService/restService';
 import './AquariumSection.scss';
+
+const { useEffect, useState } = React;
 
 const AquariumSection = () => {
 
