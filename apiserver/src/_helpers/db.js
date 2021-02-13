@@ -20,6 +20,7 @@ async function initialize() {
     db.Sensor = require('../routes/sensors/sensor.model')(sequelize);
     db.Sockets = require('../routes/sockets/socket.model')(sequelize);
     db.Weather = require('../routes/weather/weather.model')(sequelize);
+    db.Settings = require('../routes/settings/settings.model')(sequelize);
 
     // sync all models with database
     await sequelize.sync();

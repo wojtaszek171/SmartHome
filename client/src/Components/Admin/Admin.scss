@@ -1,19 +1,82 @@
 .Admin {
-    background-color: white;
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: 30px;
     padding-right: 30px;
+
     .header {
-        background-color: black;
+        padding-bottom: 20px;
+        font-weight: bold;
 
         .header-text {
-            font-size: 1.2rem;
-            color: white;
+            font-size: 2rem;
         }
     }
 
     .settings {
+
+        .setting-title {
+            display: block;
+            font-size: 1.5rem;
+            padding: 10px;
+            border: 1px dotted;
+        }
+
+        & > div {
+            width: 100%;
+            padding: 10px;
+        }
         
+        .coordinates {
+            display: flex;
+            flex-direction: row;
+
+            .text-input {
+                width: 115px;
+                padding: 5px;
+
+                /* Chrome, Safari, Edge, Opera */
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+                /* Firefox */
+                input[type=number] {
+                    -moz-appearance: textfield;
+                }
+            }
+        }
+
+        .sockets {
+            .socket-item {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .socket-switch {
+                    height: 90px;
+                    display: flex;
+                    flex-direction: column;
+
+                    span {
+                        font-size: 20px;
+                    }
+
+                    .toggle-wrapper {
+                        flex-grow: 1;
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .text-input {
+                    padding: 5px;
+                    width: 170px;
+                }
+            }
+        }
     }
+
 }

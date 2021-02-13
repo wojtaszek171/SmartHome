@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const errorHandler = require('_middleware/error-handler');
 const weatherService = require('./routes/weather/weather.service');
 const sensorService = require('./routes/sensors/sensor.service');
+const settingsService = require('./routes/settings/settings.service');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,12 +25,34 @@ app.use('/users', require('./routes/users/users.controller'));
 app.use('/sensors', require('./routes/sensors/sensors.controller'));
 app.use('/sockets', require('./routes/sockets/sockets.controller'));
 app.use('/weather', require('./routes/weather/weather.controller'));
+app.use('/settings', require('./routes/settings/settings.controller'));
 
 // openweathermap reading
 const readWeather = async () => {
-    // TODO add reading location from database
-    const lat = 52.229676;
-    const lon = 21.012229;
+    let lat;
+    let lon;
+
+    try {
+        const latRes = await settingsService.getByName('weatherLat');
+        const lonRes = await settingsService.getByName('weatherLon');
+
+        lat = latRes.value;
+        lon = lonRes.value;
+    } catch (e) {
+        lat = 52.229676;
+        lon = 21.012229;
+
+        settingsService.set({
+            name: 'weatherLat',
+            value: lat
+        })
+
+        settingsService.set({
+            name: 'weatherLon',
+            value: lon
+        })
+    }
+
     try {
         fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${config.weather_api}&units=metric&lang=pl`)
             .then(response => response.json())

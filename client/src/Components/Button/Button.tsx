@@ -4,9 +4,10 @@ import './Button.scss';
 interface ButtonProps {
     text: string;
     handleClick: Function;
+    disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, handleClick }) => {
+const Button: React.FC<ButtonProps> = ({ text, handleClick, disabled = false }) => {
 
     const handleOnClick = () => {
         if (handleClick) {
@@ -15,8 +16,8 @@ const Button: React.FC<ButtonProps> = ({ text, handleClick }) => {
     }
 
     return (
-        <div className="button-component noselect">
-            <button onClick={handleOnClick}>{text}</button>
+        <div className={`button-component noselect ${disabled ? ' disabled' : ''}`}>
+            <button disabled={disabled} onClick={handleOnClick}>{text}</button>
         </div>
     );
 }

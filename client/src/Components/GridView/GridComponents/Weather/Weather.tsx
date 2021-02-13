@@ -87,7 +87,7 @@ const Weather: React.FC<WeatherProps> = ({ current, daily, hourly }) => {
               <Icon name={current.icon}/>
             </div>
             <div className="weather-temperature">
-              <span>{`${current.temp || '--'}°C`}</span>
+              <span>{`${current.temp}°C`}</span>
               <div className="weather-desc">
                   <span className="weather-desc">{current.description}</span>
               </div>
@@ -95,7 +95,7 @@ const Weather: React.FC<WeatherProps> = ({ current, daily, hourly }) => {
           </>}
         </div>
         <div className="weather-row forecast">
-          {daily.map((day) => <DailyItem key={day.day} onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
+          {daily && daily.map((day) => <DailyItem key={day.day} onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
         </div>
         <Modal show={!!hourlyDaySelected.length} title={displayModalTitle()} onClose={handleHourlyClose}>
           <div className="weather-hourly">

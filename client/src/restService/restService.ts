@@ -13,6 +13,22 @@ export const getCurrentUser = (token: string) =>
         throw e;
     });
 
+export const getWeatherLat = () => 
+    fetch(`${HOST_URL}/api/settings/weatherLat`)
+        .then(response => response.json())
+        .then(data => data)
+        .catch(e => {
+            throw e;
+        });
+
+export const getWeatherLon = () => 
+    fetch(`${HOST_URL}/api/settings/weatherLon`)
+        .then(response => response.json())
+        .then(data => data)
+        .catch(e => {
+            throw e;
+        });
+
 export const getSensorsData = () => 
     fetch(`${HOST_URL}/api/sensors`)
         .then(response => response.json())

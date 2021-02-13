@@ -6,11 +6,11 @@ const { useState } = React;
 interface ToggleProps {
   round?: boolean;
   checked?: boolean;
-  label: string;
+  label?: string;
   onClick?: Function;
 }
 
-const Toggle: React.FC<ToggleProps> = ({ round, onClick, checked = false, label }) => {
+const Toggle: React.FC<ToggleProps> = ({ round = true, onClick, checked = false, label }) => {
 
   const [isChecked, setIsChecked] = useState(checked);
 
@@ -20,13 +20,13 @@ const Toggle: React.FC<ToggleProps> = ({ round, onClick, checked = false, label 
   }
 
   return (
-    <div className="Toggle">
+    <div className="toggle">
       <label className="toggle-content">
+        <span className="label noselect">{label}</span>
         <div className="switch">
           <input type="checkbox" onChange={handleOnClick} checked={isChecked}/>
           <span className={`slider ${round && 'round'}`}></span>
         </div>
-        <span className="label noselect">{label}</span>
       </label>
     </div>
   );

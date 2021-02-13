@@ -31,4 +31,9 @@
         }
     }
 
+    &.disabled {
+        button {
+            background-color: #898d92;
+        }
+    }
 }

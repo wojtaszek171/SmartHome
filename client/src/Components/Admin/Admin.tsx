@@ -1,40 +1,79 @@
 import * as React from 'react';
+import { getWeatherLat, getWeatherLon } from 'src/restService/restService';
+import Button from '../Button';
 import TextInput from '../TextInput';
-import Toggle from '../Toggle';
 import './Admin.scss';
+import SocketsSettings from './SocketsSettings/SocketsSettings';
 
-const { useEffect } = React;
+const { useEffect, useState } = React;
 
 const Admin = () => {
 
+  const [weatherLat, setWeatherLat] = useState(0);
+  const [weatherLon, setWeatherLon] = useState(0);
+  const [socketsValues, setSocketValues] = useState({});
+
+  const [updateDisabled, setUpdateDisabled] = useState(true);
+
   useEffect(() => {
-  
+    getWeatherLat().then(res => {
+      setWeatherLat(res.value);
+    })
+    
+    getWeatherLon().then(res => {
+      setWeatherLon(res.value);
+    })
   }, [])
 
-  const handleToggleClick = (value: boolean) => {
-    console.log('clicked '+value);
+  const handleLatChange = (value: number) => {
+    setWeatherLat(value);
+    setUpdateDisabled(false);
   }
 
-  const handleTextInputChamge = (value: string) => {
-    console.log(value);
+  const handleLonChange = (value: number) => {
+    setWeatherLon(value);
+    setUpdateDisabled(false);
   }
-  
+
+  const handleSettingsUpdate = () => {
+    console.log('update');
+  }
+
+  const handleSocketsUpdate = (values: any) => {
+    console.log(values);
+    
+    setSocketValues(values);
+    setUpdateDisabled(false);
+  }
+
   return (
     <div className="Admin">
       <div className="header">
         <span className="header-text">Administration panel</span>
       </div>
       <div className="settings">
-        <Toggle
-          round
-          onClick={handleToggleClick}
-          label="Access from local network only"
-        />
-        <TextInput
-          label={'setting'}
-          placeholder={'put setting'}
-          onChange={handleTextInputChamge}
-        />
+        <span className="setting-title">
+          Weather
+        </span>
+        <div className="coordinates">
+          <TextInput
+            label={'Lat'}
+            value={weatherLat}
+            type="number"
+            onChange={handleLatChange}
+          />
+          <TextInput
+            label={'Lon'}
+            value={weatherLon}
+            type="number"
+            onChange={handleLonChange}
+          />
+        </div>
+        <span className="setting-title">
+          Sockets
+        </span>
+        <SocketsSettings onChange={handleSocketsUpdate}/>
+        <Button text="Update settings" disabled={updateDisabled} handleClick={handleSettingsUpdate}/>
       </div>
     </div>
   );
