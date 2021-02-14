@@ -53,6 +53,7 @@
             .socket-item {
                 display: flex;
                 flex-direction: row;
+                flex-wrap: wrap;
                 align-items: center;
 
                 .socket-switch {
@@ -71,9 +72,15 @@
                     }
                 }
 
-                .text-input {
-                    padding: 5px;
-                    width: 170px;
+                .socket-inputs {
+                    display: flex;
+                    flex-wrap: wrap;
+                    flex-direction: row;
+
+                    .text-input {
+                        padding: 5px;
+                        width: 170px;
+                    }
                 }
             }
         }

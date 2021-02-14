@@ -85,20 +85,22 @@ const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
                             />
                         </div>
                     </div>
-                    <TextInput
-                        disabled={!(socketsObject[key] && socketsObject[key].enabled)}
-                        label={'Start'}
-                        value={socketsObject[key] && socketsObject[key].start}
-                        type="date"
-                        onChange={(val: Date) => handleUpdateSocketStart(key, val)}
-                    />
-                    <TextInput
-                        disabled={!(socketsObject[key] && socketsObject[key].enabled)}
-                        label={'End'}
-                        value={socketsObject[key] && socketsObject[key].end}
-                        type="date"
-                        onChange={(val: Date) => handleUpdateSocketEnd(key, val)}
-                    />
+                    <div className="socket-inputs">
+                        <TextInput
+                            disabled={!(socketsObject[key] && socketsObject[key].enabled)}
+                            label={'Start'}
+                            value={socketsObject[key] && socketsObject[key].start}
+                            type="time"
+                            onChange={(val: Date) => handleUpdateSocketStart(key, val)}
+                        />
+                        <TextInput
+                            disabled={!(socketsObject[key] && socketsObject[key].enabled)}
+                            label={'End'}
+                            value={socketsObject[key] && socketsObject[key].end}
+                            type="time"
+                            onChange={(val: Date) => handleUpdateSocketEnd(key, val)}
+                        />
+                    </div>
                 </div>
             )}
         </div>

@@ -10,9 +10,10 @@ const { useState } = React;
 
 interface HeaderProps {
   authToken: string;
+  firstName: string;
 }
 
-const HeaderNotConnected: React.FC<HeaderProps> = ({ authToken }) => {
+const HeaderNotConnected: React.FC<HeaderProps> = ({ authToken, firstName }) => {
   const [loginVisible, setLoginVisible] = useState(false);
 
   const handleTitleClick = () => {
@@ -31,7 +32,7 @@ const HeaderNotConnected: React.FC<HeaderProps> = ({ authToken }) => {
   return (
     <div className="header-component">
       <span className="header-title noselect" onClick={handleTitleClick}>Smart Home</span>
-      {authToken ?
+      {(authToken && firstName) ?
         <HeaderDropdown /> :
         <a href="#" className="login-button noselect" onClick={handleLoginOpen}>Login</a>
       }
@@ -43,8 +44,9 @@ const HeaderNotConnected: React.FC<HeaderProps> = ({ authToken }) => {
 }
 
 const mapStateToProps = (state: ApplicationState) => {
-  const { session: { authToken } } = state;
+  const { session: { authToken, firstName } } = state;
   return {
+    firstName,
     authToken
   }
 };
