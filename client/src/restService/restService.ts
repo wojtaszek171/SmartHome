@@ -1,3 +1,5 @@
+import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings';
+
 const HOST_URL = 'https://pwojtaszko.ddns.net';
 
 export const getCurrentUser = (token: string) => 
@@ -23,6 +25,29 @@ export const getWeatherLat = () =>
 
 export const getWeatherLon = () => 
     fetch(`${HOST_URL}/api/settings/weatherLon`)
+        .then(response => response.json())
+        .then(data => data)
+        .catch(e => {
+            throw e;
+        });
+
+export const getSockets = () =>
+    fetch(`${HOST_URL}/api/sockets`)
+        .then(response => response.json())
+        .then(data => data)
+        .catch(e => {
+            throw e;
+        });
+
+export const setSocket = (token: string, socketObj: SocketItem) => 
+    fetch(`${HOST_URL}/api/sockets/set`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(socketObj),
+    })
         .then(response => response.json())
         .then(data => data)
         .catch(e => {

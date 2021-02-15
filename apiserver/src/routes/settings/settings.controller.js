@@ -16,7 +16,7 @@ module.exports = router;
 function setSchema(req, res, next) {
     const schema = Joi.object({
         name: Joi.string().required(),
-        value: Joi.object().required(),
+        value: Joi.string().required(),
         dateUpdated: Joi.date()
     });
     validateRequest(req, next, schema);
@@ -43,7 +43,7 @@ function getByName(req, res, next) {
 function updateSchema(req, res, next) {
     const schema = Joi.object({
         name: Joi.string().empty(''),
-        value: Joi.object(),
+        value: Joi.string(),
         dateUpdated: Joi.date()
     });
     validateRequest(req, next, schema);

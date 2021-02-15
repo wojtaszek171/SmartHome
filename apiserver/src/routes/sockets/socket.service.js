@@ -3,32 +3,33 @@ const db = require('_helpers/db');
 module.exports = {
     getAll,
     getSocket,
+    getByKey,
     set,
     update,
     delete: _delete
 };
 
 async function getAll() {
-    return await db.Socket.findAll();
+    return await db.Sockets.findAll();
 }
 
 
-async function getByDevice(device) {
-    const socket = await db.Socket.findOne({ where: { device } });
+async function getByKey(key) {
+    const socket = await db.Sockets.findOne({ where: { key } });
     if (!socket) throw 'Socket not found';
     return socket;
 }
 
 async function set(params) {
-    if (await db.Socket.findByPk(params.id)) {
-        update(params.id, params);
+    if (await db.Sockets.findOne({ where: { key: params.key } })) {
+        update(params.key, params);
     } else {
-        await db.Socket.create(params);
+        await db.Sockets.create(params);
     }
 }
 
-async function update(id, params) {
-    const socket = await getSocket(id);
+async function update(key, params) {
+    const socket = await getByKey(key);
 
     // copy params to socket and save
     Object.assign(socket, params);
@@ -43,7 +44,7 @@ async function _delete(id) {
 // helper functions
 
 async function getSocket(id) {
-    const socket = await db.Socket.findByPk(id);
+    const socket = await db.Sockets.findByPk(id);
     if (!socket) throw 'Socket not found';
     return socket;
 }

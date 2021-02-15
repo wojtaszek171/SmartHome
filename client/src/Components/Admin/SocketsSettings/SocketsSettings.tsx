@@ -1,35 +1,50 @@
 import * as React from 'react';
+import { getSockets } from 'src/restService/restService';
 import TextInput from '../../TextInput';
 import Toggle from '../../Toggle';
+import './SocketsSettings.scss';
+import _ from 'lodash';
 
 const { useState, useEffect } = React;
 
-const sockets = [
-    {
-        name: 'Socket 1',
-        key: 'socket1'
+export const socketsConfig = {
+    socket1: {
+        key: 'socket1',
+        start: '',
+        stop: ''
     },
-    {
-        name: 'Socket 2',
-        key: 'socket2'
+    socket2: {
+        key: 'socket2',
+        start: '',
+        stop: ''
     },
-    {
-        name: 'Socket 3',
-        key: 'socket3'
+    socket3: {
+        key: 'socket3',
+        start: '',
+        stop: ''
     },
-    {
-        name: 'Socket 4',
-        key: 'socket4'
+    socket4: {
+        key: 'socket4',
+        start: '',
+        stop: ''
     }
-];
+};
 
-interface SocketItem {
-    enabled?: boolean;
-    start?: Date;
-    end?: Date;
+const socketsNames: {[key: string]: string} = {
+    socket1: 'Socket 1',
+    socket2: 'Socket 2',
+    socket3: 'Socket 3',
+    socket4: 'Socket 4'
 }
 
-interface SocketsObject {
+export interface SocketItem {
+    key: string;
+    enabled?: boolean;
+    start?: string;
+    stop?: string;
+}
+
+export interface SocketsObject {
     [index: string]: SocketItem
 }
 
@@ -39,11 +54,39 @@ interface SocketsSettingsProps {
 
 const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
 
-    const [socketsObject, setSocketsObject] = useState<SocketsObject>({});
+    const [socketsFromDB, setSocketsFromDB] = useState<SocketsObject>({...socketsConfig});
+    const [socketsObject, setSocketsObject] = useState<SocketsObject>({...socketsConfig});
 
     useEffect(() => {
-        onChange(socketsObject);
-    }, [socketsObject])
+        fetchSockets();
+    }, [])
+
+    const fetchSockets = () => {
+        getSockets().then(res => {      
+            if (res && !res.message) {
+                const socketsRes: SocketsObject = {...socketsConfig};
+
+                res.forEach((socket: SocketItem) => {
+                    socketsRes[socket.key] = {...socket};
+                });
+
+                setSocketsObject(socketsRes);
+                setSocketsFromDB(socketsRes);
+            }
+        })
+    }
+
+    useEffect(() => {
+        const changedSockets = _.reduce(socketsObject, (result: Array<SocketItem>, value, key) => {
+            return _.isEqual(value, socketsFromDB[key]) ?
+                result : result.concat(value);
+        }, []);
+
+        console.log(changedSockets);
+        
+
+        onChange(changedSockets);
+    }, [socketsObject, socketsFromDB])
 
     const handleUpdateSocketEnabled = (socket: string, value: boolean) => {
         let copySocketsObject = {...socketsObject};
@@ -54,7 +97,7 @@ const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
         setSocketsObject(copySocketsObject);
     }
 
-    const handleUpdateSocketStart = (socket: string, value: Date) => {
+    const handleUpdateSocketStart = (socket: string, value: string) => {
         let copySocketsObject = {...socketsObject};
         copySocketsObject[socket] = {
             ...copySocketsObject[socket],
@@ -63,21 +106,23 @@ const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
         setSocketsObject(copySocketsObject);
     }
 
-    const handleUpdateSocketEnd = (socket: string, value: Date) => {
+    const handleUpdateSocketEnd = (socket: string, value: string) => {
         let copySocketsObject = {...socketsObject};
         copySocketsObject[socket] = {
             ...copySocketsObject[socket],
-            end: value
+            stop: value
         };
         setSocketsObject(copySocketsObject);
     }
 
+    console.log(socketsObject);
+    
     return (
-        <div className="sockets">
-            {sockets.map(({ key, name }) =>
+        <div className="sockets-settings">
+            {Object.values(socketsConfig).map(({ key }) =>
                 <div className="socket-item" key={key}>
                     <div className="socket-switch">
-                        <span>{name}</span>
+                        <span>{socketsNames[key]}</span>
                         <div className="toggle-wrapper">
                             <Toggle
                                 checked={socketsObject[key] && socketsObject[key].enabled}
@@ -91,14 +136,14 @@ const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
                             label={'Start'}
                             value={socketsObject[key] && socketsObject[key].start}
                             type="time"
-                            onChange={(val: Date) => handleUpdateSocketStart(key, val)}
+                            onChange={(val: string) => handleUpdateSocketStart(key, val)}
                         />
                         <TextInput
                             disabled={!(socketsObject[key] && socketsObject[key].enabled)}
                             label={'End'}
-                            value={socketsObject[key] && socketsObject[key].end}
+                            value={socketsObject[key] && socketsObject[key].stop}
                             type="time"
-                            onChange={(val: Date) => handleUpdateSocketEnd(key, val)}
+                            onChange={(val: string) => handleUpdateSocketEnd(key, val)}
                         />
                     </div>
                 </div>

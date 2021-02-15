@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './Toggle.scss';
 
-const { useState } = React;
+const { useState, useEffect } = React;
 
 interface ToggleProps {
   round?: boolean;
@@ -18,6 +18,10 @@ const Toggle: React.FC<ToggleProps> = ({ round = true, onClick, checked = false,
     setIsChecked(!isChecked);
     onClick && onClick(e.target.checked);
   }
+  
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked])
 
   return (
     <div className="toggle">

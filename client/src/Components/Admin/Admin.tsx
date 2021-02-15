@@ -1,49 +1,83 @@
 import * as React from 'react';
-import { getWeatherLat, getWeatherLon } from 'src/restService/restService';
+import { getWeatherLat, getWeatherLon, setSocket } from 'src/restService/restService';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import './Admin.scss';
-import SocketsSettings from './SocketsSettings/SocketsSettings';
+import SocketsSettings, { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
+import { ApplicationState } from 'src/reducers';
+import { connect } from 'react-redux';
 
 const { useEffect, useState } = React;
 
-const Admin = () => {
+interface FetchedValues {
+  weatherLat: String;
+  weatherLon: String;
+}
 
-  const [weatherLat, setWeatherLat] = useState(0);
-  const [weatherLon, setWeatherLon] = useState(0);
-  const [socketsValues, setSocketValues] = useState({});
+const initialConfig = {
+  weatherLat: '',
+  weatherLon: ''
+}
+
+interface AdminProps {
+  authToken: string;
+}
+
+const Admin: React.FC<AdminProps> = ({ authToken }) => {
+  const [fetchedValues, setFetchedValues] = useState<FetchedValues>({...initialConfig});
+  const [weatherLat, setWeatherLat] = useState('');
+  const [weatherLon, setWeatherLon] = useState('');
+  const [error, setError] = useState('');
+  const [changedSockets, setChangedSockets] = useState<Array<SocketItem>>([]);
 
   const [updateDisabled, setUpdateDisabled] = useState(true);
 
   useEffect(() => {
-    getWeatherLat().then(res => {
+    fetchSettings();
+  }, [])
+  
+  useEffect(() => {
+    if(weatherLat !== fetchedValues.weatherLat || weatherLon !== fetchedValues.weatherLon || changedSockets.length) {
+      setUpdateDisabled(false);
+    } else {
+      setUpdateDisabled(true);
+    }
+  }, [weatherLat, weatherLon, changedSockets, fetchedValues])
+
+  const fetchSettings = async () => {
+    let settingsObject: FetchedValues = {...initialConfig};
+
+    await getWeatherLat().then(res => {
       setWeatherLat(res.value);
+      settingsObject.weatherLat = res.value;
     })
     
-    getWeatherLon().then(res => {
+    await getWeatherLon().then(res => {
       setWeatherLon(res.value);
+      settingsObject.weatherLon = res.value;
     })
-  }, [])
 
-  const handleLatChange = (value: number) => {
+    setFetchedValues({...settingsObject});
+  }
+
+  const handleLatChange = (value: string) => {
     setWeatherLat(value);
-    setUpdateDisabled(false);
   }
 
-  const handleLonChange = (value: number) => {
+  const handleLonChange = (value: string) => {
     setWeatherLon(value);
-    setUpdateDisabled(false);
-  }
-
-  const handleSettingsUpdate = () => {
-    console.log('update');
   }
 
   const handleSocketsUpdate = (values: any) => {
-    console.log(values);
-    
-    setSocketValues(values);
-    setUpdateDisabled(false);
+    setChangedSockets(values);
+  }
+
+  const handleSettingsUpdate = () => {
+    changedSockets.forEach(socketObject => {
+      setSocket(authToken, socketObject);
+    });
+
+    setError('Settings update error');
   }
 
   return (
@@ -59,13 +93,13 @@ const Admin = () => {
           <TextInput
             label={'Lat'}
             value={weatherLat}
-            type="number"
+            type='number'
             onChange={handleLatChange}
           />
           <TextInput
             label={'Lon'}
             value={weatherLon}
-            type="number"
+            type='number'
             onChange={handleLonChange}
           />
         </div>
@@ -74,9 +108,21 @@ const Admin = () => {
         </span>
         <SocketsSettings onChange={handleSocketsUpdate}/>
         <Button text="Update settings" disabled={updateDisabled} handleClick={handleSettingsUpdate}/>
+        {error && <span className="update-error">{error}</span>}
       </div>
     </div>
   );
 }
 
-export default Admin;
+const mapStateToProps = (state: ApplicationState) => {
+  const { session: { username, authToken } } = state;
+  return {
+    username,
+    authToken
+  }
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Admin)

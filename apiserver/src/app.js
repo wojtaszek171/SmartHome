@@ -39,8 +39,8 @@ const readWeather = async () => {
         lat = latRes.value;
         lon = lonRes.value;
     } catch (e) {
-        lat = 52.229676;
-        lon = 21.012229;
+        lat = '52.229676';
+        lon = '21.012229';
 
         settingsService.set({
             name: 'weatherLat',
@@ -116,7 +116,7 @@ const readWeather = async () => {
 const readSensors = () => {
     const { spawn } = require("child_process");
 
-    let process = spawn('python3', ["../pythonApp/sensors.py"] );
+    let process = spawn('python3', ["./python/sensors.py"] );
 
     process.stdout.on('data', function (data) {
         const sensors = JSON.parse(data.toString());
@@ -141,14 +141,10 @@ const startStream = () => {
     });
 }
 
-
 setInterval(() => {
     readSensors();
 }, 5000);
 
-setTimeout(() => {
-    readWeather();
-}, 5000)
 setInterval(() => {
     readWeather();
 }, 900000);

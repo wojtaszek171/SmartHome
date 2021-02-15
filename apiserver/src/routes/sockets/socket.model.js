@@ -4,9 +4,27 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-        id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-        device: { type: DataTypes.STRING, allowNull: true },
-        enabled: { type: DataTypes.BOOLEAN, allowNull: true }
+        key: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            primaryKey: true
+        },
+        start: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: "",
+            notEmpty: false
+        },
+        stop: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            defaultValue: "",
+            notEmpty: false
+        },
+        enabled: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true
+        }
     };
     const options = {};
 

@@ -1,0 +1,35 @@
+.sockets-settings {
+    .socket-item {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .socket-switch {
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+
+            span {
+                font-size: 20px;
+            }
+
+            .toggle-wrapper {
+                flex-grow: 1;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .socket-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+
+            .text-input {
+                padding: 5px;
+                width: 130px;
+            }
+        }
+    }
+}

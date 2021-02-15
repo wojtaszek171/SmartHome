@@ -6,7 +6,7 @@ function model(sequelize) {
     const attributes = {
         name: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
         value: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.STRING,
             allowNull: false
         }
     };
