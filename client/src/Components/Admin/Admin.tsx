@@ -89,6 +89,12 @@ const Admin: React.FC<AdminProps> = ({ authToken }) => {
 
   const handleSettingsUpdate = () => {
     setError('');
+
+    if (changedSockets.some(socket => (socket.start && !socket.stop) || (!socket.start && socket.stop))) {
+      setError('If you set start then you must set stop and vice versa');
+      return;
+    }
+
     changedSockets.forEach(socketObject => {
       setSocket(authToken, socketObject)
         .then(() => {
