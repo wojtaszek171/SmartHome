@@ -1,34 +1,11 @@
 import * as React from 'react';
-import { getSockets } from 'src/restService/restService';
 import TextInput from '../../TextInput';
 import Toggle from '../../Toggle';
 import './SocketsSettings.scss';
 import _ from 'lodash';
+import { socketsConfig } from './socketsConfig';
 
 const { useState, useEffect } = React;
-
-export const socketsConfig = {
-    socket1: {
-        key: 'socket1',
-        start: '',
-        stop: ''
-    },
-    socket2: {
-        key: 'socket2',
-        start: '',
-        stop: ''
-    },
-    socket3: {
-        key: 'socket3',
-        start: '',
-        stop: ''
-    },
-    socket4: {
-        key: 'socket4',
-        start: '',
-        stop: ''
-    }
-};
 
 const socketsNames: {[key: string]: string} = {
     socket1: 'Socket 1',
@@ -49,32 +26,17 @@ export interface SocketsObject {
 }
 
 interface SocketsSettingsProps {
+    socketsFromDB: SocketsObject;
     onChange: Function;
 };
 
-const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
+const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) => {
 
-    const [socketsFromDB, setSocketsFromDB] = useState<SocketsObject>({...socketsConfig});
     const [socketsObject, setSocketsObject] = useState<SocketsObject>({...socketsConfig});
-
+    
     useEffect(() => {
-        fetchSockets();
-    }, [])
-
-    const fetchSockets = () => {
-        getSockets().then(res => {      
-            if (res && !res.message) {
-                const socketsRes: SocketsObject = {...socketsConfig};
-
-                res.forEach((socket: SocketItem) => {
-                    socketsRes[socket.key] = {...socket};
-                });
-
-                setSocketsObject(socketsRes);
-                setSocketsFromDB(socketsRes);
-            }
-        })
-    }
+        setSocketsObject({...socketsFromDB})
+    }, [socketsFromDB])
 
     useEffect(() => {
         const changedSockets = _.reduce(socketsObject, (result: Array<SocketItem>, value, key) => {
@@ -82,11 +44,8 @@ const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
                 result : result.concat(value);
         }, []);
 
-        console.log(changedSockets);
-        
-
         onChange(changedSockets);
-    }, [socketsObject, socketsFromDB])
+    }, [socketsObject])
 
     const handleUpdateSocketEnabled = (socket: string, value: boolean) => {
         let copySocketsObject = {...socketsObject};
@@ -114,8 +73,6 @@ const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange }) => {
         };
         setSocketsObject(copySocketsObject);
     }
-
-    console.log(socketsObject);
     
     return (
         <div className="sockets-settings">

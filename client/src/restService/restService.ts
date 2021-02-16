@@ -2,6 +2,14 @@ import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings'
 
 const HOST_URL = 'https://pwojtaszko.ddns.net';
 
+const requestStatus = (response: Response) => {
+    if (response.ok) {
+        return response.json();
+    } else {                
+        throw new Error(response.statusText);
+    }
+}
+
 export const getCurrentUser = (token: string) => 
     fetch(`${HOST_URL}/api/users/current`, {
         headers: {
@@ -9,32 +17,28 @@ export const getCurrentUser = (token: string) =>
             'Authorization': `Bearer ${token}`
         }
     })
-    .then(response => response.json())
-    .then(data => data)
+    .then(requestStatus)
     .catch(e => {
         throw e;
     });
 
 export const getWeatherLat = () => 
     fetch(`${HOST_URL}/api/settings/weatherLat`)
-        .then(response => response.json())
-        .then(data => data)
+        .then(requestStatus)
         .catch(e => {
             throw e;
         });
 
 export const getWeatherLon = () => 
     fetch(`${HOST_URL}/api/settings/weatherLon`)
-        .then(response => response.json())
-        .then(data => data)
+        .then(requestStatus)
         .catch(e => {
             throw e;
         });
 
 export const getSockets = () =>
     fetch(`${HOST_URL}/api/sockets`)
-        .then(response => response.json())
-        .then(data => data)
+        .then(requestStatus)
         .catch(e => {
             throw e;
         });
@@ -48,23 +52,21 @@ export const setSocket = (token: string, socketObj: SocketItem) =>
         },
         body: JSON.stringify(socketObj),
     })
-        .then(response => response.json())
-        .then(data => data)
+        .then(requestStatus)
         .catch(e => {
             throw e;
-        });
+        })
 
 export const getSensorsData = () => 
     fetch(`${HOST_URL}/api/sensors`)
-        .then(response => response.json())
-        .then(data => data)
+        .then(requestStatus)
         .catch(e => {
             throw e;
         });
 
 export const getWaterTemp = () => 
     fetch(`${HOST_URL}/api/sensors/waterTemp`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => data.value.toFixed(1))
         .catch(e => {
             throw e;
@@ -72,7 +74,7 @@ export const getWaterTemp = () =>
 
 export const getRoomTemp = (): Promise<number> => 
     fetch(`${HOST_URL}/api/sensors/roomTemp`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
             throw e;
@@ -80,7 +82,7 @@ export const getRoomTemp = (): Promise<number> =>
 
 export const getRoomHumidity = (): Promise<number> => 
     fetch(`${HOST_URL}/api/sensors/roomHumidity`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
             throw e;
@@ -88,7 +90,7 @@ export const getRoomHumidity = (): Promise<number> =>
 
 export const getRoomPressure = (): Promise<number> => 
     fetch(`${HOST_URL}/api/sensors/pressure`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
         .catch(e => {
             throw e;
@@ -96,7 +98,7 @@ export const getRoomPressure = (): Promise<number> =>
 
 export const getCurrentWeather = () => {
     return fetch(`${HOST_URL}/api/weather/current`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => {
             const { dt, temp, feels_like, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
             const { icon, description } = weather[0];
@@ -120,7 +122,7 @@ export const getCurrentWeather = () => {
 
 export const getDailyWeather = () => {
     return fetch(`${HOST_URL}/api/weather/daily`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => {
             const allDays = JSON.parse(data.value);
 
@@ -153,7 +155,7 @@ export const getDailyWeather = () => {
 
 export const getHourlyWeather = () => {
     return fetch(`${HOST_URL}/api/weather/hourly`)
-        .then(response => response.json())
+        .then(requestStatus)
         .then(data => {
             const allHours = JSON.parse(data.value);
 
@@ -184,10 +186,8 @@ export const authenticateAdmin = (username: string, password: string) => {
                 username,
                 password
             }),
-        }).then(response => response.json())
-        .then(data => {
-            return data;
         })
+        .then(requestStatus)
         .catch(e => {
             throw e;
         });

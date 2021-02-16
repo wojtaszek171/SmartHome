@@ -1,22 +1,25 @@
 import * as React from 'react';
-import { getWeatherLat, getWeatherLon, setSocket } from 'src/restService/restService';
+import { getSockets, getWeatherLat, getWeatherLon, setSocket } from 'src/restService/restService';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import './Admin.scss';
 import SocketsSettings, { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
 import { ApplicationState } from 'src/reducers';
 import { connect } from 'react-redux';
+import { socketsConfig } from './SocketsSettings/socketsConfig';
 
 const { useEffect, useState } = React;
 
 interface FetchedValues {
   weatherLat: String;
   weatherLon: String;
+  socketsFromDB: SocketsObject;
 }
 
 const initialConfig = {
   weatherLat: '',
-  weatherLon: ''
+  weatherLon: '',
+  socketsFromDB: {...socketsConfig}
 }
 
 interface AdminProps {
@@ -57,6 +60,18 @@ const Admin: React.FC<AdminProps> = ({ authToken }) => {
       settingsObject.weatherLon = res.value;
     })
 
+    await getSockets().then(res => {
+      if (res && !res.message) {
+          const socketsRes: SocketsObject = {...socketsConfig};
+
+          res.forEach((socket: SocketItem) => {
+              socketsRes[socket.key] = {...socket};
+          });
+          
+          settingsObject.socketsFromDB = socketsRes;
+      }
+  })
+
     setFetchedValues({...settingsObject});
   }
 
@@ -73,11 +88,16 @@ const Admin: React.FC<AdminProps> = ({ authToken }) => {
   }
 
   const handleSettingsUpdate = () => {
+    setError('');
     changedSockets.forEach(socketObject => {
-      setSocket(authToken, socketObject);
+      setSocket(authToken, socketObject)
+        .then(() => {
+          fetchSettings();
+        })
+        .catch(e => {
+          setError(e.message);
+        })
     });
-
-    setError('Settings update error');
   }
 
   return (
@@ -106,8 +126,15 @@ const Admin: React.FC<AdminProps> = ({ authToken }) => {
         <span className="setting-title">
           Sockets
         </span>
-        <SocketsSettings onChange={handleSocketsUpdate}/>
-        <Button text="Update settings" disabled={updateDisabled} handleClick={handleSettingsUpdate}/>
+        <SocketsSettings
+          onChange={handleSocketsUpdate}
+          socketsFromDB={fetchedValues.socketsFromDB}
+        />
+        <Button
+          text="Update settings"
+          disabled={updateDisabled}
+          handleClick={handleSettingsUpdate}
+        />
         {error && <span className="update-error">{error}</span>}
       </div>
     </div>
