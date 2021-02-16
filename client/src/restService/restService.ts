@@ -2,10 +2,14 @@ import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings'
 
 const HOST_URL = 'https://pwojtaszko.ddns.net';
 
-const requestStatus = (response: Response) => {
+const requestStatus = async (response: Response) => {
     if (response.ok) {
         return response.json();
-    } else {                
+    } else {
+        const errorRes = await response.json();
+        if (errorRes.code) {
+            throw errorRes;
+        }
         throw new Error(response.statusText);
     }
 }

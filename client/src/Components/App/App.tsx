@@ -8,8 +8,8 @@ import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { setWeatherData } from '../../reducers/weather/weather';
 import { getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
-import { setSessionData } from '../../reducers/session/session';
-import { getCookie } from '../../helpers';
+import { setSessionData, clearSession } from '../../reducers/session/session';
+import { getCookie, eraseCookie } from '../../helpers';
 import { ApplicationState } from 'src/reducers';
 
 const { useEffect } = React;
@@ -18,10 +18,11 @@ interface AppProps {
   authToken: string,
   username: string,
   setWeatherData: Function,
-  setSessionData: Function
+  setSessionData: Function,
+  clearSession: Function
 }
 
-const App: React.FC<AppProps> = ({ authToken, username, setWeatherData, setSessionData }) => {
+const App: React.FC<AppProps> = ({ authToken, username, setWeatherData, setSessionData, clearSession }) => {
 
   useEffect(() => {
     const token = getCookie('token');
@@ -32,7 +33,14 @@ const App: React.FC<AppProps> = ({ authToken, username, setWeatherData, setSessi
 
   useEffect(() => {
     const setCurrentUser = async () => {
-      setSessionData({...await getCurrentUser(authToken)});
+      getCurrentUser(authToken).then(res => {
+        setSessionData(res);
+      }).catch(e => {
+        if (e.code === 'ERR0001') {
+          eraseCookie('token');
+          clearSession();
+        }
+      });
     }
 
     if (authToken && !username) {
@@ -113,6 +121,7 @@ export default connect(
   mapStateToProps,
   {
     setWeatherData,
-    setSessionData
+    setSessionData,
+    clearSession
   }
 )(App)
