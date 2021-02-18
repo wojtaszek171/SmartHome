@@ -1,0 +1,11 @@
+{
+  "name": "espapiproject",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy-local": "scp -r ./espapi/* pi@192.168.1.24:/var/www/espapi",
+    "deploy": "scp -r ./espapi/* pi@pwojtaszko.ddns.net:/var/www/espapi"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
