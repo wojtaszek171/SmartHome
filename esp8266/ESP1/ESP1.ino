@@ -1,18 +1,21 @@
 #include <ESP8266WiFi.h>
-#include <WiFiClient.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
-#include <sstream>
-#include <string>
-#include <iomanip>
-#include <algorithm>
-#include <cctype>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 
 /* define constants of various pins for easy accessibility */
-#define RELAY1 D1
-#define RELAY2 D2
+#define RELAY1 D3
+#define RELAY2 D5
 #define RELAY3 D6
 #define RELAY4 D7
+
+#define THERMOMETER D4
+
+Adafruit_BME280 bme;
 
 class Socket {
   private:
@@ -59,6 +62,9 @@ Socket socket2(RELAY2);
 Socket socket3(RELAY3);
 Socket socket4(RELAY4);
 
+OneWire oneWire(THERMOMETER);
+DallasTemperature tempSensors(&oneWire);
+
 /* Enter ssid & password of your WiFi inside double quotes */
 const char *ssid = ""; //ENTER WIFI SSID
 const char *password = ""; //ENTER WIFI PASSWORD
@@ -66,16 +72,10 @@ const char *password = ""; //ENTER WIFI PASSWORD
 String serverName = "http://pwojtaszko.ddns.net/espapi/"; //PUT YOUR API DOMAIN
 String apiKeyValue = "";  //ENTER API KEY
 
-unsigned long previousMillis = 0;
+unsigned long previousMillisFetch = 0;
+unsigned long previousMillisSensor = 0;
 const long dbFetchInterval = 10000;
-
-bool to_bool(std::string str) {
-    std::transform(str.begin(), str.end(), str.begin(), ::tolower);
-    std::istringstream is(str);
-    bool b;
-    is >> std::boolalpha >> b;
-    return b;
-}
+const long sensorFetchInterval = 5000;
 
 void fetchSockets() {
   if (WiFi.status() == WL_CONNECTED) {
@@ -101,23 +101,24 @@ void fetchSockets() {
         const char* socketKey = obj["key"];
         const char* socketStart = obj["start"];
         const char* socketStop = obj["stop"];
-        const char* socketEnabled = obj["enabled"];
+        const int socketEnabled = obj["enabled"];
 
         const char *s1 = "socket1";
         const char *s2 = "socket2";
         const char *s3 = "socket3";
         const char *s4 = "socket4";
+
         if (strcmp (socketKey, s1) == 0) {
-          socket1.setTimes(to_bool(socketEnabled), (char*)socketStart, (char*)socketStop);
+          socket1.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
         } else
         if (strcmp (socketKey, s2) == 0) {
-          socket2.setTimes(to_bool(socketEnabled), (char*)socketStart, (char*)socketStop);
+          socket2.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
         } else
         if (strcmp (socketKey, s3) == 0) {
-          socket3.setTimes(to_bool(socketEnabled), (char*)socketStart, (char*)socketStop);
+          socket3.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
         } else
         if (strcmp (socketKey, s4) == 0) {
-          socket4.setTimes(to_bool(socketEnabled), (char*)socketStart, (char*)socketStop);
+          socket4.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
         }
       }
     } else {
@@ -128,10 +129,23 @@ void fetchSockets() {
   }
 }
 
+void readSensors() {
+  tempSensors.requestTemperatures(); 
+  float temperatureC = tempSensors.getTempCByIndex(0);
+
+  Serial.println("sensorsVals: ");
+  Serial.println(bme.readTemperature());
+  Serial.println(bme.readHumidity());
+  Serial.println(bme.readPressure());
+}
+
 /* This function helps initialize program and set initial values */
 void setup(void) 
 {
   Serial.begin(9600);
+  delay(100);
+  tempSensors.begin();
+  bme.begin(0x76);
   delay(10);
   WiFi.begin(ssid, password); /* connect to WiFi */
 
@@ -141,20 +155,22 @@ void setup(void)
     Serial.print(".");
   }
 
-  /* Display WiFi SSID and IP address on serial monitor */
-  Serial.println("");
-  Serial.print("Connected to ");
-  Serial.println(ssid);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
-  }
+}
 
 void loop(void) 
 {
-    unsigned long currentMillis = millis();
+    unsigned long currentMillisFetch = millis();
+    unsigned long currentMillisSensor = millis();
 
-    if (currentMillis - previousMillis >= dbFetchInterval) {
-      previousMillis = currentMillis;
+    if (currentMillisFetch - previousMillisFetch >= dbFetchInterval) {
+      previousMillisFetch = currentMillisFetch;
       fetchSockets();
+    }
+
+    if (currentMillisSensor - previousMillisSensor >= sensorFetchInterval) {
+      previousMillisSensor = currentMillisSensor;
+      readSensors();
     }
 }
