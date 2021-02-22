@@ -23,8 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "Connection failed: ";
             die("Connection failed: " . $conn->connect_error);
         } 
-        
-        $sql = "INSERT INTO Sensors (name, value) VALUES('$sensor_name', $sensor_value) ON DUPLICATE KEY UPDATE value=$sensor_value";
+        $datum = new DateTime();
+        $sql = "INSERT INTO Sensors (name, value) VALUES('$sensor_name', $sensor_value) ON DUPLICATE KEY UPDATE value=$sensor_value, updatedAt=NOW()";
         echo $sql;
         $result = $conn->query($sql);
     
