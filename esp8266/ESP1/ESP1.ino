@@ -8,12 +8,13 @@
 #include <Adafruit_BME280.h>
 
 /* define constants of various pins for easy accessibility */
-#define RELAY1 D3
+#define RELAY1 D0
 #define RELAY2 D5
 #define RELAY3 D6
 #define RELAY4 D7
 
-#define THERMOMETER D4
+#define RELAYFEED D4
+#define THERMOMETER D3
 
 Adafruit_BME280 bme;
 
@@ -129,19 +130,49 @@ void fetchSockets() {
   }
 }
 
+void setSensor(char* name, float value) {
+  HTTPClient http;
+  http.begin(serverName + "setSensor.php");
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");  
+  String httpRequestData = "api_key=" + apiKeyValue + "&name=" + name + "&value=" + value + "";
+  int httpCode = http.POST(httpRequestData);
+
+  if (httpCode > 0) { //Check the returning code
+    Serial.print("Saved ");
+    Serial.print(name);
+    Serial.print(" ");
+    Serial.println(value);
+  } else {
+    Serial.print("Error code: ");
+    Serial.println(httpCode);
+  }
+}
+
 void readSensors() {
   tempSensors.requestTemperatures(); 
-  float temperatureC = tempSensors.getTempCByIndex(0);
+  float waterTemp = tempSensors.getTempCByIndex(0);
+  float roomTemp = bme.readTemperature();
+  float roomHumidity = bme.readHumidity();
+  float roomPressure = bme.readPressure();
 
-  Serial.println("sensorsVals: ");
-  Serial.println(bme.readTemperature());
-  Serial.println(bme.readHumidity());
-  Serial.println(bme.readPressure());
+  setSensor("waterTemp", waterTemp);
+  setSensor("roomTemp", roomTemp);
+  setSensor("roomHumidity", roomHumidity);
+  setSensor("pressure", roomPressure);
+}
+
+void feed() {
+  digitalWrite(RELAYFEED, LOW);
+  delay(100);
+  digitalWrite(RELAYFEED, HIGH);
 }
 
 /* This function helps initialize program and set initial values */
 void setup(void) 
 {
+  digitalWrite(THERMOMETER, HIGH);
+  pinMode(RELAYFEED, OUTPUT);
+  digitalWrite(RELAYFEED, HIGH);
   Serial.begin(9600);
   delay(100);
   tempSensors.begin();
