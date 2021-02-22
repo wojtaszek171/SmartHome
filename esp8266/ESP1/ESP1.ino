@@ -153,7 +153,7 @@ void readSensors() {
   float waterTemp = tempSensors.getTempCByIndex(0);
   float roomTemp = bme.readTemperature();
   float roomHumidity = bme.readHumidity();
-  float roomPressure = bme.readPressure();
+  float roomPressure = bme.readPressure()/100;
 
   setSensor("waterTemp", waterTemp);
   setSensor("roomTemp", roomTemp);
