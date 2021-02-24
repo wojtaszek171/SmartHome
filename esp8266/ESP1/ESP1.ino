@@ -1,3 +1,7 @@
+#include <NTPClient.h>
+#include <WiFiClient.h>
+#include <WiFiServer.h>
+#include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
@@ -16,7 +20,24 @@
 #define RELAYFEED D4
 #define THERMOMETER D3
 
+OneWire oneWire(THERMOMETER);
+DallasTemperature tempSensors(&oneWire);
 Adafruit_BME280 bme;
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
+
+/* Enter ssid & password of your WiFi inside double quotes */
+const char *ssid = ""; //ENTER WIFI SSID
+const char *password = ""; //ENTER WIFI PASSWORD
+
+String serverName = ""; //PUT YOUR API DOMAIN
+String apiKeyValue = ""; //ENTER API KEY
+
+unsigned long previousMillisFetch = 0;
+unsigned long previousMillisSensor = 0;
+const long dbFetchInterval = 10000;
+const long sensorFetchInterval = 5000;
 
 class Socket {
   private:
@@ -27,6 +48,9 @@ class Socket {
   public:
     Socket(byte pin) {
       this->pin = pin;
+      this->enabled = false;
+      this->start = "";
+      this->stop = "";
       init();
     }
     void init() {
@@ -56,6 +80,20 @@ class Socket {
     bool getEnabled() {
       return enabled;
     }
+    int getPinState() {
+      return digitalRead(pin);
+    }
+    void handleCurrentTime(char* currentTime) {
+      if (enabled) {
+        if (strcmp(currentTime, start) == 0){
+          on();
+        }
+  
+        if (strcmp(currentTime, stop) == 0){
+          off();
+        }
+      }
+    }
 };
 
 Socket socket1(RELAY1);
@@ -63,26 +101,11 @@ Socket socket2(RELAY2);
 Socket socket3(RELAY3);
 Socket socket4(RELAY4);
 
-OneWire oneWire(THERMOMETER);
-DallasTemperature tempSensors(&oneWire);
-
-/* Enter ssid & password of your WiFi inside double quotes */
-const char *ssid = ""; //ENTER WIFI SSID
-const char *password = ""; //ENTER WIFI PASSWORD
-
-String serverName = "http://pwojtaszko.ddns.net/espapi/"; //PUT YOUR API DOMAIN
-String apiKeyValue = "";  //ENTER API KEY
-
-unsigned long previousMillisFetch = 0;
-unsigned long previousMillisSensor = 0;
-const long dbFetchInterval = 10000;
-const long sensorFetchInterval = 5000;
-
 void fetchSockets() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(serverName + "getSockets.php");
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");  
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     String httpRequestData = "api_key=" + apiKeyValue + "";
     int httpCode = http.POST(httpRequestData);
     if (httpCode > 0) { //Check the returning code
@@ -97,7 +120,7 @@ void fetchSockets() {
         Serial.println(error.f_str());
         return;
       }
-      for(int i = 0; i < doc.size(); i++) {
+      for (int i = 0; i < doc.size(); i++) {
         JsonObject obj = doc[i];
         const char* socketKey = obj["key"];
         const char* socketStart = obj["start"];
@@ -111,14 +134,11 @@ void fetchSockets() {
 
         if (strcmp (socketKey, s1) == 0) {
           socket1.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
-        } else
-        if (strcmp (socketKey, s2) == 0) {
+        } else if (strcmp (socketKey, s2) == 0) {
           socket2.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
-        } else
-        if (strcmp (socketKey, s3) == 0) {
+        } else if (strcmp (socketKey, s3) == 0) {
           socket3.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
-        } else
-        if (strcmp (socketKey, s4) == 0) {
+        } else if (strcmp (socketKey, s4) == 0) {
           socket4.setTimes(socketEnabled, (char*)socketStart, (char*)socketStop);
         }
       }
@@ -133,27 +153,29 @@ void fetchSockets() {
 void setSensor(char* name, float value) {
   HTTPClient http;
   http.begin(serverName + "setSensor.php");
-  http.addHeader("Content-Type", "application/x-www-form-urlencoded");  
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
   String httpRequestData = "api_key=" + apiKeyValue + "&name=" + name + "&value=" + value + "";
   int httpCode = http.POST(httpRequestData);
 
-  if (httpCode > 0) { //Check the returning code
-    Serial.print("Saved ");
-    Serial.print(name);
-    Serial.print(" ");
-    Serial.println(value);
-  } else {
+  if (httpCode <= 0) {
     Serial.print("Error code: ");
     Serial.println(httpCode);
   }
 }
 
+int intLength( int N )
+{
+   if      ( N < 0  ) return 1 + intLength( -N );
+   else if ( N < 10 ) return 1;
+   else               return 1 + intLength( N / 10 );
+}
+
 void readSensors() {
-  tempSensors.requestTemperatures(); 
+  tempSensors.requestTemperatures();
   float waterTemp = tempSensors.getTempCByIndex(0);
   float roomTemp = bme.readTemperature();
   float roomHumidity = bme.readHumidity();
-  float roomPressure = bme.readPressure()/100;
+  float roomPressure = bme.readPressure() / 100;
 
   setSensor("waterTemp", waterTemp);
   setSensor("roomTemp", roomTemp);
@@ -167,8 +189,35 @@ void feed() {
   digitalWrite(RELAYFEED, HIGH);
 }
 
+void setSocketsState() {
+  int currentHour = timeClient.getHours();
+  int currentMinute = timeClient.getMinutes();
+  char liveHour[10];
+  char liveMinutes[10];
+  itoa(currentHour, liveHour, 10);
+  itoa(currentMinute, liveMinutes, 10);
+
+  char dest[24] = "";
+  if (intLength(currentHour) == 1) {
+    strcat(dest, "0");
+  }
+  
+  strcat(dest, liveHour);
+  strcat(dest, ":");
+  if (intLength(currentMinute) == 1) {
+    strcat(dest, "0");
+  }
+  strcat(dest, liveMinutes);
+
+  char* dateToCompare = dest;
+  socket1.handleCurrentTime(dateToCompare);
+  socket2.handleCurrentTime(dateToCompare);
+  socket3.handleCurrentTime(dateToCompare);
+  socket4.handleCurrentTime(dateToCompare);
+}
+
 /* This function helps initialize program and set initial values */
-void setup(void) 
+void setup(void)
 {
   digitalWrite(THERMOMETER, HIGH);
   pinMode(RELAYFEED, OUTPUT);
@@ -186,22 +235,26 @@ void setup(void)
     Serial.print(".");
   }
 
+  timeClient.begin();
+  timeClient.setTimeOffset(3600);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 }
 
-void loop(void) 
+void loop(void)
 {
-    unsigned long currentMillisFetch = millis();
-    unsigned long currentMillisSensor = millis();
+  timeClient.update();
+  unsigned long currentMillisFetch = millis();
+  unsigned long currentMillisSensor = millis();
 
-    if (currentMillisFetch - previousMillisFetch >= dbFetchInterval) {
-      previousMillisFetch = currentMillisFetch;
-      fetchSockets();
-    }
+  if (currentMillisFetch - previousMillisFetch >= dbFetchInterval) {
+    previousMillisFetch = currentMillisFetch;
+    fetchSockets();
+    setSocketsState();
+  }
 
-    if (currentMillisSensor - previousMillisSensor >= sensorFetchInterval) {
-      previousMillisSensor = currentMillisSensor;
-      readSensors();
-    }
+  if (currentMillisSensor - previousMillisSensor >= sensorFetchInterval) {
+    previousMillisSensor = currentMillisSensor;
+    readSensors();
+  }
 }
