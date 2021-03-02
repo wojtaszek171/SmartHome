@@ -11,8 +11,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const errorHandler = require('_middleware/error-handler');
 const weatherService = require('./routes/weather/weather.service');
-const sensorService = require('./routes/sensors/sensor.service');
 const settingsService = require('./routes/settings/settings.service');
+const userService = require('./routes/users/user.service');
+const prompt = require('prompt');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -26,6 +27,45 @@ app.use('/sensors', require('./routes/sensors/sensors.controller'));
 app.use('/sockets', require('./routes/sockets/sockets.controller'));
 app.use('/weather', require('./routes/weather/weather.controller'));
 app.use('/settings', require('./routes/settings/settings.controller'));
+
+const validateAdmin = async () => {
+    const usersArray = await userService.getAll();
+
+    if (!usersArray.length) {
+        const registerProps = [
+            {
+                name: 'firstName'
+            },
+            {
+                name: 'lastName'
+            },
+            {
+                name: 'username',
+            },
+            {
+                name: 'password',
+                hidden: true
+            }
+        ];
+
+        prompt.start();
+    
+        prompt.get(registerProps, function (err, result) {
+            if (err) { return onErr(err); }
+            userService.create({
+                firstName: result.firstName,
+                lastName: result.lastName,
+                username: result.username,
+                password: result.password
+            });
+        });
+    
+        function onErr(err) {
+            console.log(err);
+            return 1;
+        }
+    }    
+}
 
 // openweathermap reading
 const readWeather = async () => {
@@ -74,9 +114,15 @@ const readWeather = async () => {
         storeAfter.setDate(storeAfter.getDate()-1);
         const storeAfterTimestamp = storeAfter.getTime();
 
-        const hourlyRes = await weatherService.getByName('hourly');
-        if (hourlyRes.value) {
-            savedHours = JSON.parse(hourlyRes.value).filter((hour => hour.dt*1000 > storeAfterTimestamp))
+        let hourlyRes = null;
+
+        try {
+            hourlyRes = await weatherService.getByName('hourly');
+            if (hourlyRes.value) {
+                savedHours = JSON.parse(hourlyRes.value).filter((hour => hour.dt*1000 > storeAfterTimestamp))
+            }
+        } catch (e) {
+            console.log('No hourly weather');
         }
 
         fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${config.weather_api}&units=metric&lang=pl`)
@@ -113,24 +159,6 @@ const readWeather = async () => {
     }
 }
 
-const readSensors = () => {
-    const { spawn } = require("child_process");
-
-    let process = spawn('python3', ["./python/sensors.py"] );
-
-    process.stdout.on('data', function (data) {
-        const sensors = JSON.parse(data.toString());
-
-        sensors.forEach(sensor => {
-            const { name, value } = sensor;
-            sensorService.set({
-                name,
-                value
-            });
-        });
-    });
-}
-
 const startStream = () => {
     const { exec } = require("child_process");
 
@@ -141,15 +169,16 @@ const startStream = () => {
     });
 }
 
-setInterval(() => {
-    readSensors();
-}, 5000);
+const main = () => {
+    validateAdmin();
 
-setInterval(() => {
     readWeather();
-}, 900000);
+    setInterval(() => {
+        readWeather();
+    }, 900000);
+}
 
-// startStream();
+setTimeout(main, 1000);
 
 // global error handler
 app.use(errorHandler);
