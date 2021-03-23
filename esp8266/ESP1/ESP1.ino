@@ -39,12 +39,43 @@ unsigned long previousMillisSensor = 0;
 const long dbFetchInterval = 10000;
 const long sensorFetchInterval = 5000;
 
+String getValue(String data, char separator, int index)
+{
+  int found = 0;
+  int strIndex[] = {0, -1};
+  int maxIndex = data.length()-1;
+
+  for(int i=0; i<=maxIndex && found<=index; i++){
+    if(data.charAt(i)==separator || i==maxIndex){
+        found++;
+        strIndex[0] = strIndex[1]+1;
+        strIndex[1] = (i == maxIndex) ? i+1 : i;
+    }
+  }
+
+  return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
+}
+
 class Socket {
   private:
     byte pin;
     bool enabled;
-    char* start;
-    char* stop;
+    String start;
+    String stop;
+    bool isEarlier(int h1, int m1, int h2, int m2){
+      if (h1 < h2)
+      {
+          return true;
+      }
+      else if (h1 == h2)
+      {
+          if (m1 < m2)
+          {
+              return true;
+          }
+      }
+      return false;
+    };
   public:
     Socket(byte pin) {
       this->pin = pin;
@@ -71,10 +102,10 @@ class Socket {
     byte getPin() {
       return pin;
     }
-    char* getStart() {
+    String getStart() {
       return start;
     }
-    char* getStop() {
+    String getStop() {
       return stop;
     }
     bool getEnabled() {
@@ -85,13 +116,33 @@ class Socket {
     }
     void handleCurrentTime(char* currentTime) {
       if (enabled) {
-        if (strcmp(currentTime, start) == 0){
+        if (start == "" || stop == "") {
           on();
+          return;
         }
-  
-        if (strcmp(currentTime, stop) == 0){
-          off();
+        int currH = getValue(currentTime,':',0).toInt();
+        int currM = getValue(currentTime,':',1).toInt();
+
+        int startH = getValue(start,':',0).toInt();
+        int startM = getValue(start,':',1).toInt();
+        int stopH = getValue(stop,':',0).toInt();
+        int stopM = getValue(stop,':',1).toInt();
+
+        if (isEarlier(stopH, stopM, startH, startM)) {
+          if (!(isEarlier(currH, currM, startH, startM) && !isEarlier(currH, currM, stopH, stopM))){
+            on();
+          } else {
+            off();
+          }
+        } else {
+          if (!isEarlier(currH, currM, startH, startM) && isEarlier(currH, currM, stopH, stopM)){
+            on();
+          } else {
+            off();
+          }
         }
+      } else {
+        off();
       }
     }
 };
@@ -126,7 +177,6 @@ void fetchSockets() {
         const char* socketStart = obj["start"];
         const char* socketStop = obj["stop"];
         const int socketEnabled = obj["enabled"];
-
         const char *s1 = "socket1";
         const char *s2 = "socket2";
         const char *s3 = "socket3";
