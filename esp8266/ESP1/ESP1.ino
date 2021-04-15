@@ -19,6 +19,8 @@
 
 #define RELAYFEED D4
 #define THERMOMETER D3
+#define bcd2dec(bcd_in) (bcd_in >> 4) * 10 + (bcd_in & 0x0f)
+#define dec2bcd(dec_in) ((dec_in / 10) << 4) + (dec_in % 10)
 
 OneWire oneWire(THERMOMETER);
 DallasTemperature tempSensors(&oneWire);
@@ -26,6 +28,9 @@ Adafruit_BME280 bme;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
+
+byte mByte[0x07]; // holds the array from the DS3231 register
+byte tByte[0x07]; // holds the array from the NTP server
 
 /* Enter ssid & password of your WiFi inside double quotes */
 const char *ssid = ""; //ENTER WIFI SSID
@@ -36,8 +41,10 @@ String apiKeyValue = ""; //ENTER API KEY
 
 unsigned long previousMillisFetch = 0;
 unsigned long previousMillisSensor = 0;
+unsigned long previousMillisTime = 0;
 const long dbFetchInterval = 10000;
 const long sensorFetchInterval = 5000;
+const long timeFetchInterval = 60000;
 
 String getValue(String data, char separator, int index)
 {
@@ -227,10 +234,12 @@ void readSensors() {
   float roomHumidity = bme.readHumidity();
   float roomPressure = bme.readPressure() / 100;
 
-  setSensor("waterTemp", waterTemp);
-  setSensor("roomTemp", roomTemp);
-  setSensor("roomHumidity", roomHumidity);
-  setSensor("pressure", roomPressure);
+  if (WiFi.status() == WL_CONNECTED) {
+    setSensor("waterTemp", waterTemp);
+    setSensor("roomTemp", roomTemp);
+    setSensor("roomHumidity", roomHumidity);
+    setSensor("pressure", roomPressure);
+  }
 }
 
 void feed() {
@@ -266,6 +275,79 @@ void setSocketsState() {
   socket4.handleCurrentTime(dateToCompare);
 }
 
+void getRTCdatetime(){
+  Wire.beginTransmission (0x68);
+  // Set device to start read reg 0
+  Wire.write (0x00); 
+  Wire.endTransmission ();
+  
+  // request 7 bytes from the DS3231 and release the I2C bus
+  Wire.requestFrom(0x68, 0x07, true);
+  
+  int idx = 0;
+
+  // read the first seven bytes from the DS3231 module into the array
+  while(Wire.available()) {
+    
+    byte input = Wire.read(); // read each byte from the register
+    mByte[idx] = input;    // store each single byte in the array
+    idx++;
+  }
+
+  Serial.print(F("Seconds: ")); Serial.print(bcd2dec(mByte[0]));
+  Serial.print(F(" Minutes: ")); Serial.print(bcd2dec(mByte[1]));
+  Serial.print(F(" Hours: ")); Serial.print(bcd2dec(mByte[2]));
+  Serial.print(F(" DoW: ")); Serial.print(bcd2dec(mByte[3]));
+  Serial.print(F(" Day: ")); Serial.print(bcd2dec(mByte[4]));
+  Serial.print(F(" Month: ")); Serial.print(bcd2dec(mByte[5]));
+  Serial.print(F(" Year: ")); Serial.print(bcd2dec(mByte[6]));
+  Serial.println("\n");
+}
+
+void getNTPDateTime(){
+  unsigned long epochTime = timeClient.getEpochTime();  
+  tByte[0] = (int)timeClient.getSeconds();  
+  tByte[1] = (int)timeClient.getMinutes();  
+  tByte[2] = (int)timeClient.getHours();  
+  tByte[3] = (int)timeClient.getDay();
+
+  struct tm *ptm = gmtime ((time_t *)&epochTime);
+  tByte[4] = (int)ptm->tm_mday;  
+  tByte[5] = (int)ptm->tm_mon+1;  
+  tByte[6] = (int)ptm->tm_year-100;
+
+  Serial.print(F("NTP Webtime..........\n\n"));
+
+  Serial.print("Seconds: "); Serial.print(tByte[0]);
+  Serial.print(" Minutes: "); Serial.print(tByte[1]);
+  Serial.print(" Hours: "); Serial.print(tByte[2]);
+  Serial.print(" DoW: "); Serial.print(tByte[3]);
+  Serial.print(" Day: "); Serial.print(tByte[4]);
+  Serial.print(" Month: "); Serial.print(tByte[5]);
+  Serial.print(" Year: "); Serial.print(tByte[6]);
+  Serial.print("\n");
+}
+
+void updateRTC() {
+  if (WiFi.status() == WL_CONNECTED) {
+    timeClient.update();
+    getNTPDateTime();
+
+    if(mByte != tByte){
+      Wire.beginTransmission (0x68);
+      // Set device to start read reg 0
+      Wire.write (0x00);
+      for (int idx = 0; idx < 7; idx++){
+        Wire.write (dec2bcd(tByte[idx]));
+      }   
+      Wire.endTransmission ();
+  
+      Serial.println(F("New DS3231 register content........\n"));  
+      getRTCdatetime();
+    }
+  }
+}
+
 /* This function helps initialize program and set initial values */
 void setup(void)
 {
@@ -273,38 +355,37 @@ void setup(void)
   pinMode(RELAYFEED, OUTPUT);
   digitalWrite(RELAYFEED, HIGH);
   Serial.begin(9600);
-  delay(100);
+  while(!Serial){} // Wait for serial connection
+
+  Wire.begin();
+
   tempSensors.begin();
   bme.begin(0x76);
+
   delay(10);
   WiFi.begin(ssid, password); /* connect to WiFi */
 
-  /* Display progress dots on serial monitor till WiFi is connected */
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(100);
-    Serial.print(".");
-  }
-
   timeClient.begin();
   timeClient.setTimeOffset(3600);
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
 }
 
 void loop(void)
 {
-  timeClient.update();
-  unsigned long currentMillisFetch = millis();
-  unsigned long currentMillisSensor = millis();
+  unsigned long currentMillis = millis();
 
-  if (currentMillisFetch - previousMillisFetch >= dbFetchInterval) {
-    previousMillisFetch = currentMillisFetch;
+  if (currentMillis - previousMillisFetch >= dbFetchInterval) {
+    previousMillisFetch = currentMillis;
     fetchSockets();
     setSocketsState();
   }
 
-  if (currentMillisSensor - previousMillisSensor >= sensorFetchInterval) {
-    previousMillisSensor = currentMillisSensor;
+  if (currentMillis - previousMillisSensor >= sensorFetchInterval) {
+    previousMillisSensor = currentMillis;
     readSensors();
+  }
+
+  if (currentMillis - previousMillisTime >= timeFetchInterval) {
+    previousMillisTime = currentMillis;
+    getRTCdatetime();
   }
 }
