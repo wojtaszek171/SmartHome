@@ -1,7 +1,6 @@
-#include <NTPClient.h>
+#include <TZ.h>
 #include <WiFiClient.h>
 #include <WiFiServer.h>
-#include <WiFiUdp.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
@@ -10,6 +9,7 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include <sntp.h>
 
 /* define constants of various pins for easy accessibility */
 #define RELAY1 D0
@@ -21,13 +21,15 @@
 #define THERMOMETER D3
 #define bcd2dec(bcd_in) (bcd_in >> 4) * 10 + (bcd_in & 0x0f)
 #define dec2bcd(dec_in) ((dec_in / 10) << 4) + (dec_in % 10)
+#define MYTZ TZ_Europe_Warsaw
 
 OneWire oneWire(THERMOMETER);
 DallasTemperature tempSensors(&oneWire);
 Adafruit_BME280 bme;
 
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
+static timeval tv;
+static timespec tp;
+static time_t now;
 
 byte mByte[0x07]; // holds the array from the DS3231 register
 byte tByte[0x07]; // holds the array from the NTP server
@@ -50,17 +52,17 @@ String getValue(String data, char separator, int index)
 {
   int found = 0;
   int strIndex[] = {0, -1};
-  int maxIndex = data.length()-1;
+  int maxIndex = data.length() - 1;
 
-  for(int i=0; i<=maxIndex && found<=index; i++){
-    if(data.charAt(i)==separator || i==maxIndex){
-        found++;
-        strIndex[0] = strIndex[1]+1;
-        strIndex[1] = (i == maxIndex) ? i+1 : i;
+  for (int i = 0; i <= maxIndex && found <= index; i++) {
+    if (data.charAt(i) == separator || i == maxIndex) {
+      found++;
+      strIndex[0] = strIndex[1] + 1;
+      strIndex[1] = (i == maxIndex) ? i + 1 : i;
     }
   }
 
-  return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
+  return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
 
 class Socket {
@@ -69,17 +71,17 @@ class Socket {
     bool enabled;
     String start;
     String stop;
-    bool isEarlier(int h1, int m1, int h2, int m2){
+    bool isEarlier(int h1, int m1, int h2, int m2) {
       if (h1 < h2)
       {
-          return true;
+        return true;
       }
       else if (h1 == h2)
       {
-          if (m1 < m2)
-          {
-              return true;
-          }
+        if (m1 < m2)
+        {
+          return true;
+        }
       }
       return false;
     };
@@ -127,22 +129,22 @@ class Socket {
           on();
           return;
         }
-        int currH = getValue(currentTime,':',0).toInt();
-        int currM = getValue(currentTime,':',1).toInt();
+        int currH = getValue(currentTime, ':', 0).toInt();
+        int currM = getValue(currentTime, ':', 1).toInt();
 
-        int startH = getValue(start,':',0).toInt();
-        int startM = getValue(start,':',1).toInt();
-        int stopH = getValue(stop,':',0).toInt();
-        int stopM = getValue(stop,':',1).toInt();
+        int startH = getValue(start, ':', 0).toInt();
+        int startM = getValue(start, ':', 1).toInt();
+        int stopH = getValue(stop, ':', 0).toInt();
+        int stopM = getValue(stop, ':', 1).toInt();
 
         if (isEarlier(stopH, stopM, startH, startM)) {
-          if (!(isEarlier(currH, currM, startH, startM) && !isEarlier(currH, currM, stopH, stopM))){
+          if (!(isEarlier(currH, currM, startH, startM) && !isEarlier(currH, currM, stopH, stopM))) {
             on();
           } else {
             off();
           }
         } else {
-          if (!isEarlier(currH, currM, startH, startM) && isEarlier(currH, currM, stopH, stopM)){
+          if (!isEarlier(currH, currM, startH, startM) && isEarlier(currH, currM, stopH, stopM)) {
             on();
           } else {
             off();
@@ -222,9 +224,9 @@ void setSensor(char* name, float value) {
 
 int intLength( int N )
 {
-   if      ( N < 0  ) return 1 + intLength( -N );
-   else if ( N < 10 ) return 1;
-   else               return 1 + intLength( N / 10 );
+  if      ( N < 0  ) return 1 + intLength( -N );
+  else if ( N < 10 ) return 1;
+  else               return 1 + intLength( N / 10 );
 }
 
 void readSensors() {
@@ -249,8 +251,8 @@ void feed() {
 }
 
 void setSocketsState() {
-  int currentHour = timeClient.getHours();
-  int currentMinute = timeClient.getMinutes();
+  int currentHour = mByte[2];
+  int currentMinute = mByte[1];
   char liveHour[10];
   char liveMinutes[10];
   itoa(currentHour, liveHour, 10);
@@ -260,7 +262,7 @@ void setSocketsState() {
   if (intLength(currentHour) == 1) {
     strcat(dest, "0");
   }
-  
+
   strcat(dest, liveHour);
   strcat(dest, ":");
   if (intLength(currentMinute) == 1) {
@@ -275,20 +277,20 @@ void setSocketsState() {
   socket4.handleCurrentTime(dateToCompare);
 }
 
-void getRTCdatetime(){
+void getRTCdatetime() {
   Wire.beginTransmission (0x68);
   // Set device to start read reg 0
-  Wire.write (0x00); 
+  Wire.write (0x00);
   Wire.endTransmission ();
-  
+
   // request 7 bytes from the DS3231 and release the I2C bus
   Wire.requestFrom(0x68, 0x07, true);
-  
+
   int idx = 0;
 
   // read the first seven bytes from the DS3231 module into the array
-  while(Wire.available()) {
-    
+  while (Wire.available()) {
+
     byte input = Wire.read(); // read each byte from the register
     mByte[idx] = input;    // store each single byte in the array
     idx++;
@@ -304,17 +306,18 @@ void getRTCdatetime(){
   Serial.println("\n");
 }
 
-void getNTPDateTime(){
-  unsigned long epochTime = timeClient.getEpochTime();  
-  tByte[0] = (int)timeClient.getSeconds();  
-  tByte[1] = (int)timeClient.getMinutes();  
-  tByte[2] = (int)timeClient.getHours();  
-  tByte[3] = (int)timeClient.getDay();
-
-  struct tm *ptm = gmtime ((time_t *)&epochTime);
-  tByte[4] = (int)ptm->tm_mday;  
-  tByte[5] = (int)ptm->tm_mon+1;  
-  tByte[6] = (int)ptm->tm_year-100;
+void getNTPDateTime() {
+  gettimeofday(&tv, nullptr);
+//  clock_gettime(0, &tp);
+  now = time(nullptr);
+  const tm* tm = localtime(&now);
+  tByte[0] = (int)tm->tm_sec;
+  tByte[1] = (int)tm->tm_min;
+  tByte[2] = (int)tm->tm_hour;
+  tByte[3] = (int)tm->tm_wday;
+  tByte[4] = (int)tm->tm_mday;
+  tByte[5] = (int)tm->tm_mon + 1;
+  tByte[6] = (int)tm->tm_year - 100;
 
   Serial.print(F("NTP Webtime..........\n\n"));
 
@@ -330,20 +333,18 @@ void getNTPDateTime(){
 
 void updateRTC() {
   if (WiFi.status() == WL_CONNECTED) {
-    timeClient.update();
     getNTPDateTime();
-
-    if(mByte != tByte){
+    getRTCdatetime();
+    if (mByte != tByte) {
       Wire.beginTransmission (0x68);
       // Set device to start read reg 0
       Wire.write (0x00);
-      for (int idx = 0; idx < 7; idx++){
+      for (int idx = 0; idx < 7; idx++) {
         Wire.write (dec2bcd(tByte[idx]));
-      }   
+      }
       Wire.endTransmission ();
-  
-      Serial.println(F("New DS3231 register content........\n"));  
-      getRTCdatetime();
+
+      Serial.println(F("New DS3231 register content........\n"));
     }
   }
 }
@@ -355,7 +356,7 @@ void setup(void)
   pinMode(RELAYFEED, OUTPUT);
   digitalWrite(RELAYFEED, HIGH);
   Serial.begin(9600);
-  while(!Serial){} // Wait for serial connection
+  while (!Serial) {} // Wait for serial connection
 
   Wire.begin();
 
@@ -365,8 +366,7 @@ void setup(void)
   delay(10);
   WiFi.begin(ssid, password); /* connect to WiFi */
 
-  timeClient.begin();
-  timeClient.setTimeOffset(3600);
+  configTime(MYTZ, "pool.ntp.org");
 }
 
 void loop(void)
@@ -386,6 +386,6 @@ void loop(void)
 
   if (currentMillis - previousMillisTime >= timeFetchInterval) {
     previousMillisTime = currentMillis;
-    getRTCdatetime();
+    updateRTC();
   }
 }
