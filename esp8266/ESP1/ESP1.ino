@@ -123,19 +123,19 @@ class Socket {
     int getPinState() {
       return digitalRead(pin);
     }
-    void handleCurrentTime(char* currentTime) {
+    void handleCurrentTime() {
       if (enabled) {
         if (start == "" || stop == "") {
           on();
           return;
         }
-        int currH = getValue(currentTime, ':', 0).toInt();
-        int currM = getValue(currentTime, ':', 1).toInt();
-
+        int currH = bcd2dec(mByte[2]);
+        int currM = bcd2dec(mByte[1]);
         int startH = getValue(start, ':', 0).toInt();
         int startM = getValue(start, ':', 1).toInt();
         int stopH = getValue(stop, ':', 0).toInt();
         int stopM = getValue(stop, ':', 1).toInt();
+        
 
         if (isEarlier(stopH, stopM, startH, startM)) {
           if (!(isEarlier(currH, currM, startH, startM) && !isEarlier(currH, currM, stopH, stopM))) {
@@ -251,30 +251,10 @@ void feed() {
 }
 
 void setSocketsState() {
-  int currentHour = mByte[2];
-  int currentMinute = mByte[1];
-  char liveHour[10];
-  char liveMinutes[10];
-  itoa(currentHour, liveHour, 10);
-  itoa(currentMinute, liveMinutes, 10);
-
-  char dest[24] = "";
-  if (intLength(currentHour) == 1) {
-    strcat(dest, "0");
-  }
-
-  strcat(dest, liveHour);
-  strcat(dest, ":");
-  if (intLength(currentMinute) == 1) {
-    strcat(dest, "0");
-  }
-  strcat(dest, liveMinutes);
-
-  char* dateToCompare = dest;
-  socket1.handleCurrentTime(dateToCompare);
-  socket2.handleCurrentTime(dateToCompare);
-  socket3.handleCurrentTime(dateToCompare);
-  socket4.handleCurrentTime(dateToCompare);
+  socket1.handleCurrentTime();
+  socket2.handleCurrentTime();
+  socket3.handleCurrentTime();
+  socket4.handleCurrentTime();
 }
 
 void getRTCdatetime() {
@@ -308,7 +288,6 @@ void getRTCdatetime() {
 
 void getNTPDateTime() {
   gettimeofday(&tv, nullptr);
-//  clock_gettime(0, &tp);
   now = time(nullptr);
   const tm* tm = localtime(&now);
   tByte[0] = (int)tm->tm_sec;
@@ -375,6 +354,7 @@ void loop(void)
 
   if (currentMillis - previousMillisFetch >= dbFetchInterval) {
     previousMillisFetch = currentMillis;
+    getRTCdatetime();
     fetchSockets();
     setSocketsState();
   }
