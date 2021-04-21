@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 import DailyItem from './DailyItem/DailyItem';
 import './Weather.scss';
 import Modal from '../../../Modal';
@@ -7,9 +6,6 @@ import HourlyItem from './HourlyItem/HourlyItem';
 import { Chart } from "react-google-charts";
 import Icon from '../../../Icon/Icon';
 import { CurrentWeather, DailyWeather, HourlyWeather } from '../../../../reducers/weather/types';
-import { ApplicationState } from 'src/reducers';
-
-const { useState } = React;
 
 interface WeatherProps {
   current: CurrentWeather | null;
@@ -174,19 +170,6 @@ const Weather: React.FC<WeatherProps> = ({ current, daily, hourly }) => {
         </Modal>
     </div>
   );
-}
-
-const mapStateToProps = (state: ApplicationState) => {
-  const { weather: { current, daily, hourly } } = state;
-
-  return {
-    current,
-    daily,
-    hourly
-  }
 };
 
-export default connect(
-  mapStateToProps,
-  {}
-)(Weather)
+export default Weather;
