@@ -1,6 +1,5 @@
 import React from 'react';
 import { getSockets, getWeatherLat, getWeatherLon, setSocket } from 'src/restService/restService';
-import './Admin.scss';
 import { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
 import { socketsConfig } from './SocketsSettings/socketsConfig';
 import { useSelector } from 'react-redux';
