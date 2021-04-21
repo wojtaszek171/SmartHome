@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import './DateTime.scss';
 
 const { useEffect, useState } =  React;

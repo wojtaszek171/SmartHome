@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './Toggle.scss';
-
-const { useState, useEffect } = React;
 
 interface ToggleProps {
   round?: boolean;
@@ -10,7 +8,7 @@ interface ToggleProps {
   onClick?: Function;
 }
 
-const Toggle: React.FC<ToggleProps> = ({ round = true, onClick, checked = false, label }) => {
+const Toggle: FC<ToggleProps> = ({ round = true, onClick, checked = false, label }) => {
 
   const [isChecked, setIsChecked] = useState(checked);
 

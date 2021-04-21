@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { isDev } from '../../helpers';
 import { setSessionData } from '../../reducers/session/session';
@@ -9,7 +9,7 @@ interface LoginContainerProps {
     onLogin?: Function;
 }
 
-const LoginContainer: React.FC<LoginContainerProps> = ({ onLogin }) => {
+const LoginContainer: FC<LoginContainerProps> = ({ onLogin }) => {
     const [message, setMessage] = useState('');
     const dispatch = useDispatch();
 

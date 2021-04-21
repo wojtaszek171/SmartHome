@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useEffect } from 'react';
 import App from './App';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWeatherData } from '../../reducers/weather/weather';
@@ -7,9 +7,7 @@ import { setSessionData, clearSession } from '../../reducers/session/session';
 import { getCookie, eraseCookie } from '../../helpers';
 import { getAuthToken, getUsername } from 'src/selectors/session';
 
-const { useEffect } = React;
-
-const AppContainer: React.FC = () => {
+const AppContainer: FC = () => {
   const authToken = useSelector(getAuthToken);
   const username = useSelector(getUsername);
   const dispatch = useDispatch();

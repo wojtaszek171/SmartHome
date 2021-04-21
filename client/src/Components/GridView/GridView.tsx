@@ -1,7 +1,7 @@
 import React from 'react';
-import AquariumSection from './GridComponents/AquariumSection/AquariumSection';
+import AquariumSection from './GridComponents/AquariumSection';
 import DateTime from './GridComponents/DateTime';
-import Room from './GridComponents/Room/Room';
+import Room from './GridComponents/Room';
 import Weather from './GridComponents/Weather';
 import GridItem from './GridItem';
 import './GridView.scss';

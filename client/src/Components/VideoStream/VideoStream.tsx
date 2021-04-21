@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import './VideoStream.scss';
 import VideoPlayer from 'react-video-js-player';
 import poster from './poster.jpg';

@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { getSockets, getWeatherLat, getWeatherLon, setSocket } from 'src/restService/restService';
 import { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
 import { socketsConfig } from './SocketsSettings/socketsConfig';
 import { useSelector } from 'react-redux';
 import Admin from './Admin';
 import { getAuthToken } from 'src/selectors/session';
-
-const { useEffect, useState } = React;
 
 export interface AdminSettingsValues {
   weatherLat: string;
@@ -20,7 +18,7 @@ const initialConfig = {
   socketsFromDB: {...socketsConfig}
 }
 
-const AdminContainer: React.FC = () => {
+const AdminContainer: FC = () => {
   const [settings, setSettings] = useState<AdminSettingsValues>({...initialConfig});
   const [error, setError] = useState('');
   const authToken = useSelector(getAuthToken);

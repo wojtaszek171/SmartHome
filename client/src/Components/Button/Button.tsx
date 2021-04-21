@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FC } from 'react';
 import './Button.scss';
 
 interface ButtonProps {
@@ -7,7 +7,7 @@ interface ButtonProps {
     disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, handleClick, disabled = false }) => {
+const Button: FC<ButtonProps> = ({ text, handleClick, disabled = false }) => {
 
     const handleOnClick = () => {
         if (handleClick) {

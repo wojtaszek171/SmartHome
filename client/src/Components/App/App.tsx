@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 import Content from '../Content';
@@ -6,7 +6,7 @@ import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.scss';
 
-const App: React.FC = () => {
+const App: FC = () => {
 
   return (
       <div className="App">

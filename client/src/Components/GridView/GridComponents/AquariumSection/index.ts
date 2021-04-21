@@ -1,1 +1,1 @@
-export { default } from './AquariumSection';
+export { default } from './AquariumSectionContainer';

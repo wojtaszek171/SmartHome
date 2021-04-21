@@ -1,48 +1,30 @@
-import * as React from 'react';
-import './Room.scss';
-import { getRoomTemp, getRoomHumidity, getRoomPressure } from '../../../../restService/restService';
+import React, { FC } from 'react';
 import Icon from '../../../Icon/Icon';
+import './Room.scss';
 
-const { useEffect, useState } = React;
+interface RoomProps {
+  temperature: string;
+  pressure: string;
+  humidity: string;
+}
 
-const Room = () => {
-  const [roomTemp, setRoomTemp] = useState('--');
-  const [roomPressure, setRoomPressure] = useState('--');
-  const [roomHumidity, setRoomHumidity] = useState('--');
-
-  useEffect(() => {
-    setSensorValues();
-    setInterval(
-      setSensorValues,
-    5000)
-  }, [])
-
-  const setSensorValues = async () => {
-    try {
-      setRoomTemp((await getRoomTemp()).toString());
-      setRoomPressure((await getRoomPressure()).toString());
-      setRoomHumidity((await getRoomHumidity()).toString());
-    } catch (e) {
-      throw e;
-    }
-  }
-
+const Room: FC<RoomProps> = ({ temperature, pressure, humidity }) => {
   return (
     <div className="room-section-component">
       <div className="room-tile">
         <Icon name='thermometer' width={'30px'}/>
         <span className="text-title">Temperatura</span>
-        <span className="text-value">{roomTemp} °C</span>
+        <span className="text-value">{temperature} °C</span>
       </div>
       <div className="room-tile">
         <Icon name='barometer' width={'30px'}/>
         <span className="text-title">Ciśnienie</span>
-        <span className="text-value">{roomPressure} hPa</span>
+        <span className="text-value">{pressure} hPa</span>
       </div>
       <div className="room-tile">
         <Icon name='humidity' width={'30px'}/>
         <span className="text-title">Wilgotność</span>
-        <span className="text-value">{roomHumidity} %</span>
+        <span className="text-value">{humidity} %</span>
       </div>
     </div>
   );

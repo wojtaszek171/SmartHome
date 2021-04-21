@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import DailyItem from './DailyItem/DailyItem';
 import './Weather.scss';
 import Modal from '../../../Modal';
@@ -24,7 +24,7 @@ interface DaySelected {
   sunset: number;
 }
 
-const Weather: React.FC<WeatherProps> = ({ current, daily, hourly }) => {
+const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
 
   const [hourlyDaySelected, setHourlyDaySelected] = useState<HourlyWeather>([]);
   const [daySelected, setDaySelected] = useState<DaySelected>({

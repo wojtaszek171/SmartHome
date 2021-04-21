@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import './Modal.scss';
-
-const { useEffect, useRef } = React;
 
 interface ModalProps {
   show: Boolean;
@@ -10,7 +8,7 @@ interface ModalProps {
   children: React.ReactElement;
 }
 
-const Modal: React.FC<ModalProps> = ({ show, title, onClose, children }) => {
+const Modal: FC<ModalProps> = ({ show, title, onClose, children }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClose = () => {

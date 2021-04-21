@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FC } from "react";
 
 interface IconProps {
   name: string;
@@ -6,7 +6,7 @@ interface IconProps {
   width?: string;
 }
 
-const Icon: React.FC<IconProps> = (props) => {
+const Icon: FC<IconProps> = (props) => {
   const { name } = props;
 
   let icon = undefined;

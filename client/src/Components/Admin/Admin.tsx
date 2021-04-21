@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import './Admin.scss';
@@ -11,7 +11,7 @@ interface AdminProps {
   onSettingUpdate: Function;
 }
 
-const Admin: React.FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
+const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
   const [weatherLat, setWeatherLat] = useState('');
   const [weatherLon, setWeatherLon] = useState('');
   const [changedSockets, setChangedSockets] = useState<Array<SocketItem>>([]);

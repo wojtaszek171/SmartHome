@@ -1,11 +1,9 @@
-import * as React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import TextInput from '../../TextInput';
 import Toggle from '../../Toggle';
 import './SocketsSettings.scss';
 import _ from 'lodash';
 import { socketsConfig } from './socketsConfig';
-
-const { useState, useEffect } = React;
 
 const socketsNames: {[key: string]: string} = {
     socket1: 'Socket 1',
@@ -30,7 +28,7 @@ interface SocketsSettingsProps {
     onChange: Function;
 };
 
-const SocketsSettings: React.FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) => {
+const SocketsSettings: FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) => {
 
     const [socketsObject, setSocketsObject] = useState<SocketsObject>({...socketsConfig});
     

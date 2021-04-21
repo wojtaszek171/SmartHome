@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FC } from 'react';
 import Icon from '../../../../Icon/Icon';
 import './HourlyItem.scss';
 
@@ -8,7 +8,7 @@ interface HourlyItemProps {
   icon: string;
 }
 
-const HourlyItem: React.FC<HourlyItemProps> = ({ hour, temp, icon}) => {
+const HourlyItem: FC<HourlyItemProps> = ({ hour, temp, icon}) => {
 
   return (
     <div className="weather-forecast-hour">

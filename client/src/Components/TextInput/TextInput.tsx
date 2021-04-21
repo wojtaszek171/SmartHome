@@ -1,7 +1,5 @@
-import * as React from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import './TextInput.scss';
-
-const { useState, useEffect } = React;
 
 interface TextInputProps {
   disabled?: boolean;
@@ -13,7 +11,7 @@ interface TextInputProps {
   onChange?: Function;
 }
 
-const TextInput: React.FC<TextInputProps> = ({ disabled, onChange, value = '', label, placeholder, type = 'text', autocomplete }) => {
+const TextInput: FC<TextInputProps> = ({ disabled, onChange, value = '', label, placeholder, type = 'text', autocomplete }) => {
 
   const [inputValue, setInputValue] = useState(value);
 

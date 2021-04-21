@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import Button from '../Button';
 import TextInput from '../TextInput';
 import './Login.scss';
@@ -8,7 +8,7 @@ interface LoginProps {
     onLogin: Function;
 }
 
-const Login: React.FC<LoginProps> = ({ message, onLogin }) => {
+const Login: FC<LoginProps> = ({ message, onLogin }) => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
 

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './Weather.scss';
 import Weather from './Weather';
 import { useSelector } from 'react-redux';
 import { getCurrentWeather, getDailyWeather, getHourlyWeather } from 'src/selectors/weather';
 
-const WeatherContainer: React.FC = () => {
+const WeatherContainer: FC = () => {
 
   const currentWeather = useSelector(getCurrentWeather);
   const dailyWeather = useSelector(getDailyWeather);

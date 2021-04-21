@@ -1,10 +1,7 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import './LeftMenu.scss';
-import TemperatureSection from './TemperatureSection';
 import { isMobile } from 'react-device-detect';
 import Icon from '../Icon/Icon';
-
-const { useState } = React;
 
 const LeftMenu = () => {
   const [collapsed, setCollapsed] = useState(isMobile);
@@ -16,7 +13,7 @@ const LeftMenu = () => {
   return (
     <div className="left-menu-component" >
       <div className={`left-menu-content${collapsed ? ' sidebar-collapsed' : ' sidebar-expanded'}`}>
-        <TemperatureSection />
+
       </div>
       <div className="button-bar">
         <div className="collapse-button" onClick={handleCollapseClick}>

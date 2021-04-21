@@ -1,33 +1,17 @@
-import * as React from 'react';
-import { getWaterTemp } from '../../../../restService/restService';
+import React, { FC } from 'react';
 import './AquariumSection.scss';
 
-const { useEffect, useState } = React;
+interface AquariumSectionProps {
+  temperature: string;
+}
 
-const AquariumSection = () => {
-
-  const [waterTemp, setWaterTemp] = useState('--');
-
-  useEffect(() => {
-    setTemperatureValue();
-    setInterval(
-      setTemperatureValue, 
-    5000)
-  }, [])
-
-  const setTemperatureValue = async () => {
-    try {
-      setWaterTemp(await getWaterTemp());
-    } catch (e) {
-      console.log(e); 
-    }
-  }
+const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {
 
   return (
     <div className="aquarium-section-component">
       <div className="water-temperature">
         <div className="text-value">
-          <span>{waterTemp}°C</span>
+          <span>{temperature}°C</span>
         </div>
       </div>
     </div>

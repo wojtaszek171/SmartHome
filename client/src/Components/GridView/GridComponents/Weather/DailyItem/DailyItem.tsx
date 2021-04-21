@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FC } from 'react';
 import Icon from '../../../../Icon/Icon';
 import './DailyItem.scss';
 
@@ -12,7 +12,7 @@ interface DailyItemProps {
   onClick?: Function;
 }
 
-const DailyItem: React.FC<DailyItemProps> = ({ dayOfWeek, dayTemp, nightTemp, icon, onClick}) => {
+const DailyItem: FC<DailyItemProps> = ({ dayOfWeek, dayTemp, nightTemp, icon, onClick}) => {
 
   const handleWeatherClick = () => {
     if(onClick) {
