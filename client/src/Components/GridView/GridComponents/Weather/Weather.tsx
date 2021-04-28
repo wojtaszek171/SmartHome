@@ -3,9 +3,10 @@ import DailyItem from './DailyItem/DailyItem';
 import './Weather.scss';
 import Modal from '../../../Modal';
 import HourlyItem from './HourlyItem/HourlyItem';
-import { Chart } from "react-google-charts";
 import Icon from '../../../Icon/Icon';
 import { CurrentWeather, DailyWeather, HourlyWeather } from '../../../../reducers/weather/types';
+
+const { Chart } = require('react-google-charts');
 
 interface WeatherProps {
   current: CurrentWeather | null;

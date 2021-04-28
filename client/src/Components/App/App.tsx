@@ -5,20 +5,26 @@ import Content from '../Content';
 import Admin from '../Admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.scss';
+import SideMenu from '../SideMenu';
 
-const App: FC = () => {
+interface AppProps {
+  isTokenValid: boolean;
+};
 
+const App: FC<AppProps> = ({ isTokenValid }) => {
   return (
       <div className="App">
         <Router>
-          <Header />
+          <Header/>
             <div className="appMiddle">
               <Switch>
                 <Route path="/" exact>
                   <Content />
-                </Route>
-                <Route path="/admin">
-                  <Admin />
+                  {isTokenValid &&
+                    <SideMenu >
+                      <Admin />
+                    </SideMenu>
+                  }
                 </Route>
               </Switch>
             </div>

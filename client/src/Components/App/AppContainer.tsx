@@ -5,11 +5,12 @@ import { setWeatherData } from '../../reducers/weather/weather';
 import { getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
 import { setSessionData, clearSession } from '../../reducers/session/session';
 import { getCookie, eraseCookie } from '../../helpers';
-import { getAuthToken, getUsername } from 'src/selectors/session';
+import { getAuthToken, getIsTokenValid, getUsername } from 'src/selectors/session';
 
 const AppContainer: FC = () => {
   const authToken = useSelector(getAuthToken);
   const username = useSelector(getUsername);
+  const isTokenValid = useSelector(getIsTokenValid);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -78,7 +79,9 @@ const AppContainer: FC = () => {
   }
 
   return (
-      <App />
+      <App
+        isTokenValid={isTokenValid}
+      />
   );
 };
 

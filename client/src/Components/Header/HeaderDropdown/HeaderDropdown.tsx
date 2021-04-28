@@ -1,18 +1,17 @@
 import React, { FC, useState } from 'react';
 import { eraseCookie } from '../../../helpers';
-import { useHistory } from "react-router-dom";
 
 interface HeaderDropdownProps {
   name: string;
   clearSession: Function;
+  openAdmin: Function;
 }
 
-const HeaderDropdown: FC<HeaderDropdownProps> = ({ name, clearSession }) => {
+const HeaderDropdown: FC<HeaderDropdownProps> = ({ name, clearSession, openAdmin }) => {
   const [expanded, setExpanded] = useState(false);
-  const history = useHistory();
 
   const handleAdminClick = () => {
-    history.push("/admin");
+    openAdmin(true);
     setExpanded(false);
   }
 
