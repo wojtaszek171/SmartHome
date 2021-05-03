@@ -1,0 +1,62 @@
+.socket-item {
+  position: relative;
+  margin: 5px;
+  text-align: center;
+
+  .socket-disabled {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #223443;
+    opacity: 0.8;
+  }
+
+  .socket-title {
+    display: flex;
+    font-size: 1.3rem;
+
+    .socket-indicator {
+      width: 20px;
+      height: 20px;
+      border-radius: 8px;
+      background-color: dimgrey;
+      border: 2px solid darkslategrey;
+      margin-right: 10px;
+      margin-bottom: 5px;
+
+      &.enabled {
+        background-color: green;
+      }
+    }
+  }
+
+  .socket-details {
+
+    .socket-clock {
+      width: 50px;
+      height: 50px;
+      position: relative;
+      border-radius: 50%;
+      background: #139035;
+
+      .clockface {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .range {
+        border-radius: 50%;
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}

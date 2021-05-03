@@ -14,9 +14,9 @@ const socketsNames: {[key: string]: string} = {
 
 export interface SocketItem {
     key: string;
-    enabled?: boolean;
-    start?: string;
-    stop?: string;
+    enabled: boolean;
+    start: string;
+    stop: string;
 }
 
 export interface SocketsObject {

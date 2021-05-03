@@ -2,6 +2,7 @@ import React from 'react';
 import AquariumSection from './GridComponents/AquariumSection';
 import DateTime from './GridComponents/DateTime';
 import Room from './GridComponents/Room';
+import Sockets from './GridComponents/Sockets';
 import Weather from './GridComponents/Weather';
 import GridItem from './GridItem';
 import './GridView.scss';
@@ -20,6 +21,9 @@ const GridView = () => {
       </GridItem>
       <GridItem title="Akwarium">
         <AquariumSection/>
+      </GridItem>
+      <GridItem title="Sockets">
+        <Sockets/>
       </GridItem>
     </div>
   );
