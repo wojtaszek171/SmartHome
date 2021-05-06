@@ -60,8 +60,8 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }
         <span>{`${start} - ${stop}`}</span>
         <div className='socket-clock'>
           <div className='range' style={{
-            backgroundImage: `linear-gradient(${cssDeg >= 360 ? cssDeg-180 : cssDeg}deg, transparent 50%, ${degrees > 180 ? '#139035' : '#223343'} 50%),
-              linear-gradient(90deg, #223343 50%, transparent 50%)`,
+            backgroundImage: `linear-gradient(${cssDeg >= 360 ? cssDeg-180 : cssDeg}deg, transparent 49%, ${degrees > 180 ? '#139035' : '#223343'} 50%),
+              linear-gradient(90deg, #223343 49%, transparent 50%)`,
             transform: `rotate(${startDeg}deg)`
           }} />
           <div className='clockface'>

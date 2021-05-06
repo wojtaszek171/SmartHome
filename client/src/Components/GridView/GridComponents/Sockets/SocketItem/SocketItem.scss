@@ -1,7 +1,8 @@
 .socket-item {
   position: relative;
-  margin: 5px;
+  padding: 5px 10px 15px 5px;
   text-align: center;
+  margin: auto;
 
   .socket-disabled {
     position: absolute;
@@ -39,6 +40,8 @@
       position: relative;
       border-radius: 50%;
       background: #139035;
+      margin: 0 auto;
+      margin-top: 10px;
 
       .clockface {
         position: absolute;
