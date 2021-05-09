@@ -12,6 +12,10 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }
   const [stopHour, stopMin] = stop.split(":");
 
   const socketEnabled = () => {
+    if (enabled && !start && !stop) {
+      return true;
+    }
+
     const currentDate = new Date();
 
     const startDate = new Date(currentDate.getTime());
