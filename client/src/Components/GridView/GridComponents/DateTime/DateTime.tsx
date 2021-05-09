@@ -28,7 +28,7 @@ const DateTime = () => {
       <div className="date-section">
         <div className="date-col">
           <div className="date-row date">
-            <span>{`${currentTime.getDate()}.${currentTime.getMonth()+1}.${currentTime.getFullYear()}`}</span>
+            <span>{`${("0" + currentTime.getDate()).slice(-2)}.${("0" + (currentTime.getMonth() + 1)).slice(-2)}.${currentTime.getFullYear()}`}</span>
           </div>
           <div className="date-row time">
             <span>{formatTime()}</span>
