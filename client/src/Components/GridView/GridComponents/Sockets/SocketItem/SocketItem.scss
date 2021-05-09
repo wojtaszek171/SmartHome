@@ -35,8 +35,8 @@
   .socket-details {
 
     .socket-clock {
-      width: 50px;
-      height: 50px;
+      width: 80px;
+      height: 80px;
       position: relative;
       border-radius: 50%;
       background: #139035;
@@ -44,6 +44,17 @@
       margin-top: 10px;
 
       .clockface {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .clockface-arrow {
         position: absolute;
         top: 0;
         width: 100%;

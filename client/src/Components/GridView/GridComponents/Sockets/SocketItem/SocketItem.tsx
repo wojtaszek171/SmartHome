@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { SocketItem } from 'src/Components/Admin/SocketsSettings/SocketsSettings';
 import Icon from 'src/Components/Icon/Icon';
 import './SocketItem.scss';
@@ -10,6 +10,20 @@ interface SocketItemProps extends SocketItem {
 const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }) => {
   const [startHour, startMin] = start.split(":");
   const [stopHour, stopMin] = stop.split(":");
+  const [currentDeg, setCurrentDeg] = useState(0);
+
+  useEffect(() => {
+    const timeInterval = setInterval(
+      () => {
+        const currentDate = new Date();
+        setCurrentDeg((Number(currentDate.getHours()) * 60 + Number(currentDate.getMinutes()))/1440*360);
+      },
+      60000
+    );    
+    return () => {
+      clearInterval(timeInterval);
+    }
+  }, []);
 
   const socketEnabled = () => {
     if (enabled && !start && !stop) {
@@ -70,6 +84,9 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }
           }} />
           <div className='clockface'>
             <Icon name='clockface'/>
+          </div>
+          <div className='clockface-arrow' style={{ transform: `rotate(${currentDeg}deg)` }}>
+            <Icon name='clockface-arrow'/>
           </div>
         </div>
       </div>
