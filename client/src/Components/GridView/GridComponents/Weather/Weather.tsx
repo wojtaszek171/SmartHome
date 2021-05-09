@@ -147,7 +147,7 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
                     },
                     textPosition: 'none',
                     viewWindow: {
-                      max: Math.max.apply(Math, hourlyDaySelected.map(o => o.temp)) + 10
+                      max: Math.max.apply(Math, hourlyDaySelected.map(o => o.temp)) + 15
                     }
                   },
                   hAxis: {
