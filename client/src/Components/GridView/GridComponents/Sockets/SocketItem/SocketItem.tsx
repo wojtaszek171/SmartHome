@@ -13,17 +13,20 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }
   const [currentDeg, setCurrentDeg] = useState(0);
 
   useEffect(() => {
+    getCurrentDeg();
     const timeInterval = setInterval(
-      () => {
-        const currentDate = new Date();
-        setCurrentDeg((Number(currentDate.getHours()) * 60 + Number(currentDate.getMinutes()))/1440*360);
-      },
+      getCurrentDeg,
       60000
     );    
     return () => {
       clearInterval(timeInterval);
     }
   }, []);
+
+  const getCurrentDeg = () => {
+    const currentDate = new Date();
+    setCurrentDeg((Number(currentDate.getHours()) * 60 + Number(currentDate.getMinutes()))/1440*360);
+  };
 
   const socketEnabled = () => {
     if (enabled && !start && !stop) {
