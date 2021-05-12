@@ -1,9 +1,9 @@
+import { Login } from 'pwojtaszko-design';
 import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { isDev } from '../../helpers';
 import { setSessionData } from '../../reducers/session/session';
 import { authenticateAdmin } from '../../restService/restService';
-import Login from './Login';
 
 interface LoginContainerProps {
     onLogin?: Function;

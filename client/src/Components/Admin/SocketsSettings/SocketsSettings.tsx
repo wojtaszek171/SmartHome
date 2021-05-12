@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import TextInput from '../../TextInput';
-import Toggle from '../../Toggle';
 import './SocketsSettings.scss';
 import _ from 'lodash';
 import { socketsConfig } from './socketsConfig';
+import { Input, Toggle } from 'pwojtaszko-design';
 
 const socketsNames: {[key: string]: string} = {
     socket1: 'Socket 1',
@@ -86,14 +85,14 @@ const SocketsSettings: FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) 
                         </div>
                     </div>
                     <div className="socket-inputs">
-                        <TextInput
+                        <Input
                             disabled={!(socketsObject[key] && socketsObject[key].enabled)}
                             label={'Start'}
                             value={socketsObject[key] && socketsObject[key].start}
                             type="time"
                             onChange={(val: string) => handleUpdateSocketStart(key, val)}
                         />
-                        <TextInput
+                        <Input
                             disabled={!(socketsObject[key] && socketsObject[key].enabled)}
                             label={'End'}
                             value={socketsObject[key] && socketsObject[key].stop}

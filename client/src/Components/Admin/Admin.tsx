@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import Button from '../Button';
-import TextInput from '../TextInput';
 import './Admin.scss';
 import SocketsSettings, { SocketItem } from './SocketsSettings/SocketsSettings';
 import { AdminSettingsValues } from './AdminContainer';
+import { Button, Input } from 'pwojtaszko-design';
 
 interface AdminProps {
   settings: AdminSettingsValues;
@@ -45,13 +44,13 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
           Weather
         </span>
         <div className="coordinates">
-          <TextInput
+          <Input
             label={'Lat'}
             value={weatherLat}
             type='number'
             onChange={setWeatherLat}
           />
-          <TextInput
+          <Input
             label={'Lon'}
             value={weatherLon}
             type='number'

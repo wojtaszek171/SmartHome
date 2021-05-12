@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import Modal from '../Modal/Modal';
+import { Modal } from 'pwojtaszko-design';
 import Login from '../Login';
 import HeaderDropdown from './HeaderDropdown';
 import './Header.scss';
