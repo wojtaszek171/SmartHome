@@ -16,18 +16,15 @@
     "lodash": "^4.17.20",
     "pwojtaszko-design": "^0.3.4",
     "react": "^16.13.1",
-    "react-device-detect": "^1.14.0",
     "react-dom": "^16.13.1",
     "react-google-charts": "^3.0.15",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
-    "react-video-js-player": "^1.1.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "sass": "^1.26.10",
     "typescript": "^4.1.3",
-    "wcjs-player": "^6.0.1",
     "webpack": "4.42.0"
   },
   "scripts": {
