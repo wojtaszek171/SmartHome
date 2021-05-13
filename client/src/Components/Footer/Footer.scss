@@ -1,15 +1,14 @@
-.footer-component {
+.pwd-footer-component {
+    display: flex;
     z-index: 3;
-    height: 40px;
+    min-height: 40px;
     width: 100%;
 	-webkit-box-shadow: 0 -3px 4px -1px rgba(0,0,0,0.25);
 	-moz-box-shadow: 0 -3px 4px -1px rgba(0,0,0,0.25);
     box-shadow: 0 -3px 4px -1px rgba(0,0,0,0.25);
+    flex-wrap: wrap;
 
-    .footer-text {
-        width: 100%;
-        display: block;
-        line-height: 40px;
-        text-align: center;
+    & > * {
+        flex-grow: 1;
     }
 }

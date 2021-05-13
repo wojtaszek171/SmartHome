@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { FC, ReactElement } from 'react';
 import './Footer.scss';
 
-const Footer = () => {
+interface FooterProps {
+  left?: ReactElement;
+  middle?: ReactElement;
+  right?: ReactElement;
+}
+
+const Footer: FC<FooterProps> = ({ left, middle, right }) => {
 
   return (
-    <div className="footer-component">
-        <span className="footer-text">This is footer. Made by Paweł Wojtaszko</span>
+    <div className="pwd-footer-component">
+      <div className='pwd-footer-left'>
+        {left}
+      </div>
+      <div className='pwd-footer-middle'>
+        {middle}
+      </div>
+      <div className='pwd-footer-rigth'>
+        {right}
+      </div>
     </div>
   );
 }
