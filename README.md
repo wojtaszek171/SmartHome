@@ -1,27 +1,31 @@
 # SmartHome
-Smart home panel project. Prepared to be deployed on Apache server with nginx server for streaming device camera video, api server set on NodeJS and MySQL database. All to be set on RaspberryPi 4b.
+Smart home panel project.
 
-Used technologies:
+## This project is working with
+- https://github.com/wojtaszek171/personalApi
+- https://github.com/wojtaszek171/MicrocontrollerHome
+- https://github.com/wojtaszek171/pwojtaszko-design
+
+## Used technologies:
 - React.js
-- NodeJS
-- Python
-- RaspberryPi (electronics)
-- C++ (Arduino IDE)
+- TypeScript
+- Redux
 
-Backend:
-- saving weather to MySQL and broadcasting it using API (saved using NodeJS server)
+## Backend:
+- fetching opeanweathermap weather, saving to MySQL and broadcasting it using my API
 - saving values from sensors attached to ESP8266 NodeMCU to database using PHP api and broadcasting it using API
 - switching power sockets using ESP8266 NodeMCU, start and stop times are fetched from DB using API
 - python scripts for reading sensors values
 - auto recreated MySQL structure (if any element missing)
 - api server (with authentication using authTokens)
 
-UX:
-- displaying room sensors values (temperature, humidity, pressure)
-- displaying aquarium sernors values (temperature)
-- displaying raspberry camera streamed video
-- displaying weather with 5 days forecast
-- admin panel for changing weather location
-- admin panel for changing socket switch times
+## UX:
+- room sensors values (temperature, humidity, pressure)
+- outside sernor value (temperature)
+- widget with weather for whole week
+- modal with hourly weather
+- widget with sockets current status
+- changing weather location (admin)
+- changing socket switch times (admin)
 
 Demo - https://pwojtaszko.ddns.net/
