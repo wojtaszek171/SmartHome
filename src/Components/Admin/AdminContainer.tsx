@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { getSockets, getWeatherLat, getWeatherLon, setSocket } from 'src/restService/restService';
+import { getSockets, getWeatherLat, getWeatherLon, setSetting, setSocket } from 'src/restService/restService';
 import { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
 import { socketsConfig } from './SocketsSettings/socketsConfig';
 import { useSelector } from 'react-redux';
@@ -53,7 +53,7 @@ const AdminContainer: FC = () => {
     setSettings({...settingsObject});
   };
 
-  const handleSettingsUpdate = (changedSockets: Array<SocketItem>) => {
+  const handleSettingsUpdate = (changedSockets: Array<SocketItem>, changedSettings: Array<{ name: string, value: any }>) => {
     setError('');
 
     if (changedSockets.some(socket => (socket.start && !socket.stop) || (!socket.start && socket.stop))) {
@@ -62,6 +62,14 @@ const AdminContainer: FC = () => {
     }
 
     Promise.all(changedSockets.map(socketObject => setSocket(authToken, socketObject)))
+      .then(() => {
+        fetchSettings();
+      })
+      .catch(e => {
+        setError(e.message);
+      });
+
+    Promise.all(changedSettings.map(settingObject => setSetting(authToken, settingObject)))
       .then(() => {
         fetchSettings();
       })

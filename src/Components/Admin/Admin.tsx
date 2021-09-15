@@ -28,11 +28,27 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
   useEffect(() => {
     setWeatherLat(settings.weatherLat);
     setWeatherLon(settings.weatherLon);
-  }, [settings])
+  }, [settings]);
 
   const handleSocketsUpdate = (values: any) => {
     setChangedSockets(values);
-  }
+  };
+
+  const handleSettingsUpdate = () => {
+    onSettingUpdate(
+      changedSockets,
+      [
+        {
+          name: 'weatherLat',
+          value: weatherLat
+        },
+        {
+          name: 'weatherLon',
+          value: weatherLon
+        }
+      ]
+    );
+  };
 
   return (
     <div className="Admin">
@@ -67,7 +83,7 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
         <Button
           text="Update settings"
           disabled={updateDisabled}
-          handleClick={() => onSettingUpdate(changedSockets)}
+          handleClick={handleSettingsUpdate}
         />
         {error && <span className="update-error">{error}</span>}
       </div>

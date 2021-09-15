@@ -78,7 +78,7 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
         <div className="weather-row current" onClick={() => handleHourlyDaySelect(new Date().getDate())}>
           {current && <>
             <div className="weather-city">
-              <span>{'Warszawa'}</span>
+              <span>{'Lublin'}</span>
             </div>
             <div className="weather-icon">
               <Icon name={current.icon}/>

@@ -47,6 +47,20 @@ export const getSockets = () =>
             throw e;
         });
 
+export const setSetting = (token: string, settingObject: { name: string, value: any }) => 
+    fetch(`${HOST_URL}/api/settings/set`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(settingObject),
+    })
+        .then(requestStatus)
+        .catch(e => {
+            throw e;
+        })
+
 export const setSocket = (token: string, socketObj: SocketItem) => 
     fetch(`${HOST_URL}/api/sockets/set`, {
         method: 'POST',
