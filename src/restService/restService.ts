@@ -118,7 +118,7 @@ export const getCurrentWeather = () => {
     return fetch(`${HOST_URL}/api/weather/current`)
         .then(requestStatus)
         .then(data => {
-            const { dt, temp, feels_like, humidity, pressure, sunrise, sunset, weather } = JSON.parse(data.value);
+            const { dt, temp, feels_like, humidity, pressure, sunrise, sunset, weather } = data.value;
             const { icon, description } = weather[0];
 
             return{
@@ -142,7 +142,7 @@ export const getDailyWeather = () => {
     return fetch(`${HOST_URL}/api/weather/daily`)
         .then(requestStatus)
         .then(data => {
-            const allDays = JSON.parse(data.value);
+            const allDays = data.value;
 
             return allDays.reduce((acc: any, dayEl: any) => {
                 const { dt, temp: { day: dayTemp, night: nightTemp }, pressure, humidity, weather, sunrise, sunset } = dayEl;
@@ -175,7 +175,7 @@ export const getHourlyWeather = () => {
     return fetch(`${HOST_URL}/api/weather/hourly`)
         .then(requestStatus)
         .then(data => {
-            const allHours = JSON.parse(data.value);
+            const allHours = data.value;
 
             return allHours.reduce((acc: any, dayEl: any) => {
                 const { day, hour, temp, icon } = dayEl;

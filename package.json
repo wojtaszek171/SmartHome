@@ -30,8 +30,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy-local": "react-scripts build && scp -r ./build/* pi@192.168.1.24:/var/www/pwojtaszko.ddns.net/public_html",
-    "deploy-remote": "react-scripts build && scp -r ./build/* pi@pwojtaszko.ddns.net:/var/www/pwojtaszko.ddns.net/public_html",
+    "deploy-local": "react-scripts build && scp -r ./build/* pwojtaszko@192.168.1.27:/var/www/pwojtaszko.ddns.net/public_html",
+    "deploy-remote": "react-scripts build && scp -r ./build/* pwojtaszko@pwojtaszko.ddns.net:/var/www/pwojtaszko.ddns.net/public_html",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
