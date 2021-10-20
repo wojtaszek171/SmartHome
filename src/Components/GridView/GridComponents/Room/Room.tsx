@@ -11,21 +11,21 @@ interface RoomProps {
 const Room: FC<RoomProps> = ({ temperature, pressure, humidity }) => {
   return (
     <div className="room-section-component">
-      <div className="room-tile">
+      {temperature !== undefined && <div className="room-tile">
         <Icon name='thermometer' width={'30px'}/>
         <span className="text-title">Temperatura</span>
         <span className="text-value">{temperature} °C</span>
-      </div>
-      <div className="room-tile">
+      </div>}
+      {pressure !== undefined && <div className="room-tile">
         <Icon name='barometer' width={'30px'}/>
         <span className="text-title">Ciśnienie</span>
         <span className="text-value">{pressure} hPa</span>
-      </div>
-      <div className="room-tile">
+      </div>}
+      {humidity !== undefined && <div className="room-tile">
         <Icon name='humidity' width={'30px'}/>
         <span className="text-title">Wilgotność</span>
         <span className="text-value">{humidity} %</span>
-      </div>
+      </div>}
     </div>
   );
 }

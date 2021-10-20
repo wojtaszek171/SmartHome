@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { getWaterTemp } from '../../../../restService/restService';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getInitialSensorObject, setSensorsData } from 'src/reducers/sensors/sensors';
+import { getSensorValueByKey } from 'src/selectors/sensors';
 import AquariumSection from './AquariumSection';
 
+const SENSOR_KEY = 'waterTemp';
+
 const AquariumSectionContainer = () => {
-  const [waterTemp, setWaterTemp] = useState('--');
+  const dispatch = useDispatch();
+  const waterTemp = useSelector(getSensorValueByKey(SENSOR_KEY));
 
   useEffect(() => {
-    setTemperatureValue();
-    setInterval(
-      setTemperatureValue, 
-    5000)
-  }, [])
-
-  const setTemperatureValue = async () => {
-    try {
-      setWaterTemp(await getWaterTemp());
-    } catch (e) {
-      console.log(e); 
-    }
-  }
+    dispatch(setSensorsData([getInitialSensorObject(SENSOR_KEY)]))
+  }, []);
 
   return (
     <AquariumSection

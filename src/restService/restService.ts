@@ -82,38 +82,6 @@ export const getSensorsData = () =>
             throw e;
         });
 
-export const getWaterTemp = () => 
-    fetch(`${HOST_URL}/api/sensors/waterTemp`)
-        .then(requestStatus)
-        .then(data => data.value.toFixed(1))
-        .catch(e => {
-            throw e;
-        });
-
-export const getRoomTemp = (): Promise<number> => 
-    fetch(`${HOST_URL}/api/sensors/roomTemp`)
-        .then(requestStatus)
-        .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
-        .catch(e => {
-            throw e;
-        });
-
-export const getRoomHumidity = (): Promise<number> => 
-    fetch(`${HOST_URL}/api/sensors/roomHumidity`)
-        .then(requestStatus)
-        .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
-        .catch(e => {
-            throw e;
-        });
-
-export const getRoomPressure = (): Promise<number> => 
-    fetch(`${HOST_URL}/api/sensors/pressure`)
-        .then(requestStatus)
-        .then(data => Math.round((data.value + Number.EPSILON) * 10) / 10)
-        .catch(e => {
-            throw e;
-        });
-
 export const getCurrentWeather = () => {
     return fetch(`${HOST_URL}/api/weather/current`)
         .then(requestStatus)

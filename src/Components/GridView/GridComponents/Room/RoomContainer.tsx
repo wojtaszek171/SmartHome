@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { getRoomTemp, getRoomHumidity, getRoomPressure } from '../../../../restService/restService';
+import React, { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getInitialSensorObject, setSensorsData } from 'src/reducers/sensors/sensors';
+import { Sensor } from 'src/reducers/sensors/types';
+import { getSensorValueByKey } from 'src/selectors/sensors';
 import Room from './Room';
 
-const RoomContainer = () => {
-  const [roomTemp, setRoomTemp] = useState('--');
-  const [roomPressure, setRoomPressure] = useState('--');
-  const [roomHumidity, setRoomHumidity] = useState('--');
+interface RoomContainerProps {
+  tempKey?: string;
+  pressureKey?: string;
+  humidityKey?: string;
+}
+
+const RoomContainer: FC<RoomContainerProps> = ({ tempKey = '', pressureKey = '', humidityKey = '' }) => {
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setSensorValues();
-    setInterval(
-      setSensorValues,
-    5000)
-  }, [])
-
-  const setSensorValues = async () => {
-    try {
-      setRoomTemp((await getRoomTemp()).toString());
-      setRoomPressure((await getRoomPressure()).toString());
-      setRoomHumidity((await getRoomHumidity()).toString());
-    } catch (e) {
-      throw e;
+    const sensorsArray: Sensor[] = [];
+    if (tempKey?.length) {
+      sensorsArray.push(getInitialSensorObject(tempKey));
     }
-  }
+    if (pressureKey?.length) {
+      sensorsArray.push(getInitialSensorObject(pressureKey));
+    }
+    if (humidityKey?.length) {
+      sensorsArray.push(getInitialSensorObject(humidityKey));
+    }
+    dispatch(setSensorsData(sensorsArray))
+  }, [dispatch, humidityKey, pressureKey, tempKey]);
+
+  const roomTemp = useSelector(getSensorValueByKey(tempKey));
+  const roomPressure = useSelector(getSensorValueByKey(pressureKey));
+  const roomHumidity = useSelector(getSensorValueByKey(humidityKey));
 
   return (
     <Room
