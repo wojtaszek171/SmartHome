@@ -1,0 +1,15 @@
+.todo-component {
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.todo-item-component {
+  display: flex;
+  width: 100%;
+  min-height: 20px;
+
+  .todo-row-checkbox {
+
+  }
+}

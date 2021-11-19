@@ -6,6 +6,7 @@ import AquariumSection from './GridComponents/AquariumSection';
 import DateTime from './GridComponents/DateTime';
 import Room from './GridComponents/Room';
 import Sockets from './GridComponents/Sockets';
+import ToDoList from './GridComponents/ToDoList';
 import Weather from './GridComponents/Weather';
 import GridItem from './GridItem';
 import './GridView.scss';
@@ -80,6 +81,29 @@ const GridView = () => {
       <GridItem title="Akwarium">
         <AquariumSection/>
         <Sockets/>
+      </GridItem>
+      <GridItem title="TODO">
+        <ToDoList
+          list={[
+            {
+              title: 'need to do 2',
+              order: 2,
+              styles: {
+                color: '#941111'
+              }
+            },
+            {
+              title: 'need to do 1',
+              order: 1,
+              checked: false
+            },
+            {
+              title: 'need to do 3',
+              order: 3,
+              checked: true
+            }
+          ]}
+        />
       </GridItem>
     </div>
   );
