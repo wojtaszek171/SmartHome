@@ -6,10 +6,16 @@
 
 .todo-item-component {
   display: flex;
+  align-items: center;
   width: 100%;
-  min-height: 20px;
+  min-height: 25px;
 
   .todo-row-checkbox {
+    width: 20px;
+    height: 20px;
+  }
 
+  .todo-row-title {
+    flex: 1;
   }
 }
