@@ -2,17 +2,12 @@
   input[type="checkbox"] {
     -webkit-appearance: none;
     appearance: none;
-    background-color: inherit;
     margin: 0;
-  
-    font: inherit;
     color: #bcd0d9;
-    width: 1.15em;
-    height: 1.15em;
+    width: 18px;
+    height: 18px;
     border: 0.15em solid #bcd0d9;
-    border-radius: 0.15em;
-    transform: translateY(-0.075em);
-  
+    border-radius: 2px;
     display: grid;
     place-content: center;
   }
@@ -22,7 +17,6 @@
     width: 0.65em;
     height: 0.65em;
     transform: scale(0);
-    transform-origin: bottom left;
     background-color: #bcd0d9;
   }
   
@@ -33,5 +27,12 @@
   input[type="checkbox"]:disabled {  
     color: var(--form-control-disabled);
     cursor: not-allowed;
+  }
+
+  &.check-shape {
+    input[type="checkbox"]::before {
+      transform-origin: bottom left;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
   }
 }

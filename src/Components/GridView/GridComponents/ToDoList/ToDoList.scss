@@ -2,6 +2,14 @@
   min-width: 200px;
   display: flex;
   flex-direction: column;
+
+  .todo-add-button {
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+  }
 }
 
 .todo-item-component {
@@ -11,11 +19,18 @@
   min-height: 25px;
 
   .todo-row-checkbox {
-    width: 20px;
-    height: 20px;
+
   }
 
   .todo-row-title {
     flex: 1;
+  }
+}
+
+.todo-item-creator {
+
+  .submit-button {
+    display: flex;
+    float: right;
   }
 }
