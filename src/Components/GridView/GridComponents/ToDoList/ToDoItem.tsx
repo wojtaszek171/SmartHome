@@ -1,4 +1,4 @@
-import React, { ChangeEvent, CSSProperties, FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 import Checkbox from './Checkbox';
 
 export interface ToDoItemProps {
@@ -16,13 +16,14 @@ const ToDoItem: FC<ToDoItemProps> = ({ title, styles, checked }) => {
 
   return (
     <div className='todo-item-component'>
+      <span className='todo-row-title' style={styles}>{title}</span>
       {checked !== undefined && <div className='todo-row-checkbox'>
         <Checkbox
           checked={checked}
+          checkShape={true}
           onChange={handleCheckboxChange}
         />
       </div>}
-      <span className='todo-row-title' style={styles}>{title}</span>
     </div>
   );
 };
