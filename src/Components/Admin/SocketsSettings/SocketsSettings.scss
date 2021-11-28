@@ -51,6 +51,37 @@
           margin-left: 5px;
         }
       }
+
+      .light-mode-input-wrapper {
+        display: flex;
+        flex-direction: row;
+        margin-top: 10px;
+
+        .select-wrapper {
+          display: flex;
+          flex-direction: column;
+          width: 45px;
+          margin-right: 10px;
+          text-align: center;
+
+          span {
+            flex: 1;
+          }
+
+          .pwd-select {
+            margin: 8px 0;
+            height: 42px;
+            width: 42px;
+          }
+        }
+
+        .pwd-button-component {
+          display: flex;
+          height: auto;
+          align-items: center;
+          margin-top: 21px;
+        }
+      }
     }
 
     &:nth-child(even) {

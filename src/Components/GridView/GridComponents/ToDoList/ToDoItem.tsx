@@ -1,5 +1,5 @@
+import { Checkbox } from 'pwojtaszko-design';
 import React, { CSSProperties, FC } from 'react';
-import Checkbox from './Checkbox';
 
 export interface ToDoItemProps {
   title?: string;
@@ -10,10 +10,6 @@ export interface ToDoItemProps {
 
 const ToDoItem: FC<ToDoItemProps> = ({ title, styles, checked }) => {
 
-  const handleCheckboxChange = (changedChecked: boolean) => {
-    console.log(changedChecked);
-  }
-
   return (
     <div className='todo-item-component'>
       <span className='todo-row-title' style={styles}>{title}</span>
@@ -21,7 +17,6 @@ const ToDoItem: FC<ToDoItemProps> = ({ title, styles, checked }) => {
         <Checkbox
           checked={checked}
           checkShape={true}
-          onChange={handleCheckboxChange}
         />
       </div>}
     </div>

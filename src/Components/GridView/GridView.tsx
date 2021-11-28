@@ -82,8 +82,8 @@ const GridView = () => {
         <AquariumSection/>
         <Sockets/>
       </GridItem>
-      <GridItem title="TODO">
-        {/* <ToDoList
+      {/* <GridItem title="TODO">
+        <ToDoList
           list={[
             {
               title: 'need to do 2',
@@ -103,8 +103,8 @@ const GridView = () => {
               checked: true
             }
           ]}
-        /> */}
-      </GridItem>
+        />
+      </GridItem> */}
     </div>
   );
 }
