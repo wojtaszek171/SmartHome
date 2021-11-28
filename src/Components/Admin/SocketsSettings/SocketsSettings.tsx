@@ -1,109 +1,139 @@
 import React, { FC, useEffect, useState } from 'react';
-import './SocketsSettings.scss';
 import _ from 'lodash';
 import { socketsConfig } from './socketsConfig';
 import { Input, Toggle } from 'pwojtaszko-design';
+import './SocketsSettings.scss';
+import Checkbox from 'src/Components/GridView/GridComponents/ToDoList/Checkbox';
 
-const socketsNames: {[key: string]: string} = {
-    socket1: 'Socket 1',
-    socket2: 'Socket 2',
-    socket3: 'Socket 3',
-    socket4: 'Socket 4'
+const socketsNames: { [key: string]: string } = {
+  socket1: 'Socket 1',
+  socket2: 'Socket 2',
+  socket3: 'Socket 3',
+  socket4: 'Socket 4'
 }
 
 export interface SocketItem {
-    key: string;
-    enabled: boolean;
-    start: string;
-    stop: string;
+  key: string;
+  enabled: boolean;
+  start: string;
+  stop: string;
 }
 
 export interface SocketsObject {
-    [index: string]: SocketItem
+  [index: string]: SocketItem
 }
 
 interface SocketsSettingsProps {
-    socketsFromDB: SocketsObject;
-    onChange: Function;
+  socketsFromDB: SocketsObject;
+  onChange: Function;
 };
 
 const SocketsSettings: FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) => {
 
-    const [socketsObject, setSocketsObject] = useState<SocketsObject>({...socketsConfig});
-    
-    useEffect(() => {
-        setSocketsObject({...socketsFromDB})
-    }, [socketsFromDB])
+  const [socketsObject, setSocketsObject] = useState<SocketsObject>({ ...socketsConfig });
+  const [useLightModes, setUseLightModes] = useState(false);
 
-    useEffect(() => {
-        const changedSockets = _.reduce(socketsObject, (result: Array<SocketItem>, value, key) => {
-            return _.isEqual(value, socketsFromDB[key]) ?
-                result : result.concat(value);
-        }, []);
+  useEffect(() => {
+    setSocketsObject({ ...socketsFromDB })
+  }, [socketsFromDB]);
 
-        onChange(changedSockets);
-    }, [socketsObject])
+  useEffect(() => {
+    const changedSockets = _.reduce(socketsObject, (result: Array<SocketItem>, value, key) => {
+      return _.isEqual(value, socketsFromDB[key]) ?
+        result : result.concat(value);
+    }, []);
 
-    const handleUpdateSocketEnabled = (socket: string, value: boolean) => {
-        let copySocketsObject = {...socketsObject};
-        copySocketsObject[socket] = {
-            ...copySocketsObject[socket],
-            enabled: value
-        };
-        setSocketsObject(copySocketsObject);
-    }
+    onChange(changedSockets);
+  }, [socketsObject]);
 
-    const handleUpdateSocketStart = (socket: string, value: string) => {
-        let copySocketsObject = {...socketsObject};
-        copySocketsObject[socket] = {
-            ...copySocketsObject[socket],
-            start: value
-        };
-        setSocketsObject(copySocketsObject);
-    }
+  const handleUpdateSocketEnabled = (socket: string, value: boolean) => {
+    let copySocketsObject = { ...socketsObject };
+    copySocketsObject[socket] = {
+      ...copySocketsObject[socket],
+      enabled: value
+    };
+    setSocketsObject(copySocketsObject);
+  }
 
-    const handleUpdateSocketEnd = (socket: string, value: string) => {
-        let copySocketsObject = {...socketsObject};
-        copySocketsObject[socket] = {
-            ...copySocketsObject[socket],
-            stop: value
-        };
-        setSocketsObject(copySocketsObject);
-    }
-    
-    return (
-        <div className="sockets-settings">
-            {Object.values(socketsConfig).map(({ key }) =>
-                <div className="socket-item" key={key}>
-                    <div className="socket-switch">
-                        <span>{socketsNames[key]}</span>
-                        <div className="toggle-wrapper">
-                            <Toggle
-                                checked={socketsObject[key] && socketsObject[key].enabled}
-                                onClick={(val: boolean) => handleUpdateSocketEnabled(key, val)}
-                            />
-                        </div>
-                    </div>
-                    <div className="socket-inputs">
-                        <Input
-                            disabled={!(socketsObject[key] && socketsObject[key].enabled)}
-                            label={'Start'}
-                            value={socketsObject[key] && socketsObject[key].start}
-                            type="time"
-                            onChange={(val: string) => handleUpdateSocketStart(key, val)}
-                        />
-                        <Input
-                            disabled={!(socketsObject[key] && socketsObject[key].enabled)}
-                            label={'End'}
-                            value={socketsObject[key] && socketsObject[key].stop}
-                            type="time"
-                            onChange={(val: string) => handleUpdateSocketEnd(key, val)}
-                        />
-                    </div>
-                </div>
-            )}
+  const handleUpdateSocketStart = (socket: string, value: string) => {
+    let copySocketsObject = { ...socketsObject };
+    copySocketsObject[socket] = {
+      ...copySocketsObject[socket],
+      start: value
+    };
+    setSocketsObject(copySocketsObject);
+  }
+
+  const handleUpdateSocketEnd = (socket: string, value: string) => {
+    let copySocketsObject = { ...socketsObject };
+    copySocketsObject[socket] = {
+      ...copySocketsObject[socket],
+      stop: value
+    };
+    setSocketsObject(copySocketsObject);
+  }
+
+  return (
+    <div className="sockets-settings">
+      {Object.values(socketsConfig).map(({ key }) =>
+        <div className="socket-settings-item" key={key}>
+          <div className='socket-start-stop'>
+            <div className="socket-switch">
+              <span>{socketsNames[key]}</span>
+              <div className="toggle-wrapper">
+                <Toggle
+                  checked={socketsObject[key] && socketsObject[key].enabled}
+                  onClick={(val: boolean) => handleUpdateSocketEnabled(key, val)}
+                />
+              </div>
+            </div>
+            <div className="socket-inputs">
+              <Input
+                disabled={!(socketsObject[key] && socketsObject[key].enabled)}
+                label={'Start'}
+                value={socketsObject[key] && socketsObject[key].start}
+                type="time"
+                onChange={(val: string) => handleUpdateSocketStart(key, val)}
+              />
+              <Input
+                disabled={!(socketsObject[key] && socketsObject[key].enabled)}
+                label={'End'}
+                value={socketsObject[key] && socketsObject[key].stop}
+                type="time"
+                onChange={(val: string) => handleUpdateSocketEnd(key, val)}
+              />
+            </div>
+          </div>
+          <div className='socket-light-modes'>
+            <div className='light-modes-switch'>
+              <Checkbox
+                checked={useLightModes}
+                onChange={setUseLightModes}
+              />
+              <span>Light modes (Aquael)</span>
+            </div>
+            {useLightModes && <>
+              <Input
+                disabled={!(socketsObject[key] && socketsObject[key].enabled)}
+                label={''}
+                value={socketsObject[key] && socketsObject[key].start}
+                type="number"
+                onChange={(val: string) => handleUpdateSocketStart(key, val)}
+              />
+              <Input
+                disabled={!(socketsObject[key] && socketsObject[key].enabled)}
+                label={'Start'}
+                value={socketsObject[key] && socketsObject[key].start}
+                type="time"
+                onChange={(val: string) => handleUpdateSocketStart(key, val)}
+              />
+            </>
+            }
+          </div>
         </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default SocketsSettings;

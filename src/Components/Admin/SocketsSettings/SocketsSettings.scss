@@ -1,39 +1,60 @@
 .sockets-settings {
-    .socket-item {
+  .socket-settings-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+
+    .socket-start-stop {
+      width: 100%;
+
+      .socket-switch {
+        height: 90px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+
+        span {
+            font-size: 20px;
+        }
+
+        .toggle-wrapper {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+      }
+
+      .socket-inputs {
+        display: block;
         flex-wrap: wrap;
-        align-items: center;
+        flex-direction: row;
+        padding: 3px 10px;
 
-        .socket-switch {
-            height: 90px;
-            display: flex;
-            flex-direction: column;
+        .text-input {
+            padding: 5px;
+            width: 110px;
 
-            span {
-                font-size: 20px;
-            }
-
-            .toggle-wrapper {
-                flex-grow: 1;
-                display: flex;
-                align-items: center;
+            input {
+              padding: 12px 12px;
             }
         }
-
-        .socket-inputs {
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-
-            .text-input {
-                padding: 5px;
-                width: 110px;
-
-                input {
-                  padding: 12px 12px;
-                }
-            }
-        }
+      }
     }
+
+    .socket-light-modes {
+      width: 100%;
+
+      .light-modes-switch {
+        display: flex;
+
+        span {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    &:nth-child(even) {
+      background: #2b3e50b0;
+    }
+  }
 }
