@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: smart-home-web-config
+data:
+    web.properties: |
+      window.REACT_APP_API_HOST= "https://pwojtaszko.ddns.net"
+
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -18,7 +27,18 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: "/usr/share/nginx/html/config.js"
+              subPath: "config.js"
       restartPolicy: Always
+      volumes:
+        - name: config
+          configMap:
+              name: smart-home-web-config
+              items:
+                  - key: "web.properties"
+                    path: "config.js"
 
 ---
 kind: Service

@@ -1,8 +1,8 @@
 import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings';
 
-const { REACT_APP_API_HOST, REACT_APP_API_PORT, REACT_APP_API_PATH } = process.env;
+const { REACT_APP_API_HOST, REACT_APP_API_PORT, REACT_APP_API_PATH } = window;
 
-const HOST_URL = `${REACT_APP_API_HOST}${REACT_APP_API_PORT ? ':' + REACT_APP_API_PORT : ''}${REACT_APP_API_PATH ? '/' + REACT_APP_API_PATH : ''}`;
+const HOST_URL = `${REACT_APP_API_HOST}${REACT_APP_API_PORT?.length ? ':' + REACT_APP_API_PORT : ''}${REACT_APP_API_PATH?.length ? '/' + REACT_APP_API_PATH : ''}`;
 
 const requestStatus = async (response: Response) => {
     if (response.ok) {
