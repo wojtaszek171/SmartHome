@@ -1,6 +1,8 @@
 import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings';
 
-const HOST_URL = 'https://pwojtaszko.ddns.net';
+const { REACT_APP_API_HOST, REACT_APP_API_PORT, REACT_APP_API_PATH } = process.env;
+
+const HOST_URL = `${REACT_APP_API_HOST}${REACT_APP_API_PORT ? ':' + REACT_APP_API_PORT : ''}${REACT_APP_API_PATH ? '/' + REACT_APP_API_PATH : ''}`;
 
 const requestStatus = async (response: Response) => {
     if (response.ok) {
@@ -20,7 +22,7 @@ export const configureAdmin = (
         lastName: string,
         username: string,
         password: string
-    }) => 
+    }) =>
         fetch(`${HOST_URL}/api/users/configureAdmin`, {
             method: 'POST',
             headers: {

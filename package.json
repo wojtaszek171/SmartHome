@@ -2,7 +2,7 @@
   "name": "smart_home",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pwojtaszko.ddns.net/",
+  "homepage": ".",
   "dependencies": {
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
