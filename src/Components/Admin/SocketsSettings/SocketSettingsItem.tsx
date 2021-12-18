@@ -63,39 +63,55 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
           />
           <span>Light modes (Aquael)</span>
         </div>
-        {useLightModes && <div className='light-mode-input-wrapper'>
-          <ul>
-            {currentLightModes?.map((mode) => <li>{`${mode[0]} -> ${mode[1]}`}</li>)}
-          </ul>
-          <div className='select-wrapper'>
-            <span>Mode</span>
-            <Select
-              options={[{
-                key: '1',
-                item: '1'
-              },
-              {
-                key: '2',
-                item: '2'
-              },
-              {
-                key: '3',
-                item: '3'
-              }]}
-              onChange={setLightMode}
+        {useLightModes && <>
+          <div className='light-modes-list'>
+            <div className='light-modes-row'>
+              <span>MODE</span>
+              <span>ENABLE HOUR</span>
+            </div>
+            {currentLightModes?.map((mode) => <div className='light-modes-row'>
+              <span>
+                {mode[0]}
+              </span>
+              <span>
+                {mode[1]}
+              </span>
+              <span className='delete-light-mode'>
+                🗑️
+              </span>
+            </div>)}
+          </div>
+          <div className='light-mode-input-wrapper'>
+            <div className='select-wrapper'>
+              <span>Mode</span>
+              <Select
+                options={[{
+                  key: '1',
+                  item: '1'
+                },
+                {
+                  key: '2',
+                  item: '2'
+                },
+                {
+                  key: '3',
+                  item: '3'
+                }]}
+                onChange={setLightMode}
+              />
+            </div>
+            <Input
+              label={'Change time'}
+              value={lightModeHour}
+              type="time"
+              onChange={setLightModeHour}
+            />
+            <Button
+              text='+'
+              handleClick={handleAddLightMode}
             />
           </div>
-          <Input
-            label={'Change time'}
-            value={lightModeHour}
-            type="time"
-            onChange={setLightModeHour}
-          />
-          <Button
-            text='✓'
-            handleClick={handleAddLightMode}
-          />
-        </div>
+        </>
         }
       </div>
     </div>

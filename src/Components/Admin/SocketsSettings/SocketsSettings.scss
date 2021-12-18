@@ -52,6 +52,38 @@
         }
       }
 
+      .light-modes-list {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+
+        .light-modes-row {
+          display: flex;
+          flex-direction: row;
+          border-bottom: 1px solid #bcd0d9;
+
+          span {
+            padding: 4px;
+            text-align: center;
+            flex: 1;
+          }
+
+          .delete-light-mode {
+            flex: none;
+            width: 20px;
+            visibility: hidden;
+            cursor: pointer;
+            color: red;
+          }
+
+          &:hover {
+            .delete-light-mode {
+              visibility: visible;
+            }
+          }
+        }
+      }
+
       .light-mode-input-wrapper {
         display: flex;
         flex-direction: row;
