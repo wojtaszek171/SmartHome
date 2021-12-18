@@ -14,7 +14,33 @@ const requestStatus = async (response: Response) => {
     }
 }
 
-export const getCurrentUser = (token: string) => 
+export const configureAdmin = (
+    registerAdminObj: {
+        firstName: string,
+        lastName: string,
+        username: string,
+        password: string
+    }) => 
+        fetch(`${HOST_URL}/api/users/configureAdmin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registerAdminObj),
+        })
+            .then(requestStatus)
+            .catch(e => {
+                throw e;
+            })
+
+export const getAdminConfigurationStatus = () =>
+    fetch(`${HOST_URL}/api/users/validateConfig`)
+        .then(requestStatus)
+        .catch(e => {
+            throw e;
+        });
+
+export const getCurrentUser = (token: string) =>
     fetch(`${HOST_URL}/api/users/current`, {
         headers: {
             'Content-Type': 'application/json',
