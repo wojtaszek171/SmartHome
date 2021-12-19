@@ -4,7 +4,7 @@ metadata:
    name: smart-home-web-config
 data:
     web.properties: |
-      window.REACT_APP_API_HOST= "https://pwojtaszko.ddns.net"
+      window.REACT_APP_API_HOST= "http://localhost:32000"
 
 ---
 kind: Deployment
@@ -54,3 +54,25 @@ spec:
       nodePort: 31000
   selector:
     app: smart-home
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-home-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: smart-home
+            port:
+              number: 80
+
