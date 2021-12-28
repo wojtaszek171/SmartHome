@@ -10,7 +10,7 @@ interface SideMenuContainerProps {
 
 const SideMenuContainer: FC<SideMenuContainerProps> = ({ children }) => {
 
-  const isOpen = useSelector(getIsAdminOpen);
+  const isOpen = true;
   const dispatch = useDispatch();
 
   return (

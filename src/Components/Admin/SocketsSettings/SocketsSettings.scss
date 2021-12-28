@@ -23,6 +23,10 @@
             align-items: center;
         }
       }
+    }
+
+    .socket-advanced {
+      width: 100%;
 
       .socket-inputs {
         display: block;
@@ -39,10 +43,6 @@
             }
         }
       }
-    }
-
-    .socket-light-modes {
-      width: 100%;
 
       .light-modes-switch {
         display: flex;
