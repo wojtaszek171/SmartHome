@@ -12,6 +12,7 @@
         width: 100%;
         cursor: pointer;
         min-height: 22px;
+        user-select: none;
 
         .collapse-arrow {
             transition: 0.3s ease-out;
