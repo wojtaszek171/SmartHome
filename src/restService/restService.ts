@@ -1,6 +1,8 @@
 import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings';
 
-const HOST_URL = 'https://pwojtaszko.ddns.net';
+const { REACT_APP_API_HOST, REACT_APP_API_PORT, REACT_APP_API_PATH } = window;
+
+const HOST_URL = `${REACT_APP_API_HOST}${REACT_APP_API_PORT?.length ? ':' + REACT_APP_API_PORT : ''}${REACT_APP_API_PATH?.length ? '/' + REACT_APP_API_PATH : ''}`;
 
 const requestStatus = async (response: Response) => {
     if (response.ok) {
@@ -14,7 +16,33 @@ const requestStatus = async (response: Response) => {
     }
 }
 
-export const getCurrentUser = (token: string) => 
+export const configureAdmin = (
+    registerAdminObj: {
+        firstName: string,
+        lastName: string,
+        username: string,
+        password: string
+    }) =>
+        fetch(`${HOST_URL}/api/users/configureAdmin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registerAdminObj),
+        })
+            .then(requestStatus)
+            .catch(e => {
+                throw e;
+            })
+
+export const getAdminConfigurationStatus = () =>
+    fetch(`${HOST_URL}/api/users/validateConfig`)
+        .then(requestStatus)
+        .catch(e => {
+            throw e;
+        });
+
+export const getCurrentUser = (token: string) =>
     fetch(`${HOST_URL}/api/users/current`, {
         headers: {
             'Content-Type': 'application/json',

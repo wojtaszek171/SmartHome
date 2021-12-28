@@ -1,3 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: smart-home-web-config
+data:
+    web.properties: |
+      window.REACT_APP_API_HOST= "http://localhost"
+
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -18,7 +27,18 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: "/usr/share/nginx/html/config.js"
+              subPath: "config.js"
       restartPolicy: Always
+      volumes:
+        - name: config
+          configMap:
+              name: smart-home-web-config
+              items:
+                  - key: "web.properties"
+                    path: "config.js"
 
 ---
 kind: Service
@@ -34,3 +54,25 @@ spec:
       nodePort: 31000
   selector:
     app: smart-home
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smart-home-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: smart-home
+            port:
+              number: 80
+

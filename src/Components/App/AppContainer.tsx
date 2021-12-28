@@ -1,24 +1,30 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import App from './App';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWeatherData } from '../../reducers/weather/weather';
-import { getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
+import { getAdminConfigurationStatus, getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
 import { setSessionData, clearSession } from '../../reducers/session/session';
 import { getCookie, eraseCookie } from '../../helpers';
-import { getAuthToken, getIsTokenValid, getUsername } from 'src/selectors/session';
+import { getAuthToken, getUsername } from 'src/selectors/session';
 
 const AppContainer: FC = () => {
+  const [isAdminConfigured, setIsAdminConfigured] = useState(true);
   const authToken = useSelector(getAuthToken);
   const username = useSelector(getUsername);
-  const isTokenValid = useSelector(getIsTokenValid);
   const dispatch = useDispatch();
+
+  const checkAdminConfigStatus = () =>
+    getAdminConfigurationStatus()
+      .then(setIsAdminConfigured);
 
   useEffect(() => {
     const token = getCookie('token');
     if (token) {
       dispatch(setSessionData({ authToken: token }));
     }
-  }, [])
+
+    checkAdminConfigStatus();
+  }, [dispatch])
 
   useEffect(() => {
     const setCurrentUser = async () => {
@@ -35,9 +41,24 @@ const AppContainer: FC = () => {
     if (authToken && !username) {
       setCurrentUser();
     }
-  }, [authToken, username])
+  }, [authToken, dispatch, username])
 
   useEffect(() => {
+    const fetchCurrentWeather = async () => {
+      const current = await getCurrentWeather();
+      dispatch(setWeatherData({ current }));
+    }
+  
+    const fetchDailyWeather = async () => {
+      const daily = await getDailyWeather();
+      dispatch(setWeatherData({ daily }));
+    }
+    
+    const fetchHourlyWeather = async () => {
+      const hourly = await getHourlyWeather();
+      dispatch(setWeatherData({ hourly }));
+    }
+
     fetchCurrentWeather();
     const weatherRequestInterval = setInterval(
       fetchCurrentWeather,
@@ -61,27 +82,14 @@ const AppContainer: FC = () => {
       clearInterval(weatherDailyRequestInterval);
       clearInterval(weatherHourlyRequestInterval);
     }
-  }, []);
+  }, [dispatch]);
 
-  const fetchCurrentWeather = async () => {
-    const current = await getCurrentWeather();
-    dispatch(setWeatherData({ current }));
-  }
-
-  const fetchDailyWeather = async () => {
-    const daily = await getDailyWeather();
-    dispatch(setWeatherData({ daily }));
-  }
-  
-  const fetchHourlyWeather = async () => {
-    const hourly = await getHourlyWeather();
-    dispatch(setWeatherData({ hourly }));
-  }
 
   return (
-      <App
-        isTokenValid={isTokenValid}
-      />
+    <App
+      isAdminConfigured={!isAdminConfigured}
+      onRegister={checkAdminConfigStatus}
+    />
   );
 };
 

@@ -2,7 +2,7 @@
   "name": "smart_home",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://pwojtaszko.ddns.net/",
+  "homepage": ".",
   "dependencies": {
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
@@ -14,7 +14,7 @@
     "@typescript-eslint/parser": "4.0.1",
     "eslint": "^6.6.0",
     "lodash": "^4.17.20",
-    "pwojtaszko-design": "^0.3.14",
+    "pwojtaszko-design": "^0.3.18",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-google-charts": "^3.0.15",
