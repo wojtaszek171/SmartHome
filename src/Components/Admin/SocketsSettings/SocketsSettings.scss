@@ -11,16 +11,21 @@
       .socket-switch {
         height: 90px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
 
         span {
-            font-size: 20px;
+          font-size: 20px;
         }
 
         .toggle-wrapper {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
+          flex-grow: 1;
+          display: flex;
+          align-items: center;
+        }
+
+        .toggle-title {
+          flex-grow: 1;
         }
       }
     }
@@ -112,6 +117,11 @@
           height: auto;
           align-items: center;
           margin-top: 21px;
+
+          button {
+            height: 45px;
+            width: 45px;
+          }
         }
       }
     }

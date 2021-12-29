@@ -25,8 +25,8 @@ const collapseSection = (element: HTMLElement) => {
     element.setAttribute('data-collapsed', 'true');
 }
 
-const expandSection = (element: HTMLElement) => {
-    var sectionHeight = element.scrollHeight;
+const expandSection = (element: HTMLElement, heightToSet?: number) => {
+    var sectionHeight = heightToSet || element.scrollHeight;
     
     element.style.height = sectionHeight + 'px';
     
@@ -54,6 +54,13 @@ const Collapse: FC<CollapseProps> = ({ collapsed, collapseTitle, onCollapse, chi
 
         onCollapse && onCollapse(isCollapsed);
     };
+    
+    const currentScrollHeight = boxRef.current?.scrollHeight;
+
+    useEffect(() => {
+        if (boxRef.current && !isCollapsed)
+            expandSection(boxRef.current, currentScrollHeight);
+    }, [currentScrollHeight, isCollapsed]);
 
     return (
         <div className={`pwd-collapse${isCollapsed ? ' collapsed' : ''}`}>

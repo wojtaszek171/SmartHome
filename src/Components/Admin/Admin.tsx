@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
-import './Admin.scss';
 import SocketsSettings, { SocketItem } from './SocketsSettings/SocketsSettings';
 import { AdminSettingsValues } from './AdminContainer';
 import { Button, Input } from 'pwojtaszko-design';
+import './Admin.scss';
 
 interface AdminProps {
   settings: AdminSettingsValues;
