@@ -19,6 +19,6 @@ export interface ClearSession extends Action {
 }
 
 export interface SetAdminOpen extends Action {
-  type: string;
-  payload: boolean;
+    type: string;
+    payload: boolean;
 }

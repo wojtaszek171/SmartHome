@@ -27,11 +27,11 @@ const collapseSection = (element: HTMLElement) => {
 
 const expandSection = (element: HTMLElement, heightToSet?: number) => {
     var sectionHeight = heightToSet || element.scrollHeight;
-    
+
     element.style.height = sectionHeight + 'px';
     
     element.setAttribute('data-collapsed', 'false');
-  }
+}
 
 const Collapse: FC<CollapseProps> = ({ collapsed, collapseTitle, onCollapse, children }) => {
     const [isCollapsed, setIsCollapsed] = useState(collapsed);

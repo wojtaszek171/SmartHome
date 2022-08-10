@@ -9,6 +9,8 @@ interface SocketSettingsItemProps {
   onChange: Function;
 };
 
+const lightModesTitles = ['off', 'on', 'evening (Aquael)', 'night (Aquael)'];
+
 const parseLightModes = (modesStr: string | undefined) => modesStr?.length ? modesStr?.split('/').map(lightModeString => lightModeString.replace(/:/,';').split(';')) || [] : [];
 
 const stringifyLightModes = (modesArr: string[][]) => (modesArr.length ? modesArr.map(mode => mode.join(':')).join('/') : '');
@@ -16,7 +18,7 @@ const stringifyLightModes = (modesArr: string[][]) => (modesArr.length ? modesAr
 const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }) => {
 
   const [lightModeHour, setLightModeHour] = useState('');
-  const [lightMode, setLightMode] = useState('1');
+  const [lightMode, setLightMode] = useState('0');
 
   const lightModes = parseLightModes(socketObj.lightModes);
   const [currentLightModes, setCurrentLightModes] = useState(lightModes);
@@ -37,12 +39,20 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
   const handleAddLightMode = () => {
     const newMode = [lightMode, lightModeHour];
     if (lightModeHour.length && lightMode.length && !currentLightModes.some((mode) => arrayEquals(mode, newMode))) {
-      handleUpdateSocket({ lightModes: stringifyLightModes([...currentLightModes, newMode]) });
+      const sortedLightModes = [...currentLightModes, newMode].sort((a, b) => {
+        var time1 = parseFloat(a[1].replace(':','.').replace(/[^\d.-]/g, ''));
+        var time2 = parseFloat(b[1].replace(':','.').replace(/[^\d.-]/g, ''));
+        if (time1 < time2) return -1;
+        if (time1 > time2) return 1;
+        return 0;
+      } );
+      
+      handleUpdateSocket({ lightModes: stringifyLightModes(sortedLightModes) });
     }
   };
 
   const handleDeleteLightMode = (modeToDelete: string[]) => {
-    handleUpdateSocket({ lightModes: stringifyLightModes(currentLightModes.filter((mode: any) => mode !== modeToDelete)) });
+    handleUpdateSocket({ lightModes: stringifyLightModes(currentLightModes.filter((mode: any) => mode[1] !== modeToDelete[1])) });
   };
   
   return (
@@ -58,47 +68,27 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
           <span className='toggle-title'>{socketObj.name || socketObj.key}</span>
         </div>
       </div>
-      <Collapse
-        collapseTitle='Advanced'
-        collapsed
-      >
         <div className='socket-advanced'>
-          <div className="socket-inputs">
-            <Input
-              disabled={!socketObj.enabled}
-              label={'Start'}
-              value={socketObj.start}
-              type="time"
-              onChange={(val: string) => handleUpdateSocket({ start: val })}
-            />
-            <Input
-              disabled={!socketObj.enabled}
-              label={'End'}
-              value={socketObj.stop}
-              type="time"
-              onChange={(val: string) => handleUpdateSocket({ stop: val })}
-            />
-          </div>
-          {socketObj.key === 'socket1' && <>
-            <span>Light modes (Aquael)</span>
+          <>
+            <span>Light modes</span>
             <div className='light-modes-list'>
               <div className='light-modes-row'>
                 <span>MODE</span>
                 <span>ENABLE HOUR</span>
               </div>
-              {currentLightModes?.map((mode) =>
+              {currentLightModes?.map(([lmode, lhour]) =>
                 <div
                   className='light-modes-row'
-                  key={mode[0] + mode[1]}
+                  key={lmode + lhour}
                 >
                   <span>
-                    {mode[0]}
+                    {lightModesTitles[Number(lmode)]}
                   </span>
                   <span>
-                    {mode[1]}
+                    {lhour}
                   </span>
                   <span className='delete-light-mode'
-                    onClick={() => handleDeleteLightMode(mode)}
+                    onClick={() => handleDeleteLightMode([lmode, lhour])}
                     role='img'
                     aria-label='delete-mode'
                   >
@@ -112,16 +102,20 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
                 <span>Mode</span>
                 <Select
                   options={[{
+                    key: '0',
+                    item: lightModesTitles[0]
+                  },
+                  {
                     key: '1',
-                    item: '1'
+                    item: lightModesTitles[1]
                   },
                   {
                     key: '2',
-                    item: '2'
+                    item: lightModesTitles[2]
                   },
                   {
                     key: '3',
-                    item: '3'
+                    item: lightModesTitles[3]
                   }]}
                   onChange={setLightMode}
                 />
@@ -138,10 +132,7 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
               />
             </div>
           </>
-          }
-        </div>
-      </Collapse>
-      
+        </div>      
     </div>
   );
 }

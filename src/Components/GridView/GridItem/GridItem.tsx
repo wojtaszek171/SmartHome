@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import './GridItem.scss';
 
 interface GridItemProps {
@@ -7,8 +7,18 @@ interface GridItemProps {
 }
 
 const GridItem: FC<GridItemProps> = ({ children, title }) => {
+  const gridItemRef = useRef<HTMLDivElement>(null);
+  
+  const currentScrollHeight = gridItemRef.current?.scrollHeight;
+
+  useEffect(() => {
+      if (gridItemRef.current) {
+
+      }
+  }, [currentScrollHeight]);
+
   return (
-    <div className="grid-item-component">
+    <div className="grid-item-component" ref={gridItemRef}>
       {title && <span className="item-title">{title}</span>}
       <div className="item-content">
         {children}

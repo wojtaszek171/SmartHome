@@ -40,13 +40,7 @@ const SocketsSettings: FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) 
   }, [socketsObject]);
 
   const handleSocketUpdate = (socketObj: SocketItem) => {
-    console.log({
-      ...socketsObject,
-      [socketObj.key]: {
-        ...socketObj
-      }
-    });
-    
+
     setSocketsObject((prevObj) => ({
       ...prevObj,
       [socketObj.key]: {
