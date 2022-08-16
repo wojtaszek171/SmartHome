@@ -1,15 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import { SocketItem } from 'src/Components/Admin/SocketsSettings/SocketsSettings';
 import Icon from 'src/Components/Icon/Icon';
+import { parseLightModes } from 'src/utils/lightModes';
 import './SocketItem.scss';
 
 interface SocketItemProps extends SocketItem {
   name: string;
 };
 
-const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }) => {
-  const [startHour, startMin] = start.split(":");
-  const [stopHour, stopMin] = stop.split(":");
+const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled }) => {
   const [currentDeg, setCurrentDeg] = useState(0);
 
   useEffect(() => {
@@ -28,31 +27,9 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }
     setCurrentDeg((Number(currentDate.getHours()) * 60 + Number(currentDate.getMinutes()))/1440*360);
   };
 
-  const socketEnabled = () => {
-    if (enabled && !start && !stop) {
-      return true;
-    }
-
-    const currentDate = new Date();
-
-    const startDate = new Date(currentDate.getTime());
-    startDate.setHours(Number(startHour));
-    startDate.setMinutes(Number(startMin));
-
-    const stopDate = new Date(currentDate.getTime());
-    stopDate.setHours(Number(stopHour));
-    stopDate.setMinutes(Number(stopMin));
-
-    if ( startDate > stopDate) {
-      return !(startDate < currentDate && stopDate > currentDate);
-    }
-
-    return startDate < currentDate && stopDate > currentDate;
-  };
-
-  const minutesBetween = () => {
-    let startDate = new Date(0, 0, 0, Number(startHour), Number(startMin), 0);
-    let endDate = new Date(0, 0, 0, Number(stopHour), Number(stopMin), 0);
+  const minutesBetween = (startH: number, startM: number, stopH: number, stopM: number) => {
+    let startDate = new Date(0, 0, 0, Number(startH), Number(startM), 0);
+    let endDate = new Date(0, 0, 0, Number(stopH), Number(stopM), 0);
     let diff = endDate.getTime() - startDate.getTime();
     let hours = Math.floor(diff / 1000 / 60 / 60);
     diff -= hours * 1000 * 60 * 60;
@@ -63,28 +40,43 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, start, stop, enabled }
     }
 
     return hours*60 + minutes;
-  };  
+  };
 
-  const degrees = minutesBetween()/1440*360;
+  const socketModesArray = parseLightModes(lightModes);
 
-  const cssDeg = 90 + degrees;
-  const startDeg = (Number(startHour) * 60 + Number(startMin))/1440*360;
+  const modeColors = ['#223343', '#139035', '#86eba1', '#5498ff'];
+
+  const getChart = (socketMode: string[], i: number ) => {
+    const modeHour = socketMode[1].split(':');
+    const nextModeHour = (socketModesArray?.[i + 1] || socketModesArray[0])[1].split(':');    
+    
+    const degrees = minutesBetween(Number(modeHour[0]), Number(modeHour[1]), Number(nextModeHour[0]), Number(nextModeHour[1]))/1440*360;
+
+    const cssDeg = 90 + degrees;
+    const startDeg = (Number(modeHour[0]) * 60 + Number(modeHour[1]))/1440*360;
+    const modeColor = modeColors[Number(socketMode[0])];
+
+    return (
+      <div className='socket-range' style={{ background: modeColor }}>
+        <div className='range' style={{
+          backgroundImage: `linear-gradient(${degrees >= 180 ? cssDeg-180 : cssDeg}deg, transparent 49%, ${degrees > 180 ? `${modeColor}` : 'transparent'} 50%),
+            linear-gradient(90deg, transparent 49%, transparent 50%)`,
+          transform: `rotate(${startDeg}deg)`
+        }} />
+      </div>
+    );
+  };
 
   return (
     <div className={`socket-item`}>
       {!enabled && <div className='socket-disabled'/>}
       <div className={'socket-title'}>
-        <div className={`socket-indicator ${socketEnabled() ? 'enabled' : ''}`}/>
+        <div className={`socket-indicator ${enabled ? 'enabled' : ''}`}/>
         <span>{name}</span>
       </div>
       <div className='socket-details'>
-        <span>{`${start} - ${stop}`}</span>
         <div className='socket-clock'>
-          <div className='range' style={{
-            backgroundImage: `linear-gradient(${degrees >= 180 ? cssDeg-180 : cssDeg}deg, transparent 49%, ${degrees > 180 ? '#139035' : '#223343'} 50%),
-              linear-gradient(90deg, #223343 49%, transparent 50%)`,
-            transform: `rotate(${startDeg}deg)`
-          }} />
+          {socketModesArray.map((mode, i) => getChart(mode, i))}
           <div className='clockface'>
             <Icon name='clockface'/>
           </div>

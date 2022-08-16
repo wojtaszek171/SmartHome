@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Footer, Modal } from 'pwojtaszko-design';
 import Content from '../Content';
 import Admin from '../Admin';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import SideMenu from '../SideMenu';
 import Header from '../Header';
 import { useSelector } from 'react-redux';
@@ -30,16 +30,14 @@ const App: FC<AppProps> = ({ isAdminConfigured, onRegister }) => {
       <Router>
         <Header/>
           <div className="appMiddle">
-            <Switch>
-              <Route path="/" exact>
-                <Content />
-                {isTokenValid &&
-                  <SideMenu >
-                    <Admin />
-                  </SideMenu>
-                }
-              </Route>
-            </Switch>
+            <Route path="/">
+              <Content />
+              {isTokenValid &&
+                <SideMenu >
+                  <Admin />
+                </SideMenu>
+              }
+            </Route>
           </div>
         <Footer
           middle={<span className="footer-text">This is footer. Made by Paweł Wojtaszko</span>}

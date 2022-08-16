@@ -83,7 +83,7 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
         <Button
           text="Update settings"
           disabled={updateDisabled}
-          handleClick={handleSettingsUpdate}
+          onClick={handleSettingsUpdate}
         />
         {error && <span className="update-error">{error}</span>}
       </div>

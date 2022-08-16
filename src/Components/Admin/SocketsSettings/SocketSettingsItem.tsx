@@ -1,8 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button, Input, Select, Toggle } from 'pwojtaszko-design';
 import { SocketItem } from './SocketsSettings';
-import Collapse from 'src/Components/Collapse';
 import arrayEquals from 'src/utils/arrayEquals';
+import { parseLightModes, stringifyLightModes } from 'src/utils/lightModes';
 
 interface SocketSettingsItemProps {
   socketObj: SocketItem;
@@ -10,10 +10,6 @@ interface SocketSettingsItemProps {
 };
 
 const lightModesTitles = ['off', 'on', 'evening (Aquael)', 'night (Aquael)'];
-
-const parseLightModes = (modesStr: string | undefined) => modesStr?.length ? modesStr?.split('/').map(lightModeString => lightModeString.replace(/:/,';').split(';')) || [] : [];
-
-const stringifyLightModes = (modesArr: string[][]) => (modesArr.length ? modesArr.map(mode => mode.join(':')).join('/') : '');
 
 const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }) => {
 
@@ -128,7 +124,7 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
               />
               <Button
                 text='+'
-                handleClick={handleAddLightMode}
+                onClick={handleAddLightMode}
               />
             </div>
           </>

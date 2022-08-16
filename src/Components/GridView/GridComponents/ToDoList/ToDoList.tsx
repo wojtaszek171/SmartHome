@@ -43,7 +43,7 @@ const ToDoList: FC<ToDoListProps> = ({ list }) => {
           />
           <div className='submit-button'>
             <Button
-              handleClick={createNewItem}
+              onClick={createNewItem}
               text='Dodaj'
             />
           </div>
