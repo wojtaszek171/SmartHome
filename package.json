@@ -14,7 +14,7 @@
     "@typescript-eslint/parser": "4.0.1",
     "eslint": "^6.6.0",
     "i18next": "^21.9.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "pwojtaszko-design": "^0.3.26",
     "react": "^17.0.2",
