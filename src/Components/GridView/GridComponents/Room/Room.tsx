@@ -1,31 +1,33 @@
 import React, { FC } from 'react';
-import Icon from '../../../Icon/Icon';
+import { Sensor } from 'src/reducers/sensors/types';
+import SensorComponent from '../Sensor';
+import { SensorTypes } from '../Sensor/Sensor';
 import './Room.scss';
 
 interface RoomProps {
-  temperature: string;
-  pressure: string;
-  humidity: string;
+  temperature: Sensor;
+  pressure: Sensor;
+  humidity: Sensor;
 }
 
 const Room: FC<RoomProps> = ({ temperature, pressure, humidity }) => {
   return (
     <div className="room-section-component">
-      {temperature !== undefined && <div className="room-tile">
-        <Icon name='thermometer' width={'30px'}/>
-        <span className="text-title">Temperatura</span>
-        <span className="text-value">{temperature} °C</span>
-      </div>}
-      {pressure !== undefined && <div className="room-tile">
-        <Icon name='barometer' width={'30px'}/>
-        <span className="text-title">Ciśnienie</span>
-        <span className="text-value">{pressure} hPa</span>
-      </div>}
-      {humidity !== undefined && <div className="room-tile">
-        <Icon name='humidity' width={'30px'}/>
-        <span className="text-title">Wilgotność</span>
-        <span className="text-value">{humidity} %</span>
-      </div>}
+      {temperature !== undefined &&
+        <SensorComponent
+          type={SensorTypes.TEMPERATURE}
+          data={temperature}
+        />}
+      {pressure !== undefined &&
+        <SensorComponent
+          type={SensorTypes.PRESSURE}
+          data={temperature}
+        />}
+      {humidity !== undefined &&
+        <SensorComponent
+          type={SensorTypes.HUMIDITY}
+          data={temperature}
+        />}
     </div>
   );
 }

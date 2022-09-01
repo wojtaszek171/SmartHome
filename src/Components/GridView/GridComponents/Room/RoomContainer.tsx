@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInitialSensorObject, setSensorsData } from 'src/reducers/sensors/sensors';
 import { Sensor } from 'src/reducers/sensors/types';
-import { getSensorValueByKey } from 'src/selectors/sensors';
+import { getSensorByKey } from 'src/selectors/sensors';
 import Room from './Room';
 
 interface RoomContainerProps {
@@ -29,9 +29,9 @@ const RoomContainer: FC<RoomContainerProps> = ({ tempKey = '', pressureKey = '',
     dispatch(setSensorsData(sensorsArray))
   }, [dispatch, humidityKey, pressureKey, tempKey]);
 
-  const roomTemp = useSelector(getSensorValueByKey(tempKey));
-  const roomPressure = useSelector(getSensorValueByKey(pressureKey));
-  const roomHumidity = useSelector(getSensorValueByKey(humidityKey));
+  const roomTemp = useSelector(getSensorByKey(tempKey));
+  const roomPressure = useSelector(getSensorByKey(pressureKey));
+  const roomHumidity = useSelector(getSensorByKey(humidityKey));
 
   return (
     <Room

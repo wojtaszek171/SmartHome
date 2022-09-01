@@ -1,0 +1,12 @@
+{
+   "temperature": "Temperatura",
+   "humidity": "Wilgotność",
+   "pressure": "Ciśnienie",
+   "monday": "Poniedziałek",
+   "tuesday": "Wtorek",
+   "wednesday": "Środa",
+   "thursday": "Czwartek",
+   "friday": "Piątek",
+   "saturday": "Sobota",
+   "sunday": "Niedziela"
+}

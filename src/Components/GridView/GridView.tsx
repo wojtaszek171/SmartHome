@@ -6,7 +6,6 @@ import AquariumSection from './GridComponents/AquariumSection';
 import DateTime from './GridComponents/DateTime';
 import Room from './GridComponents/Room';
 import Sockets from './GridComponents/Sockets';
-import ToDoList from './GridComponents/ToDoList';
 import Weather from './GridComponents/Weather';
 import GridItem from './GridItem';
 import './GridView.scss';

@@ -1,12 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import i18nInstance from 'src/i18n/i18nInstance';
 import './DateTime.scss';
 
 const { useEffect, useState } =  React;
 
 const DateTime = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { t } = useTranslation('common', { i18n: i18nInstance })
 
-  const days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+  const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
   useEffect(() => {
     const timeInterval = setInterval(
@@ -34,7 +37,7 @@ const DateTime = () => {
             <span>{formatTime()}</span>
           </div>
           <div className="date-row day">
-            <span>{days[currentTime.getDay()]}</span>
+            <span>{t(days[currentTime.getDay()])}</span>
           </div>
         </div>
       </div> 

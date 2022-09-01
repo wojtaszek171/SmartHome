@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
+import { Sensor } from 'src/reducers/sensors/types';
 import './AquariumSection.scss';
 
 interface AquariumSectionProps {
-  temperature: string;
+  temperature: Sensor;
 }
 
 const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {
@@ -11,7 +12,7 @@ const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {
     <div className="aquarium-section-component">
       <div className="water-temperature">
         <div className="text-value">
-          <span>{temperature}°C</span>
+          <span>{temperature?.value}°C</span>
         </div>
       </div>
     </div>
