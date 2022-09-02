@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import i18nInstance from 'src/i18n/i18nInstance';
 import { setSensorsData } from 'src/reducers/sensors/sensors';
 import { getSensorsData } from 'src/restService/restService';
 import AquariumSection from './GridComponents/AquariumSection';
@@ -12,13 +14,14 @@ import './GridView.scss';
 
 const GridView = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation('common', { i18n: i18nInstance });
 
   const fetchSensors = async () => {
     try {
       const sensors = await getSensorsData();
       dispatch(setSensorsData(sensors));
     } catch (e) {
-      console.log('Failed to read API');
+      console.log(t('apiNotReachable'));
     }
   };
 
@@ -36,12 +39,6 @@ const GridView = () => {
     <div className="grid-component noselect">
       <GridItem>
         <DateTime />
-      </GridItem>
-      <GridItem title='Na zewnątrz'>
-        <Room
-          tempKey='room1TempOut'
-          humidityKey='room1HumidityOut'
-        />
       </GridItem>
       <GridItem title='Salon'>
         <Room

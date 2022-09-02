@@ -21,12 +21,12 @@ const Room: FC<RoomProps> = ({ temperature, pressure, humidity }) => {
       {pressure !== undefined &&
         <SensorComponent
           type={SensorTypes.PRESSURE}
-          data={temperature}
+          data={pressure}
         />}
       {humidity !== undefined &&
         <SensorComponent
           type={SensorTypes.HUMIDITY}
-          data={temperature}
+          data={humidity}
         />}
     </div>
   );

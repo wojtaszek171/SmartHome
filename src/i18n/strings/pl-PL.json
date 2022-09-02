@@ -8,5 +8,6 @@
    "thursday": "Czwartek",
    "friday": "Piątek",
    "saturday": "Sobota",
-   "sunday": "Niedziela"
+   "sunday": "Niedziela",
+   "apiNotReachable": "Serwer API nie odpowiada"
 }

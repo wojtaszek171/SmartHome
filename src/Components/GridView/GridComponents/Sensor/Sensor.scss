@@ -6,11 +6,18 @@
     padding-left: 10px;
     padding-right: 10px;
     min-width: 140px;
-    min-height: 105px;
 
-    img {
+    .sensor-icon {
         margin: 0 auto;
+        position: relative;
+    
+        .stale-icon {
+            position: absolute;
+            right: -5px;
+            top: 15px;
+        }    
     }
+
 
     .text-title {
         text-align: center;

@@ -1,20 +1,21 @@
 import React, { FC } from 'react';
 import { Sensor } from 'src/reducers/sensors/types';
+import SensorComponent from '../Sensor';
+import { SensorTypes } from '../Sensor/Sensor';
 import './AquariumSection.scss';
 
 interface AquariumSectionProps {
   temperature: Sensor;
 }
 
-const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {
-
+const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {  
   return (
     <div className="aquarium-section-component">
-      <div className="water-temperature">
-        <div className="text-value">
-          <span>{temperature?.value}°C</span>
-        </div>
-      </div>
+      <SensorComponent
+        type={SensorTypes.TEMPERATURE}
+        data={temperature}
+        customTitle=''
+      />
     </div>
   );
 }
