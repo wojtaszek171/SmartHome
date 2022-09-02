@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import Tooltip from 'src/Components/Tooltip';
 import i18nInstance from 'src/i18n/i18nInstance';
 import { Sensor } from 'src/reducers/sensors/types';
 import Icon from '../../../Icon/Icon';
@@ -32,7 +33,11 @@ const SensorComponent: FC<SensorComponentProps> = ({ type, data, customTitle }) 
       <div className='sensor-icon'>
         <Icon name={type} width='30px'/>
         {isStale() && <div className='stale-icon'>
-          <Icon name={'exclamation'} width='20px'/>
+          <Tooltip
+            content={t('sensorWarning')}
+          >
+            <Icon name={'exclamation'} width='20px'/>
+          </Tooltip>
         </div>}
       </div>
       <span className='text-title'>{customTitle !== undefined ? customTitle : t(type)}</span>

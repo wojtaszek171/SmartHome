@@ -9,5 +9,6 @@
    "friday": "Friday",
    "saturday": "Saturday",
    "sunday": "Sunday",
-   "apiNotReachable": "API server doesn't respond"
+   "apiNotReachable": "API server doesn't respond",
+   "sensorWarning": "Data are not up to date. Check sensor."
 }
