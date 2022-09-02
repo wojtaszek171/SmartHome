@@ -118,7 +118,7 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
                   <span>{`${daySelected.humidity} %`}</span>
                 </div>
                 <div className="other-value">
-                  <Icon name='barometer' width={'30px'}/>
+                  <Icon name='pressure' width={'30px'}/>
                   <span>{`${daySelected.pressure} hPa`}</span>
                 </div>
               </div>
