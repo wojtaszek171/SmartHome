@@ -15,7 +15,7 @@ export enum SensorTypes {
 
 interface SensorComponentProps {
   type: SensorTypes;
-  data: Sensor;
+  data: Sensor | undefined;
   customTitle?: string;
 }
 
@@ -26,6 +26,19 @@ const SensorComponent: FC<SensorComponentProps> = ({ type, data, customTitle }) 
     const diff = moment().diff(moment(data?.updatedAt), 'seconds');
     
     return diff > 60;
+  };
+
+  const getUnit = () => {
+    switch (type) {
+      case SensorTypes.HUMIDITY:
+        return '%';
+      case SensorTypes.PRESSURE:
+        return 'hPa';
+      case SensorTypes.TEMPERATURE: 
+        return '°C';
+      default:
+        return '°C';
+    }
   };
 
   return (
@@ -41,7 +54,7 @@ const SensorComponent: FC<SensorComponentProps> = ({ type, data, customTitle }) 
         </div>}
       </div>
       <span className='text-title'>{customTitle !== undefined ? customTitle : t(type)}</span>
-      <span className='text-value'>{data?.value || '--'} °C</span>
+      <span className='text-value'>{data?.value || '--'} {getUnit()}</span>
     </div>
   );
 }

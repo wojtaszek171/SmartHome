@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInitialSensorObject, setSensorsData } from 'src/reducers/sensors/sensors';
+import { setSensorsData } from 'src/reducers/sensors/sensors';
 import { getSensorByKey } from 'src/selectors/sensors';
 import AquariumSection from './AquariumSection';
 
@@ -11,7 +11,7 @@ const AquariumSectionContainer = () => {
   const waterTemp = useSelector(getSensorByKey(SENSOR_KEY));
 
   useEffect(() => {
-    dispatch(setSensorsData([getInitialSensorObject(SENSOR_KEY)]))
+    dispatch(setSensorsData([]))
   }, []);
 
   return (

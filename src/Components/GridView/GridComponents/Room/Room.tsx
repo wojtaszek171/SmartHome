@@ -5,9 +5,9 @@ import { SensorTypes } from '../Sensor/Sensor';
 import './Room.scss';
 
 interface RoomProps {
-  temperature: Sensor;
-  pressure: Sensor;
-  humidity: Sensor;
+  temperature: Sensor | undefined;
+  pressure: Sensor | undefined;
+  humidity: Sensor | undefined;
 }
 
 const Room: FC<RoomProps> = ({ temperature, pressure, humidity }) => {

@@ -5,7 +5,7 @@ import { SensorTypes } from '../Sensor/Sensor';
 import './AquariumSection.scss';
 
 interface AquariumSectionProps {
-  temperature: Sensor;
+  temperature: Sensor | undefined;
 }
 
 const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {  
