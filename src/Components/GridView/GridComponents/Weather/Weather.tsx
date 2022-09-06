@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
 import DailyItem from './DailyItem/DailyItem';
-import './Weather.scss';
 import { Modal } from 'pwojtaszko-design';
 import HourlyItem from './HourlyItem/HourlyItem';
 import Icon from '../../../Icon/Icon';
 import { CurrentWeather, DailyWeather, HourlyWeather } from '../../../../reducers/weather/types';
-
-const { Chart } = require('react-google-charts');
+import LineChart from './LineChart';
+import './Weather.scss';
 
 interface WeatherProps {
   current: CurrentWeather | null;
@@ -65,7 +64,7 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
   }
 
   const prepareChartData = () => {
-    return hourlyDaySelected.map((hour) => [hour.hour, hour.temp, hour.temp]);
+    return hourlyDaySelected.map((hour) => hour.temp);
   }
 
   const displayModalTitle = () => {
@@ -124,45 +123,7 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
               </div>
             </div>
             <div className="chart">
-              <Chart
-                width={'100%'}
-                height={100}
-                chartType="AreaChart"
-                loader={<div>Loading Chart</div>}
-                data={[
-                  [
-                    { type: 'number', label: 'x' },
-                    { id: 'i0', type: 'number' },
-                    { type: 'number', role: 'annotation' },
-                  ],
-                  ...prepareChartData()
-                ]}
-                options={{
-                  intervals: { style: 'none' },
-                  legend: 'none',
-                  curveType: 'function',
-                  vAxis: {
-                    gridlines: {
-                      count: 0
-                    },
-                    textPosition: 'none',
-                    viewWindow: {
-                      max: Math.max.apply(Math, hourlyDaySelected.map(o => o.temp)) + 15
-                    }
-                  },
-                  hAxis: {
-                    gridlines: {
-                      count: 0
-                    },
-                    textPosition: 'none'
-                  },
-                  annotations: {
-                    stemColor : 'none'
-                  },
-                  backgroundColor: 'transparent',
-                  enableInteractivity: false
-                }}
-              />
+              <LineChart values={prepareChartData()} />
             </div>
             <div className="temperatures">
               {hourlyDaySelected.map((hour) => <HourlyItem key={hour.hour} {...hour} />)}

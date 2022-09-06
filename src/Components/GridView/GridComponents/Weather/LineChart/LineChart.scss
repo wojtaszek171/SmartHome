@@ -1,0 +1,19 @@
+.pwd-line-chart {
+  display: flex;
+
+  .chart {
+    padding: 0 40px;
+  }
+  
+  body {
+    /* background: #ccc; */
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  body, html {
+    height: 100%;
+  }
+}
