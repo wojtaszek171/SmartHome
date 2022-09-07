@@ -44,28 +44,32 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled })
 
   const socketModesArray = parseLightModes(lightModes);
 
-  const modeColors = ['#223343', '#139035', '#86eba1', '#5498ff'];
-
-  const getChart = (socketMode: string[], i: number ) => {
+  const getSlice = (socketMode: string[], i: number ) => {
     const modeHour = socketMode[1].split(':');
     const nextModeHour = (socketModesArray?.[i + 1] || socketModesArray[0])[1].split(':');    
     
-    const degrees = minutesBetween(Number(modeHour[0]), Number(modeHour[1]), Number(nextModeHour[0]), Number(nextModeHour[1]))/1440*360;
+    const degrees = minutesBetween(Number(modeHour[0]), Number(modeHour[1]), Number(nextModeHour[0]), Number(nextModeHour[1]))/1440*360 + 1;
 
-    const cssDeg = 90 + degrees;
-    const startDeg = (Number(modeHour[0]) * 60 + Number(modeHour[1]))/1440*360;
-    const modeColor = modeColors[Number(socketMode[0])];
+    const startDeg = (Number(modeHour[0]) * 60 + Number(modeHour[1]))/1440*360 - 1;
 
-    return (
-      <div className='socket-range' style={{ background: modeColor }}>
-        <div className='range' style={{
-          backgroundImage: `linear-gradient(${degrees >= 180 ? cssDeg-180 : cssDeg}deg, transparent 49%, ${degrees > 180 ? `${modeColor}` : 'transparent'} 50%),
-            linear-gradient(90deg, transparent 49%, transparent 50%)`,
-          transform: `rotate(${startDeg}deg)`
-        }} />
-      </div>
-    );
+    return <circle className={`mode-${socketMode[0]}`} stroke-dasharray={`${degrees/360*100} 100`} transform={`rotate(${startDeg}, 16, 16)`} />;
   };
+
+  const getSlices = () => {
+    if (enabled && !lightModes?.length) {
+      return <circle className='mode-1' stroke-dasharray='101 100' />
+    }
+
+    if (socketModesArray?.length === 1) {
+      return <circle className={`mode-${socketModesArray[0][0]}`} stroke-dasharray='101 100' />
+    }
+
+    return socketModesArray.map((mode, i) => getSlice(mode, i));
+  };
+
+  const useOnOffOnly = socketModesArray.every(([mode, time]) => {
+    return mode === '0' || mode === '1';
+  });
 
   return (
     <div className={`socket-item`}>
@@ -76,7 +80,9 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled })
       </div>
       <div className='socket-details'>
         <div className='socket-clock'>
-          {socketModesArray.map((mode, i) => getChart(mode, i))}
+          <svg className={`pie${useOnOffOnly ? ' standard' : ''}`} viewBox="0 0 32 32">
+            {getSlices()}
+          </svg>
           <div className='clockface'>
             <Icon name='clockface'/>
           </div>

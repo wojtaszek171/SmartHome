@@ -42,6 +42,47 @@
       margin: 0 auto;
       margin-top: 10px;
 
+      .pie {
+        border-radius: 50%;
+        transform: rotate(-90deg);
+
+        circle {
+          fill: none;
+          stroke-width: 32;
+          r: 16;
+          cx: 16;
+          cy: 16;
+
+          &.mode-0 {
+            stroke: transparent;
+          }
+
+          &.mode-1 {
+            stroke: #e5de44;
+          }
+
+          &.mode-2 {
+            stroke: #ef810e;
+          }
+
+          &.mode-3 {
+            stroke: #4f678d;
+          }
+        }
+
+        &.standard {
+          circle {
+            &.mode-0 {
+              stroke: transparent;
+            }
+
+            &.mode-1 {
+              stroke: #139035;
+            }
+          }
+        }
+      }
+
       .clockface {
         position: absolute;
         top: 0;
@@ -61,21 +102,6 @@
 
         img {
           width: 100%;
-        }
-      }
-
-      .socket-range {
-        width: 100%;
-        background: #139035;
-        height: 100%;
-        position: absolute;
-        border-radius: 50%;
-
-        .range {
-          border-radius: 50%;
-          position: relative;
-          width: 100%;
-          height: 100%;
         }
       }
     }
