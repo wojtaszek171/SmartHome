@@ -5,11 +5,10 @@ interface LineChartProps {
     values: number[];
 }
 
+const HEIGHT = 100;
+const WIDTH = 500;
+
 const LineChart: FC<LineChartProps> = ({ values }) => {
-
-    const HEIGHT = 100;
-    const WIDTH = 500;
-
     const valuesToPoints = () => {
         const invertedValues = values.map(val => val*-1);
 
@@ -17,12 +16,11 @@ const LineChart: FC<LineChartProps> = ({ values }) => {
         const max = Math.max(...invertedValues);
         const maxDiff = Math.abs(max - min);
         const yPoints = invertedValues.map(val => val + Math.abs(min));
-        console.log(yPoints);
         
         const scale = HEIGHT / Math.abs(maxDiff) / 2;
         
         let points = '\n';
-        const widthToAdd = 500 / yPoints.length;
+        const widthToAdd = WIDTH / yPoints.length;
         let previous = widthToAdd/2;
 
         yPoints.forEach(value => {
@@ -44,7 +42,7 @@ const LineChart: FC<LineChartProps> = ({ values }) => {
         const scale = HEIGHT / Math.abs(maxDiff) / 2;
         
         let points = '\n';
-        const widthToAdd = 500 / (yPoints.length - 2);
+        const widthToAdd = WIDTH / (yPoints.length - 2);
         let previous = widthToAdd/2;
 
         yPoints.forEach((value, index) => {
