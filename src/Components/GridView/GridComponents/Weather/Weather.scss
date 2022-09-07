@@ -129,7 +129,11 @@
             flex-wrap: wrap;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: 880px) {
+            .pwd-line-chart .chart {
+                padding: 0 0 20px 0;
+            }
+
             .temperatures {
                 margin-left: 0;
                 margin-right: 0;

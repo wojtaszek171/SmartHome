@@ -11,12 +11,12 @@ const LineChart: FC<LineChartProps> = ({ values }) => {
     const WIDTH = 500;
 
     const valuesToPoints = () => {
-        let values2 = values.map(val => val*-1);
+        const invertedValues = values.map(val => val*-1);
 
-        const min = Math.min(...values2);
-        const max = Math.max(...values2);
+        const min = Math.min(...invertedValues);
+        const max = Math.max(...invertedValues);
         const maxDiff = Math.abs(max - min);
-        const yPoints = values2.map(val => val + Math.abs(min));
+        const yPoints = invertedValues.map(val => val + Math.abs(min));
         console.log(yPoints);
         
         const scale = HEIGHT / Math.abs(maxDiff) / 2;
@@ -33,6 +33,34 @@ const LineChart: FC<LineChartProps> = ({ values }) => {
         return points;
     };
 
+    const valuesToBg = () => {
+        const invertedValues = values.map(val => val*-1);
+
+        const min = Math.min(...invertedValues);
+        const max = Math.max(...invertedValues);
+        const maxDiff = Math.abs(max - min);
+        const yPoints = [0, ...invertedValues, 0].map(val => val + Math.abs(min));
+        
+        const scale = HEIGHT / Math.abs(maxDiff) / 2;
+        
+        let points = '\n';
+        const widthToAdd = 500 / (yPoints.length - 2);
+        let previous = widthToAdd/2;
+
+        yPoints.forEach((value, index) => {
+            if (index === 0) {
+                points += `${previous}, ${value * scale - 5 + HEIGHT / 4}\n`;
+            } else if (index === yPoints.length - 1) {
+                points += `${previous - widthToAdd}, ${value * scale - 5 + HEIGHT / 4}\n`;
+            } else {
+                points += `${previous}, ${value * scale - 5 + HEIGHT / 4}\n`;
+                previous += widthToAdd;
+            }
+        });
+
+        return points;
+    };
+
     return (
         <div className='pwd-line-chart'>
             <svg width="100%" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="chart">
@@ -44,7 +72,14 @@ const LineChart: FC<LineChartProps> = ({ values }) => {
                     width='100%'
                     height='100%'
                 />
-                
+                <polyline
+                    fill="#4864a9a8"
+                    stroke="#0074d9"
+                    stroke-width="0"
+                    points={valuesToBg()}
+                    width='100%'
+                    height='100%'
+                />
                 </svg>
         </div>
     );
