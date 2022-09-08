@@ -3,21 +3,22 @@ import { Button, Input, Select, Toggle } from 'pwojtaszko-design';
 import { SocketItem } from './SocketsSettings';
 import arrayEquals from 'src/utils/arrayEquals';
 import { parseLightModes, stringifyLightModes } from 'src/utils/lightModes';
+import { useTranslation } from 'react-i18next';
+import i18nInstance from 'src/i18n/i18nInstance';
 
 interface SocketSettingsItemProps {
   socketObj: SocketItem;
   onChange: Function;
 };
 
-const lightModesTitles = ['off', 'on', 'evening (Aquael)', 'night (Aquael)'];
+const lightModesTitles = ['off', 'on', 'eveningAquael', 'nightAquael'];
 
 const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }) => {
-
   const [lightModeHour, setLightModeHour] = useState('');
   const [lightMode, setLightMode] = useState('0');
-
   const lightModes = parseLightModes(socketObj.lightModes);
   const [currentLightModes, setCurrentLightModes] = useState(lightModes);
+  const { t } = useTranslation('common', { i18n: i18nInstance });
 
   useEffect(() => {
     if (!arrayEquals(lightModes, currentLightModes)) {
@@ -66,11 +67,11 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
       </div>
         <div className='socket-advanced'>
           <>
-            <span>Light modes</span>
+            <span>{t('socketModes')}</span>
             <div className='light-modes-list'>
               <div className='light-modes-row'>
-                <span>MODE</span>
-                <span>ENABLE HOUR</span>
+                <span>{t('mode')}</span>
+                <span>{t('enableHour')}</span>
               </div>
               {currentLightModes?.map(([lmode, lhour]) =>
                 <div
@@ -78,7 +79,7 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
                   key={lmode + lhour}
                 >
                   <span>
-                    {lightModesTitles[Number(lmode)]}
+                    {t(lightModesTitles[Number(lmode)])}
                   </span>
                   <span>
                     {lhour}
@@ -95,29 +96,17 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
             </div>
             <div className='light-mode-input-wrapper'>
               <div className='select-wrapper'>
-                <span>Mode</span>
+                <span>{t('mode')}</span>
                 <Select
-                  options={[{
-                    key: '0',
-                    item: lightModesTitles[0]
-                  },
-                  {
-                    key: '1',
-                    item: lightModesTitles[1]
-                  },
-                  {
-                    key: '2',
-                    item: lightModesTitles[2]
-                  },
-                  {
-                    key: '3',
-                    item: lightModesTitles[3]
-                  }]}
+                  options={lightModesTitles.map((title, i) => ({
+                    key: `${i}`,
+                    item: t(title)
+                  }))}
                   onChange={setLightMode}
                 />
               </div>
               <Input
-                label={'Change time'}
+                label={t('enableHour')}
                 value={lightModeHour}
                 type="time"
                 onChange={setLightModeHour}

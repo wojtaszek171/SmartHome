@@ -1,16 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
-import SocketsSettings, { SocketItem } from './SocketsSettings/SocketsSettings';
+import { SocketItem } from './SocketsSettings/SocketsSettings';
 import { AdminSettingsValues } from './AdminContainer';
 import { Button, Input } from 'pwojtaszko-design';
+import { TFunction } from 'react-i18next';
+import SocketsSettings from './SocketsSettings';
 import './Admin.scss';
 
 interface AdminProps {
   settings: AdminSettingsValues;
   error: string;
   onSettingUpdate: Function;
+  t: TFunction
 }
 
-const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
+const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate, t }) => {
   const [weatherLat, setWeatherLat] = useState('');
   const [weatherLon, setWeatherLon] = useState('');
   const [changedSockets, setChangedSockets] = useState<Array<SocketItem>>([]);
@@ -53,11 +56,11 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
   return (
     <div className="Admin">
       <div className="header">
-        <span className="header-text">Administration panel</span>
+        <span className="header-text">{t('adminPanel')}</span>
       </div>
       <div className="settings">
         <span className="setting-title">
-          Weather
+          {t('weather')}
         </span>
         <div className="coordinates">
           <Input
@@ -74,14 +77,14 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate }) => {
           />
         </div>
         <span className="setting-title">
-          Sockets
+          {t('sockets')}
         </span>
         <SocketsSettings
           onChange={handleSocketsUpdate}
           socketsFromDB={settings.socketsFromDB}
         />
         <Button
-          text="Update settings"
+          text={t('updateSettings')}
           disabled={updateDisabled}
           onClick={handleSettingsUpdate}
         />

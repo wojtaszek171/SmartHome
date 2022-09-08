@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { Footer, Modal } from 'pwojtaszko-design';
 import Content from '../Content';
 import Admin from '../Admin';

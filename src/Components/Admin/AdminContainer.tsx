@@ -5,6 +5,8 @@ import { socketsConfig } from './SocketsSettings/socketsConfig';
 import { useSelector } from 'react-redux';
 import Admin from './Admin';
 import { getAuthToken } from 'src/selectors/session';
+import i18nInstance from 'src/i18n/i18nInstance';
+import { useTranslation } from 'react-i18next';
 
 export interface AdminSettingsValues {
   weatherLat: string;
@@ -22,6 +24,7 @@ const AdminContainer: FC = () => {
   const [settings, setSettings] = useState<AdminSettingsValues>({...initialConfig});
   const [error, setError] = useState('');
   const authToken = useSelector(getAuthToken);
+  const { t } = useTranslation('common', { i18n: i18nInstance });
 
   useEffect(() => {
     fetchSettings();
@@ -83,6 +86,7 @@ const AdminContainer: FC = () => {
       onSettingUpdate={handleSettingsUpdate}
       error={error}
       settings={settings}
+      t={t}
     />
   );
 }

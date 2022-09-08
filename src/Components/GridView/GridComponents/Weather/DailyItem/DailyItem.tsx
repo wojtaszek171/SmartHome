@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import i18nInstance from 'src/i18n/i18nInstance';
 import Icon from '../../../../Icon/Icon';
 import './DailyItem.scss';
 
-const dayNames = ['niedz', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob']
+const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
 interface DailyItemProps {
   dayOfWeek: number;
@@ -13,6 +15,7 @@ interface DailyItemProps {
 }
 
 const DailyItem: FC<DailyItemProps> = ({ dayOfWeek, dayTemp, nightTemp, icon, onClick}) => {
+  const { t } = useTranslation('common', { i18n: i18nInstance });
 
   const handleWeatherClick = () => {
     if(onClick) {
@@ -22,7 +25,7 @@ const DailyItem: FC<DailyItemProps> = ({ dayOfWeek, dayTemp, nightTemp, icon, on
 
   return (
     <div className="weather-forecast-day" onClick={handleWeatherClick}>
-      <span className="day-title"> {dayNames[dayOfWeek]} </span>
+      <span className="day-title"> {t(dayNames[dayOfWeek])} </span>
       <div className="day-image">
         <Icon name={icon}/>
       </div>

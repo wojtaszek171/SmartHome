@@ -1,6 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
-import _ from 'lodash';
-import { socketsConfig } from './socketsConfig';
+import React, { FC } from 'react';
 import SocketSettingsItem from './SocketSettingsItem';
 import './SocketsSettings.scss';
 
@@ -18,43 +16,19 @@ export interface SocketsObject {
 }
 
 interface SocketsSettingsProps {
-  socketsFromDB: SocketsObject;
+  socketsConfigValues: SocketItem[];
+  socketsObject: SocketsObject;
   onChange: Function;
 };
 
-const SocketsSettings: FC<SocketsSettingsProps> = ({ onChange, socketsFromDB }) => {
-
-  const [socketsObject, setSocketsObject] = useState<SocketsObject>({ ...socketsConfig });
-
-  useEffect(() => {
-    setSocketsObject({ ...socketsFromDB })
-  }, [socketsFromDB]);
-
-  useEffect(() => {
-    const changedSockets = _.reduce(socketsObject, (result: Array<SocketItem>, value, key) => {
-      return _.isEqual(value, socketsFromDB[key]) ?
-        result : result.concat(value);
-    }, []);
-
-    onChange(changedSockets);
-  }, [socketsObject]);
-
-  const handleSocketUpdate = (socketObj: SocketItem) => {
-
-    setSocketsObject((prevObj) => ({
-      ...prevObj,
-      [socketObj.key]: {
-        ...socketObj
-      }
-    }));
-  };
+const SocketsSettings: FC<SocketsSettingsProps> = ({ socketsObject, socketsConfigValues, onChange }) => {
 
   return (
     <div className="sockets-settings">
-      {Object.values(socketsConfig).map(({ key }) =>
+      {socketsConfigValues.map(({ key }) =>
         <SocketSettingsItem
           socketObj={socketsObject[key]}
-          onChange={handleSocketUpdate}
+          onChange={onChange}
           key={key}
         />
       )}

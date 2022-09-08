@@ -12,7 +12,7 @@ const AquariumSectionContainer = () => {
 
   useEffect(() => {
     dispatch(setSensorsData([]))
-  }, []);
+  }, [dispatch]);
 
   return (
     <AquariumSection

@@ -52,16 +52,16 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled })
 
     const startDeg = (Number(modeHour[0]) * 60 + Number(modeHour[1]))/1440*360 - 1;
 
-    return <circle className={`mode-${socketMode[0]}`} stroke-dasharray={`${degrees/360*100} 100`} transform={`rotate(${startDeg}, 16, 16)`} />;
+    return <circle key={`slice-${i}`} className={`mode-${socketMode[0]}`} strokeDasharray={`${degrees/360*100} 100`} transform={`rotate(${startDeg}, 16, 16)`} />;
   };
 
   const getSlices = () => {
     if (enabled && !lightModes?.length) {
-      return <circle className='mode-1' stroke-dasharray='101 100' />
+      return <circle className='mode-1' strokeDasharray='101 100' />
     }
 
     if (socketModesArray?.length === 1) {
-      return <circle className={`mode-${socketModesArray[0][0]}`} stroke-dasharray='101 100' />
+      return <circle className={`mode-${socketModesArray[0][0]}`} strokeDasharray='101 100' />
     }
 
     return socketModesArray.map((mode, i) => getSlice(mode, i));
