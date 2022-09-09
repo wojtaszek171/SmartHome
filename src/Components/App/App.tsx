@@ -43,6 +43,7 @@ const App: FC<AppProps> = ({ isAdminConfigured, onRegister }) => {
           middle={<span className="footer-text">This is footer. Made by Paweł Wojtaszko</span>}
         />
       </Router>
+      <div id="portal-root" />
     </div>
   );
 };
