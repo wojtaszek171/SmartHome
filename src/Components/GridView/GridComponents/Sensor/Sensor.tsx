@@ -1,5 +1,5 @@
-import moment from 'moment';
 import React, { FC } from 'react';
+import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 import Tooltip from 'src/Components/Tooltip';
 import i18nInstance from 'src/i18n/i18nInstance';

@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
-import DailyItem from './DailyItem/DailyItem';
 import { Modal } from 'pwojtaszko-design';
-import HourlyItem from './HourlyItem/HourlyItem';
-import Icon from '../../../Icon/Icon';
 import { CurrentWeather, DailyWeather, HourlyWeather } from '../../../../reducers/weather/types';
+import Icon from '../../../Icon/Icon';
+import DailyItem from './DailyItem/DailyItem';
+import HourlyItem from './HourlyItem/HourlyItem';
 import LineChart from './LineChart';
 import './Weather.scss';
 
@@ -11,7 +11,7 @@ interface WeatherProps {
   current: CurrentWeather | null;
   daily: DailyWeather;
   hourly: HourlyWeather;
-};
+}
 
 interface DaySelected {
   dt: number;
@@ -69,37 +69,37 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
 
   const displayModalTitle = () => {
     const date = new Date(daySelected.dt * 1000);
-    return `Pogoda ${("0" + date.getDate()).slice(-2)}.${("0" + (date.getMonth() + 1)).slice(-2)}`;
+    return `Pogoda ${('0' + date.getDate()).slice(-2)}.${('0' + (date.getMonth() + 1)).slice(-2)}`;
   }
 
   return (
-    <div className="weather-component">
-        <div className="weather-row current" onClick={() => handleHourlyDaySelect(new Date().getDate())}>
+    <div className='weather-component'>
+        <div className='weather-row current' onClick={() => handleHourlyDaySelect(new Date().getDate())}>
           {current && <>
-            <div className="weather-city">
+            <div className='weather-city'>
               <span>{'Lublin'}</span>
             </div>
-            <div className="weather-icon">
+            <div className='weather-icon'>
               <Icon name={current.icon}/>
             </div>
-            <div className="weather-temperature">
+            <div className='weather-temperature'>
               <span>{`${current.temp}°C`}</span>
-              <div className="weather-desc">
-                  <span className="weather-desc">{current.description}</span>
+              <div className='weather-desc'>
+                  <span className='weather-desc'>{current.description}</span>
               </div>
             </div>
           </>}
         </div>
-        <div className="weather-row forecast">
+        <div className='weather-row forecast'>
           {daily && daily.map((day) => <DailyItem key={day.day} onClick={() => handleHourlyDaySelect(day.day)} {...day} />)}
         </div>
         <Modal show={!!hourlyDaySelected.length} title={displayModalTitle()} onClose={handleHourlyClose}>
-          <div className="weather-hourly">
-            <div className="values">
-              <div className="weather-icon">
+          <div className='weather-hourly'>
+            <div className='values'>
+              <div className='weather-icon'>
                 <Icon name={daySelected.icon}/>
               </div>
-              <div className="weather-temperature">
+              <div className='weather-temperature'>
                 <div>
                   {daySelected.dayTemp !== null && <Icon name={'sun'}/>}
                   <span>{`${daySelected.dayTemp} °C`}</span>
@@ -111,21 +111,21 @@ const Weather: FC<WeatherProps> = ({ current, daily, hourly }) => {
                   </div>
                 }
               </div>
-              <div className="weather-other">
-                <div className="other-value">
+              <div className='weather-other'>
+                <div className='other-value'>
                   <Icon name='humidity' width={'30px'}/>
                   <span>{`${daySelected.humidity} %`}</span>
                 </div>
-                <div className="other-value">
+                <div className='other-value'>
                   <Icon name='pressure' width={'30px'}/>
                   <span>{`${daySelected.pressure} hPa`}</span>
                 </div>
               </div>
             </div>
-            <div className="chart">
+            <div className='chart'>
               <LineChart values={prepareChartData()} />
             </div>
-            <div className="temperatures">
+            <div className='temperatures'>
               {hourlyDaySelected.map((hour) => <HourlyItem key={hour.hour} {...hour} />)}
             </div>
           </div>

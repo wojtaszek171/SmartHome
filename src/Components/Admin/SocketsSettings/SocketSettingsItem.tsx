@@ -1,15 +1,15 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button, Input, Select, Toggle } from 'pwojtaszko-design';
-import { SocketItem } from './SocketsSettings';
-import arrayEquals from 'src/utils/arrayEquals';
-import { parseLightModes, stringifyLightModes } from 'src/utils/lightModes';
 import { useTranslation } from 'react-i18next';
 import i18nInstance from 'src/i18n/i18nInstance';
+import arrayEquals from 'src/utils/arrayEquals';
+import { parseLightModes, stringifyLightModes } from 'src/utils/lightModes';
+import { SocketItem } from './SocketsSettings';
 
 interface SocketSettingsItemProps {
   socketObj: SocketItem;
   onChange: Function;
-};
+}
 
 const lightModesTitles = ['off', 'on', 'eveningAquael', 'nightAquael'];
 
@@ -37,8 +37,8 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
     const newMode = [lightMode, lightModeHour];
     if (lightModeHour.length && lightMode.length && !currentLightModes.some((mode) => arrayEquals(mode, newMode))) {
       const sortedLightModes = [...currentLightModes, newMode].sort((a, b) => {
-        var time1 = parseFloat(a[1].replace(':','.').replace(/[^\d.-]/g, ''));
-        var time2 = parseFloat(b[1].replace(':','.').replace(/[^\d.-]/g, ''));
+        const time1 = parseFloat(a[1].replace(':','.').replace(/[^\d.-]/g, ''));
+        const time2 = parseFloat(b[1].replace(':','.').replace(/[^\d.-]/g, ''));
         if (time1 < time2) return -1;
         if (time1 > time2) return 1;
         return 0;
@@ -53,10 +53,10 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
   };
   
   return (
-    <div className="socket-settings-item">
+    <div className='socket-settings-item'>
       <div className='socket-start-stop'>
-        <div className="socket-switch">
-          <div className="toggle-wrapper">
+        <div className='socket-switch'>
+          <div className='toggle-wrapper'>
             <Toggle
               checked={socketObj.enabled}
               onClick={(val: boolean) => handleUpdateSocket({ enabled: val })}
@@ -108,7 +108,7 @@ const SocketSettingsItem: FC<SocketSettingsItemProps> = ({ onChange, socketObj }
               <Input
                 label={t('enableHour')}
                 value={lightModeHour}
-                type="time"
+                type='time'
                 onChange={setLightModeHour}
               />
               <Button

@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import App from './App';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAuthToken, getUsername } from 'src/selectors/session';
+import { getCookie, eraseCookie } from '../../helpers';
+import { setSessionData, clearSession } from '../../reducers/session/session';
 import { setWeatherData } from '../../reducers/weather/weather';
 import { getAdminConfigurationStatus, getCurrentUser, getCurrentWeather, getDailyWeather, getHourlyWeather } from '../../restService/restService';
-import { setSessionData, clearSession } from '../../reducers/session/session';
-import { getCookie, eraseCookie } from '../../helpers';
-import { getAuthToken, getUsername } from 'src/selectors/session';
+import App from './App';
 
 const AppContainer: FC = () => {
   const [isAdminConfigured, setIsAdminConfigured] = useState(true);

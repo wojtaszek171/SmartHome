@@ -1,7 +1,7 @@
-import React, { CSSProperties, FC, ReactElement, useEffect, useRef, useState } from "react";
-import { useWindowSize } from "src/utils/useWindowSize";
-import Portal from "../Portal";
-import "./Tooltip.scss";
+import React, { CSSProperties, FC, ReactElement, useEffect, useRef, useState } from 'react';
+import { useWindowSize } from 'src/utils/useWindowSize';
+import Portal from '../Portal';
+import './Tooltip.scss';
 
 interface TooltipProps {
     delay?: number;
@@ -12,8 +12,8 @@ interface TooltipProps {
 const Tooltip: FC<TooltipProps> = ({ children, delay, direction, content }) => {
   let timeout: ReturnType<typeof setTimeout>;
   const [active, setActive] = useState(false);
-  const wrapperRef = useRef(document.createElement("div"));
-  const tooltipRef = useRef(document.createElement("div"));
+  const wrapperRef = useRef(document.createElement('div'));
+  const tooltipRef = useRef(document.createElement('div'));
   const [styles, setStyles] = useState<CSSProperties>({});
   const size = useWindowSize();
 
@@ -70,7 +70,7 @@ const Tooltip: FC<TooltipProps> = ({ children, delay, direction, content }) => {
   return (
     <div
       ref={wrapperRef}
-      className="pwd-tooltip-wrapper"
+      className='pwd-tooltip-wrapper'
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
     >

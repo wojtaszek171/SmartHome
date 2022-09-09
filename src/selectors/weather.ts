@@ -1,4 +1,4 @@
-import { ApplicationState } from "src/reducers";
+import { ApplicationState } from 'src/reducers';
 
 export const getCurrentWeather = (state: ApplicationState) => state.weather.current;
 

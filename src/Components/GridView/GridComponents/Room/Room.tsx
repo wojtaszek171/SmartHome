@@ -12,7 +12,7 @@ interface RoomProps {
 
 const Room: FC<RoomProps> = ({ temperature, pressure, humidity }) => {
   return (
-    <div className="room-section-component">
+    <div className='room-section-component'>
       {temperature !== undefined &&
         <SensorComponent
           type={SensorTypes.TEMPERATURE}

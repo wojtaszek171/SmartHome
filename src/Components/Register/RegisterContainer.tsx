@@ -1,9 +1,9 @@
-import { Register } from 'pwojtaszko-design';
 import React, { FC, useState } from 'react';
+import { Register } from 'pwojtaszko-design';
 import { configureAdmin } from 'src/restService/restService';
 
 interface RegisterContainerProps {
-    onRegister?: Function;
+    onRegister?: () => void;
 }
 
 const RegisterContainer: FC<RegisterContainerProps> = ({ onRegister }) => {
@@ -52,7 +52,7 @@ const RegisterContainer: FC<RegisterContainerProps> = ({ onRegister }) => {
                 password
             }).then(() => {
                 onRegister && onRegister();
-            }).catch((e) => {
+            }).catch((e: Error) => {
                 setMessage(e.message);
             });
         }

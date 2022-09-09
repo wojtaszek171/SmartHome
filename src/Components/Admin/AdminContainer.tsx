@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
-import { getSockets, getWeatherLat, getWeatherLon, setSetting, setSocket } from 'src/restService/restService';
-import { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
-import { socketsConfig } from './SocketsSettings/socketsConfig';
-import { useSelector } from 'react-redux';
-import Admin from './Admin';
-import { getAuthToken } from 'src/selectors/session';
-import i18nInstance from 'src/i18n/i18nInstance';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import i18nInstance from 'src/i18n/i18nInstance';
+import { getSockets, getWeatherLat, getWeatherLon, setSetting, setSocket } from 'src/restService/restService';
+import { getAuthToken } from 'src/selectors/session';
+import Admin from './Admin';
+import { socketsConfig } from './SocketsSettings/socketsConfig';
+import { SocketItem, SocketsObject } from './SocketsSettings/SocketsSettings';
 
 export interface AdminSettingsValues {
   weatherLat: string;
@@ -31,7 +31,7 @@ const AdminContainer: FC = () => {
   }, []);
 
   const fetchSettings = async () => {
-    let settingsObject: AdminSettingsValues = {...initialConfig};
+    const settingsObject: AdminSettingsValues = {...initialConfig};
 
     await getWeatherLat().then(res => {
       settingsObject.weatherLat = res.value;

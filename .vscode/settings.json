@@ -1,0 +1,24 @@
+{
+    "terminal.integrated.cwd": ".",
+    "editor.rulers": [120],
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.stylelint": true,
+        "source.fixAll.eslint": true
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "stylelint.vscode-stylelint"
+    },
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "stylelint.validate": ["scss", "css"],
+    "eslint.format.enable": true,
+    "eslint.workingDirectories": [
+        "production/",
+        "tests/acceptance/"
+    ],
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  }
+  

@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import { Modal, Header } from 'pwojtaszko-design';
-import Login from '../Login';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAuthToken, getFirstName, getLastName } from 'src/selectors/session';
-import { eraseCookie } from '../../helpers';
+import { eraseCookie } from 'src/helpers';
 import { clearSession, openAdmin } from 'src/reducers/session/session';
+import { getAuthToken, getFirstName, getLastName } from 'src/selectors/session';
+import Login from '../Login';
 import './Header.scss';
 
 const HeaderContainer: FC = () => {
@@ -51,18 +51,18 @@ const HeaderContainer: FC = () => {
     ]
 
     return (
-        <div className="header-component">
+        <div className='header-component'>
             <Header
                 left={<>
-                    <span className="header-title" onClick={handleTitleClick}>Smart Home</span>
+                    <span className='header-title' onClick={handleTitleClick}>Smart Home</span>
                 </>}
                 right={<>
-                    {!loggedIn && <a href="#" className="login-button" onClick={handleLoginOpen}>Login</a>}
+                    {!loggedIn && <a href='#' className='login-button' onClick={handleLoginOpen}>Login</a>}
                 </>}
                 dropdownTitle={`${firstName} ${lastName}`}
                 dropdownElements={loggedIn ? dropdownConfig : []}
             />
-            <Modal show={loginVisible} title={"Login to administrate"} onClose={handleLoginClose}>
+            <Modal show={loginVisible} title={'Login to administrate'} onClose={handleLoginClose}>
                 <Login onLogin={handleLoginClose} />
             </Modal>
         </div>

@@ -10,7 +10,7 @@ interface SocketsProps {
 const Sockets: FC<SocketsProps> = ({ socketsSettings }) => {
 
   return (
-    <div className="sockets-component">
+    <div className='sockets-component'>
       {socketsSettings.map((socket =>
         <SocketItemComponent
           {...socket}

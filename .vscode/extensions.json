@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "SonarSource.sonarlint-vscode",
+        "firsttris.vscode-jest-runner",
+        "esbenp.prettier-vscode",
+        "stylelint.vscode-stylelint"
+    ],
+}

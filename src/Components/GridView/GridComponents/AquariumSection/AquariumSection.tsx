@@ -10,7 +10,7 @@ interface AquariumSectionProps {
 
 const AquariumSection: FC<AquariumSectionProps> = ({ temperature }) => {  
   return (
-    <div className="aquarium-section-component">
+    <div className='aquarium-section-component'>
       <SensorComponent
         type={SensorTypes.TEMPERATURE}
         data={temperature}

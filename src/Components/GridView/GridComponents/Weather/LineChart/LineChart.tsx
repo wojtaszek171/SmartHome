@@ -61,19 +61,19 @@ const LineChart: FC<LineChartProps> = ({ values }) => {
 
     return (
         <div className='pwd-line-chart'>
-            <svg width="100%" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="chart">
+            <svg width='100%' viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className='chart'>
                 <polyline
-                    fill="none"
-                    stroke="#0074d9"
-                    stroke-width="3"
+                    fill='none'
+                    stroke='#0074d9'
+                    strokeWidth='3'
                     points={valuesToPoints()}
                     width='100%'
                     height='100%'
                 />
                 <polyline
-                    fill="#4864a9a8"
-                    stroke="#0074d9"
-                    stroke-width="0"
+                    fill='#4864a9a8'
+                    stroke='#0074d9'
+                    strokeWidth='0'
                     points={valuesToBg()}
                     width='100%'
                     height='100%'

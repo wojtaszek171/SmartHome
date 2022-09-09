@@ -1,6 +1,16 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {},
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "ESNext"
+    ],
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
@@ -8,21 +18,9 @@
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "typeRoots": [ "./types", "./node_modules/@types"]
+    "downlevelIteration": true,
+    "resolveJsonModule": true
   },
   "include": [
     "./src/**/*",

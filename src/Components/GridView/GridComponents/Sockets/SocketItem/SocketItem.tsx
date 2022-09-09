@@ -6,7 +6,7 @@ import './SocketItem.scss';
 
 interface SocketItemProps extends SocketItem {
   name: string;
-};
+}
 
 const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled }) => {
   const [currentDeg, setCurrentDeg] = useState(0);
@@ -28,12 +28,12 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled })
   };
 
   const minutesBetween = (startH: number, startM: number, stopH: number, stopM: number) => {
-    let startDate = new Date(0, 0, 0, Number(startH), Number(startM), 0);
-    let endDate = new Date(0, 0, 0, Number(stopH), Number(stopM), 0);
+    const startDate = new Date(0, 0, 0, Number(startH), Number(startM), 0);
+    const endDate = new Date(0, 0, 0, Number(stopH), Number(stopM), 0);
     let diff = endDate.getTime() - startDate.getTime();
     let hours = Math.floor(diff / 1000 / 60 / 60);
     diff -= hours * 1000 * 60 * 60;
-    let minutes = Math.floor(diff / 1000 / 60);
+    const minutes = Math.floor(diff / 1000 / 60);
 
     if (hours < 0) {
       hours = hours + 24;
@@ -72,7 +72,7 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled })
   });
 
   return (
-    <div className={`socket-item`}>
+    <div className={'socket-item'}>
       {!enabled && <div className='socket-disabled'/>}
       <div className={'socket-title'}>
         <div className={`socket-indicator ${enabled ? 'enabled' : ''}`}/>
@@ -80,7 +80,7 @@ const SocketItemComponent: FC<SocketItemProps> = ({ name, lightModes, enabled })
       </div>
       <div className='socket-details'>
         <div className='socket-clock'>
-          <svg className={`pie${useOnOffOnly ? ' standard' : ''}`} viewBox="0 0 32 32">
+          <svg className={`pie${useOnOffOnly ? ' standard' : ''}`} viewBox='0 0 32 32'>
             {getSlices()}
           </svg>
           <div className='clockface'>

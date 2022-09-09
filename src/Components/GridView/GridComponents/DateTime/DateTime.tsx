@@ -23,20 +23,20 @@ const DateTime = () => {
   }, [])
 
   const formatTime = () => {
-    return `${("0" + currentTime.getHours()).slice(-2)}:${("0" + currentTime.getMinutes()).slice(-2)}:${("0" + currentTime.getSeconds()).slice(-2)}`;
+    return `${('0' + currentTime.getHours()).slice(-2)}:${('0' + currentTime.getMinutes()).slice(-2)}:${('0' + currentTime.getSeconds()).slice(-2)}`;
   }
 
   return (
-    <div className="datetime-component">
-      <div className="date-section">
-        <div className="date-col">
-          <div className="date-row date">
-            <span>{`${("0" + currentTime.getDate()).slice(-2)}.${("0" + (currentTime.getMonth() + 1)).slice(-2)}.${currentTime.getFullYear()}`}</span>
+    <div className='datetime-component'>
+      <div className='date-section'>
+        <div className='date-col'>
+          <div className='date-row date'>
+            <span>{`${('0' + currentTime.getDate()).slice(-2)}.${('0' + (currentTime.getMonth() + 1)).slice(-2)}.${currentTime.getFullYear()}`}</span>
           </div>
-          <div className="date-row time">
+          <div className='date-row time'>
             <span>{formatTime()}</span>
           </div>
-          <div className="date-row day">
+          <div className='date-row day'>
             <span>{t(days[currentTime.getDay()])}</span>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useTranslation } from 'react-i18next';
+import Icon from 'src/Components/Icon/Icon';
 import i18nInstance from 'src/i18n/i18nInstance';
-import Icon from '../../../../Icon/Icon';
 import './DailyItem.scss';
 
 const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
@@ -11,7 +11,7 @@ interface DailyItemProps {
   dayTemp: number;
   nightTemp: number;
   icon: string;
-  onClick?: Function;
+  onClick?: () => void;
 }
 
 const DailyItem: FC<DailyItemProps> = ({ dayOfWeek, dayTemp, nightTemp, icon, onClick}) => {
@@ -24,13 +24,13 @@ const DailyItem: FC<DailyItemProps> = ({ dayOfWeek, dayTemp, nightTemp, icon, on
   }
 
   return (
-    <div className="weather-forecast-day" onClick={handleWeatherClick}>
-      <span className="day-title"> {t(dayNames[dayOfWeek])} </span>
-      <div className="day-image">
+    <div className='weather-forecast-day' onClick={handleWeatherClick}>
+      <span className='day-title'> {t(dayNames[dayOfWeek])} </span>
+      <div className='day-image'>
         <Icon name={icon}/>
       </div>
-      <span className="temperature-day">{dayTemp}°C</span>
-      <span className="temperature-night">{nightTemp}°C</span>
+      <span className='temperature-day'>{dayTemp}°C</span>
+      <span className='temperature-night'>{nightTemp}°C</span>
     </div>
   );
 }

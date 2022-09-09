@@ -6,7 +6,7 @@ import SideMenu from './SideMenu';
 
 interface SideMenuContainerProps {
   children: ReactElement;
-};
+}
 
 const SideMenuContainer: FC<SideMenuContainerProps> = ({ children }) => {
 
