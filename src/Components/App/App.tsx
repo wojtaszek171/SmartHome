@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Footer, Modal } from 'pwojtaszko-design';
-import Content from '../Content';
-import Admin from '../Admin';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import SideMenu from '../SideMenu';
-import Header from '../Header';
 import { useSelector } from 'react-redux';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { getIsTokenValid } from 'src/selectors/session';
-import './App.scss';
+import Admin from '../Admin';
+import Content from '../Content';
+import Header from '../Header';
 import Register from '../Register';
+import SideMenu from '../SideMenu';
+import './App.scss';
 
 interface AppProps {
   isAdminConfigured: boolean;
@@ -19,7 +19,7 @@ const App: FC<AppProps> = ({ isAdminConfigured, onRegister }) => {
   const isTokenValid = useSelector(getIsTokenValid);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Modal
         show={isAdminConfigured}
       >
@@ -27,23 +27,23 @@ const App: FC<AppProps> = ({ isAdminConfigured, onRegister }) => {
           onRegister={onRegister}
         />
       </Modal>
-      <Router>
-        <Header/>
-          <div className="appMiddle">
-            <Route path="/">
-              <Content />
-              {isTokenValid &&
-                <SideMenu >
-                  <Admin />
-                </SideMenu>
-              }
-            </Route>
-          </div>
-        <Footer
-          middle={<span className="footer-text">This is footer. Made by Paweł Wojtaszko</span>}
-        />
-      </Router>
-      <div id="portal-root" />
+      <Header/>
+      <div className='appMiddle'>
+        {isTokenValid &&
+          <SideMenu >
+            <Admin />
+          </SideMenu>
+        }
+        <Router>
+          <Routes>
+            <Route path='/' element={<Content />}/>
+          </Routes>
+        </Router>
+      </div>
+      <Footer
+        middle={<span className='footer-text'>This is footer. Made by Paweł Wojtaszko</span>}
+      />
+      <div id='portal-root' />
     </div>
   );
 };
