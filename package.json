@@ -7,7 +7,7 @@
     "i18next": "^21.9.1",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
-    "pwojtaszko-design": "^0.3.26",
+    "pwojtaszko-design": "^0.3.27",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^11.18.5",

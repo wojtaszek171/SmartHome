@@ -13,7 +13,7 @@ import './App.scss';
 interface AppProps {
   isAdminConfigured: boolean;
   onRegister: () => void;
-};
+}
 
 const App: FC<AppProps> = ({ isAdminConfigured, onRegister }) => {
   const isTokenValid = useSelector(getIsTokenValid);
