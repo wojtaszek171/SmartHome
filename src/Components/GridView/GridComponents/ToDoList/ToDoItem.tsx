@@ -1,5 +1,5 @@
-import { Checkbox } from 'pwojtaszko-design';
 import React, { CSSProperties, FC } from 'react';
+import { Checkbox } from 'pwojtaszko-design';
 
 export interface ToDoItemProps {
   title?: string;

@@ -50,7 +50,8 @@
     "deploy-local": "react-scripts build && scp -r ./build/* pwojtaszko@192.168.1.41:/media/pwojtaszko/DATA_STORAGE/smart_home/app",
     "deploy-remote": "react-scripts build && scp -r ./build/* pwojtaszko@pwojtaszko.ddns.net:/media/pwojtaszko/DATA_STORAGE/smart_home/app",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix --ext .ts,.tsx ."
   },
   "browserslist": {
     "production": [

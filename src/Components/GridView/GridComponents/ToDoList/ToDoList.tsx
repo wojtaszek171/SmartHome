@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
-import ToDoItem, { ToDoItemProps } from './ToDoItem';
 import { Button, Input, Modal } from 'pwojtaszko-design';
+import ToDoItem, { ToDoItemProps } from './ToDoItem';
 import './ToDoList.scss';
 
 interface ToDoListProps {

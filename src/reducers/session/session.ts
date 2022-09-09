@@ -1,5 +1,5 @@
-import { ClearSession, SessionState, SetAdminOpen, SetSessionData } from "./types";
 import { ActionCreator, Reducer } from 'redux';
+import { ClearSession, SessionState, SetAdminOpen, SetSessionData } from './types';
 
 const SESSION_SET = 'SESSION_SET';
 const SESSION_CLEAR = 'SESSION_CLEAR';

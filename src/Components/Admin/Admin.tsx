@@ -1,9 +1,9 @@
 import React, { FC, useEffect, useState } from 'react';
-import { SocketItem } from './SocketsSettings/SocketsSettings';
-import { AdminSettingsValues } from './AdminContainer';
 import { Button, Input } from 'pwojtaszko-design';
 import { TFunction } from 'react-i18next';
+import { AdminSettingsValues } from './AdminContainer';
 import SocketsSettings from './SocketsSettings';
+import { SocketItem } from './SocketsSettings/SocketsSettings';
 import './Admin.scss';
 
 interface AdminProps {
@@ -54,15 +54,15 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate, t }) => {
   };
 
   return (
-    <div className="Admin">
-      <div className="header">
-        <span className="header-text">{t('adminPanel')}</span>
+    <div className='Admin'>
+      <div className='header'>
+        <span className='header-text'>{t('adminPanel')}</span>
       </div>
-      <div className="settings">
-        <span className="setting-title">
+      <div className='settings'>
+        <span className='setting-title'>
           {t('weather')}
         </span>
-        <div className="coordinates">
+        <div className='coordinates'>
           <Input
             label={'Lat'}
             value={weatherLat}
@@ -76,7 +76,7 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate, t }) => {
             onChange={setWeatherLon}
           />
         </div>
-        <span className="setting-title">
+        <span className='setting-title'>
           {t('sockets')}
         </span>
         <SocketsSettings
@@ -88,7 +88,7 @@ const Admin: FC<AdminProps> = ({ settings, error, onSettingUpdate, t }) => {
           disabled={updateDisabled}
           onClick={handleSettingsUpdate}
         />
-        {error && <span className="update-error">{error}</span>}
+        {error && <span className='update-error'>{error}</span>}
       </div>
     </div>
   );

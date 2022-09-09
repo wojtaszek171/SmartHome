@@ -8,9 +8,9 @@ interface CollapseProps {
 }
 
 const collapseSection = (element: HTMLElement) => {
-    var sectionHeight = element.scrollHeight;
+    const sectionHeight = element.scrollHeight;
     
-    var elementTransition = element.style.transition;
+    const elementTransition = element.style.transition;
     element.style.transition = '';
     
     requestAnimationFrame(() => {
@@ -26,7 +26,7 @@ const collapseSection = (element: HTMLElement) => {
 }
 
 const expandSection = (element: HTMLElement, heightToSet?: number) => {
-    var sectionHeight = heightToSet || element.scrollHeight;
+    const sectionHeight = heightToSet || element.scrollHeight;
 
     element.style.height = sectionHeight + 'px';
     
@@ -65,7 +65,7 @@ const Collapse: FC<CollapseProps> = ({ collapsed, collapseTitle, onCollapse, chi
     return (
         <div className={`pwd-collapse${isCollapsed ? ' collapsed' : ''}`}>
             <div
-                className="collapse-button"
+                className='collapse-button'
                 onClick={() => handleCollapse()}
             >
                 <span className='collapse-arrow'>&#9660;</span>

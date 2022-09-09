@@ -19,12 +19,12 @@ interface SocketsSettingsProps {
   socketsConfigValues: SocketItem[];
   socketsObject: SocketsObject;
   onChange: Function;
-};
+}
 
 const SocketsSettings: FC<SocketsSettingsProps> = ({ socketsObject, socketsConfigValues, onChange }) => {
 
   return (
-    <div className="sockets-settings">
+    <div className='sockets-settings'>
       {socketsConfigValues.map(({ key }) =>
         <SocketSettingsItem
           socketObj={socketsObject[key]}

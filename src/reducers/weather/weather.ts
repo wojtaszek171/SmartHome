@@ -1,5 +1,5 @@
-import { ActionCreator, Reducer } from "redux";
-import { SetWeatherData, WeatherState } from "./types";
+import { ActionCreator, Reducer } from 'redux';
+import { SetWeatherData, WeatherState } from './types';
 
 const WEATHER_SET = 'WEATHER_SET';
 

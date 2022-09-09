@@ -1,5 +1,5 @@
-import { Sensor, SensorsState, SetSensorsData } from "./types";
 import { ActionCreator, Reducer } from 'redux';
+import { Sensor, SensorsState, SetSensorsData } from './types';
 
 const SENSORS_SET = 'SENSORS_SET';
 

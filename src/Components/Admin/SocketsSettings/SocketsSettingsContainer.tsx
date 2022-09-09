@@ -19,7 +19,7 @@ export interface SocketsObject {
 interface SocketsSettingsContainerProps {
   socketsFromDB: SocketsObject;
   onChange: Function;
-};
+}
 
 const SocketsSettingsContainer: FC<SocketsSettingsContainerProps> = ({ onChange, socketsFromDB }) => {
 

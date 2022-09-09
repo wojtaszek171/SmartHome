@@ -1,4 +1,5 @@
 import { SocketItem } from '../Components/Admin/SocketsSettings/SocketsSettings';
+import { ErrnoException, GetDailyWeatherReponse, WeatherCurrentResponse, WeatherDailyItem, WeatherDailyResponse, WeatherHourlyItem, WeatherHourlyResponse } from './types';
 
 const { REACT_APP_API_HOST, REACT_APP_API_PORT, REACT_APP_API_PATH } = window;
 
@@ -8,7 +9,7 @@ const requestStatus = async (response: Response) => {
     if (response.ok) {
         return response.json();
     } else {
-        const errorRes = await response.json();
+        const errorRes = await response.json() as ErrnoException;
         if (errorRes.code) {
             throw errorRes;
         }
@@ -113,8 +114,18 @@ export const getSensorsData = () =>
 export const getCurrentWeather = () => {
     return fetch(`${HOST_URL}/api/weather/current`)
         .then(requestStatus)
-        .then(data => {
-            const { dt, temp, feels_like, humidity, pressure, sunrise, sunset, weather } = data.value;
+        .then((data: WeatherCurrentResponse) => {
+            const {
+                dt,
+                temp,
+                feels_like,
+                humidity,
+                pressure,
+                sunrise,
+                sunset,
+                weather
+            } = data.value;
+
             const { icon, description } = weather[0];
 
             return{
@@ -137,11 +148,23 @@ export const getCurrentWeather = () => {
 export const getDailyWeather = () => {
     return fetch(`${HOST_URL}/api/weather/daily`)
         .then(requestStatus)
-        .then(data => {
+        .then((data: WeatherDailyResponse) => {
             const allDays = data.value;
 
-            return allDays.reduce((acc: any, dayEl: any) => {
-                const { dt, temp: { day: dayTemp, night: nightTemp }, pressure, humidity, weather, sunrise, sunset } = dayEl;
+            return allDays.reduce((acc: GetDailyWeatherReponse, dayEl: WeatherDailyItem) => {
+                const {
+                    dt,
+                    temp: {
+                        day: dayTemp,
+                        night: nightTemp
+                    },
+                    pressure,
+                    humidity,
+                    weather,
+                    sunrise,
+                    sunset
+                } = dayEl;
+
                 const icon = weather[0].icon;
                 const date = new Date(dt*1000);
 
@@ -170,10 +193,10 @@ export const getDailyWeather = () => {
 export const getHourlyWeather = () => {
     return fetch(`${HOST_URL}/api/weather/hourly`)
         .then(requestStatus)
-        .then(data => {
+        .then((data: WeatherHourlyResponse) => {
             const allHours = data.value;
 
-            return allHours.reduce((acc: any, dayEl: any) => {
+            return allHours.reduce((acc: Partial<WeatherHourlyItem>[], dayEl: WeatherHourlyItem) => {
                 const { day, hour, temp, icon } = dayEl;
 
                 acc.push({

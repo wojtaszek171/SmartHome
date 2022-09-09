@@ -18,9 +18,9 @@ const GridItem: FC<GridItemProps> = ({ children, title }) => {
   }, [currentScrollHeight]);
 
   return (
-    <div className="grid-item-component" ref={gridItemRef}>
-      {title && <span className="item-title">{title}</span>}
-      <div className="item-content">
+    <div className='grid-item-component' ref={gridItemRef}>
+      {title && <span className='item-title'>{title}</span>}
+      <div className='item-content'>
         {children}
       </div>
     </div>

@@ -1,9 +1,9 @@
-import { FC, useEffect } from "react";
-import { createPortal } from "react-dom";
+import { FC, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 const Portal: FC = ({ children }) => {
-  const mount = document.getElementById("portal-root");
-  const el = document.createElement("div");
+  const mount = document.getElementById('portal-root');
+  const el = document.createElement('div');
 
   useEffect(() => {
     if (mount) {

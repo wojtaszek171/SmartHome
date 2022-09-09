@@ -1,4 +1,4 @@
-import { Action } from "redux";
+import { Action } from 'redux';
 
 export interface CurrentWeather {
     dt: number;
@@ -25,7 +25,7 @@ export interface DailyWeatherItem {
     icon: string;
 }
 
-export interface DailyWeather extends Array<DailyWeatherItem> {}
+export type DailyWeather = Array<DailyWeatherItem>
 
 export interface HourlyWeatherItem {
     day: number;
@@ -34,7 +34,7 @@ export interface HourlyWeatherItem {
     icon: string;
 }
 
-export interface HourlyWeather extends Array<HourlyWeatherItem> {}
+export type HourlyWeather = Array<HourlyWeatherItem>
 
 export interface WeatherState {
     current: CurrentWeather | null;

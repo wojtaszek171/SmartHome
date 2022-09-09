@@ -11,12 +11,12 @@ interface HourlyItemProps {
 const HourlyItem: FC<HourlyItemProps> = ({ hour, temp, icon}) => {
 
   return (
-    <div className="weather-forecast-hour">
-        <span className="hour-title">{`${("0" + hour).slice(-2)}:00`}</span>
-        <div className="day-image">
+    <div className='weather-forecast-hour'>
+        <span className='hour-title'>{`${('0' + hour).slice(-2)}:00`}</span>
+        <div className='day-image'>
           <Icon name={icon}/>
         </div>
-        <span className="temperature">{temp}°C</span>
+        <span className='temperature'>{temp}°C</span>
     </div>
   );
 }

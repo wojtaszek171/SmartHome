@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC } from 'react';
 
 interface IconProps {
   name: string;
@@ -14,12 +14,12 @@ const Icon: FC<IconProps> = (props) => {
     icon = require(`./assets/${name}.svg`);
   }
   catch (e) {
-    icon = require(`./assets/broken-image.svg`);
+    icon = require('./assets/broken-image.svg');
   }
 
   return (
     <>
-      {name && <img {...props} src={icon} alt=""/>}
+      {name && <img {...props} src={icon} alt=''/>}
     </>
   );
 };

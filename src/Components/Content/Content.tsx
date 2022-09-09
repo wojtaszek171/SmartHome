@@ -5,8 +5,8 @@ import GridView from '../GridView';
 const Content = () => {
 
   return (
-    <div className="content-component">
-        <div className="content-box">
+    <div className='content-component'>
+        <div className='content-box'>
           <GridView />
         </div>
     </div>
