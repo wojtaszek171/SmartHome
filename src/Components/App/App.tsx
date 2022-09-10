@@ -29,16 +29,16 @@ const App: FC<AppProps> = ({ isAdminConfigured, onRegister }) => {
       </Modal>
       <Header/>
       <div className='appMiddle'>
-        {isTokenValid &&
-          <SideMenu >
-            <Admin />
-          </SideMenu>
-        }
         <Router>
           <Routes>
             <Route path='/' element={<Content />}/>
           </Routes>
         </Router>
+        {isTokenValid &&
+          <SideMenu >
+            <Admin />
+          </SideMenu>
+        }
       </div>
       <Footer
         middle={<span className='footer-text'>This is footer. Made by Paweł Wojtaszko</span>}
